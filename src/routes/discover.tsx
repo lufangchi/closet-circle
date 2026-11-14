@@ -8,9 +8,9 @@ import { ItemCard, Chip, DemoTag, btn, input } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/discover")({
   head: () => ({ meta: [
-    { title: "Discover — Closet Circle" },
+    { title: "Discover — SisUse" },
     { name: "description", content: "Find outfits for any occasion from closets in your neighborhood." },
-    { property: "og:title", content: "Discover looks nearby — Closet Circle" },
+    { property: "og:title", content: "Discover looks nearby — SisUse" },
     { property: "og:description", content: "AI-inspired outfit picks from neighbors' closets." },
   ] }),
   component: Discover,

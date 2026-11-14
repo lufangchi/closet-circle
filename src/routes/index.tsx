@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import hero from "@/assets/landing-hero-sky.jpg";
 import bottom from "@/assets/landing-bottom-circle.jpg";
 import stepBrowse from "@/assets/step-browse.jpg";
 import stepMessage from "@/assets/step-message.jpg";
 import stepWear from "@/assets/step-wear.jpg";
+import occasion from "@/assets/occasion-wedding.jpg";
 import stepFriends from "@/assets/step-friends.jpg";
 import tileDiscover from "@/assets/tile-discover.jpg";
 import tileCommunity from "@/assets/tile-community.jpg";
@@ -14,9 +15,9 @@ import { items } from "@/lib/data";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Closet Circle — Your neighborhood's shared wardrobe" },
+    { title: "SisUse — Your sisterhood’s shared wardrobe" },
     { name: "description", content: "Rent dresses, shoes and bags from stylish neighbors, get AI outfit picks for any occasion, and meet your Closet Soulmates." },
-    { property: "og:title", content: "Closet Circle — Your neighborhood's shared wardrobe" },
+    { property: "og:title", content: "SisUse — Your sisterhood’s shared wardrobe" },
     { property: "og:description", content: "Local fashion rental, AI styling and a style-first community in one place." },
   ] }),
   component: Landing,
@@ -28,11 +29,7 @@ const collections = [
   { t: "Manage your closet", d: "List what you rarely wear, set your price and dates, and earn from every rental.", img: tileCloset, to: "/closet" },
 ];
 const cats = [
-  { label: "Wedding Guest", img: items[1]!.image },
-  { label: "Evening & Gala", img: items[0]!.image },
-  { label: "Handbags", img: items[2]!.image },
-  { label: "Shoes", img: items[4]!.image },
-  { label: "Tailoring", img: items[3]!.image },
+  { label: "Clothing" }, { label: "Bags" }, { label: "Jewelry" }, { label: "Shoes" }, { label: "Accessories" },
 ];
 const steps = [
   { t: "Browse, AI Discover & AI Try-On", d: "Search by occasion, size and budget, get an AI-styled look, and preview pieces on yourself.", img: stepBrowse },
@@ -43,25 +40,48 @@ const steps = [
 
 function Steps() {
   const [on, setOn] = useState(0);
+  useEffect(() => { const t = setInterval(() => setOn((v) => (v + 1) % steps.length), 4500); return () => clearInterval(t); }, []);
+  const n = steps.length;
   return (
-    <section className="mx-auto max-w-7xl px-6 pb-28 pt-24 md:pt-32">
-      <p className="text-[12px] tracking-luxe text-accent-foreground">How it works</p>
-      <h2 className="mt-6 max-w-4xl font-display text-4xl leading-[1.1] md:text-6xl">One closet is never enough. <em>A whole neighborhood's is.</em></h2>
-      <div className="mt-16 grid items-center gap-12 md:grid-cols-[1.2fr_1fr]">
-        <ol className="space-y-8">{steps.map((st, i) => (
-          <li key={st.t}>
-            <button onMouseEnter={() => setOn(i)} onFocus={() => setOn(i)} onClick={() => setOn(i)} className={`block border-l-2 pl-5 text-left transition ${on === i ? "border-foreground" : "border-transparent opacity-45 hover:opacity-80"}`}>
-              <span className="block text-xs font-medium tracking-[0.1em]">0.0{i + 1}</span>
-              <span className="mt-1 block font-display text-3xl md:text-4xl">{st.t}</span>
-              {on === i && <span className="mt-2 block max-w-md text-sm text-muted-foreground">{st.d}</span>}
-            </button>
-          </li>))}</ol>
-        <div className="mx-auto w-full max-w-sm overflow-hidden rounded-[2rem] shadow-soft">
-          <img key={on} src={steps[on]!.img} alt={steps[on]!.t} loading="lazy" className="aspect-square w-full object-cover animate-fade-up" />
+    <section className="px-6 pb-16 pt-24 md:pt-32">
+      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 md:gap-16">
+        <div>
+          <p className="text-[13px] tracking-[0.08em] text-accent-foreground">How it works</p>
+          <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">A closet built for women, <em>by women</em></h2>
         </div>
+        <p className="self-end text-lg leading-relaxed text-muted-foreground md:text-xl">SisUse connects women in the same neighborhood to borrow, lend and style each other's pieces. Find a look, meet the woman who owns it, wear it out, and keep the conversation going with people who share your taste.</p>
       </div>
-      <Link to="/signup" className="mt-12 inline-block border-b border-foreground pb-0.5 text-[13px] tracking-[0.1em]">Join the circle</Link>
+      <div className="relative mx-auto mt-20 h-[300px] max-w-5xl md:h-[360px]">
+        {steps.map((st, i) => {
+          let d = i - on; if (d > n / 2) d -= n; if (d < -n / 2) d += n;
+          const abs = Math.abs(d);
+          return (
+            <button key={st.t} onClick={() => setOn(i)} aria-label={st.t}
+              style={{ transform: `translateX(calc(-50% + ${d * 72}%)) rotate(${d * 9}deg) translateY(${abs * 28}px) scale(${1 - abs * 0.12})`, zIndex: 10 - abs, opacity: abs > 1 ? 0.35 : 1, filter: abs > 1 ? "blur(3px)" : "none" }}
+              className="absolute left-1/2 top-0 aspect-square w-[210px] overflow-hidden rounded-[1.75rem] border-4 border-background shadow-soft transition-all duration-700 md:w-[290px]">
+              <img src={st.img} alt="" loading="lazy" className="h-full w-full object-cover" />
+            </button>
+          );
+        })}
+      </div>
+      <div className="mx-auto mt-10 max-w-xl text-center">
+        <p className="text-sm font-medium tracking-[0.1em]">0.0{on + 1}</p>
+        <h3 key={on} className="mt-2 animate-fade-up font-display text-3xl leading-tight md:text-4xl">{steps[on]!.t}</h3>
+        <p className="mt-3 text-muted-foreground">{steps[on]!.d}</p>
+        <div className="mt-6 flex justify-center gap-2">{steps.map((st, i) => (
+          <button key={st.t} onClick={() => setOn(i)} aria-label={`Step ${i + 1}`} className={`h-2 rounded-full transition-all ${on === i ? "w-6 bg-primary" : "w-2 bg-border"}`} />
+        ))}</div>
+      </div>
     </section>
+  );
+}
+
+function Bridge({ text }: { text: string }) {
+  return (
+    <div className="flex flex-col items-center pb-14 text-center">
+      <span className="h-14 w-px bg-border" />
+      <p className="mt-5 max-w-md font-display text-2xl italic text-muted-foreground">{text}</p>
+    </div>
   );
 }
 
@@ -78,29 +98,31 @@ function Landing() {
               <Link key={l} to={to as "/discover"} className="text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground">{l}</Link>
             ))}
           </div>
-          <Link to="/" className="font-display text-xl tracking-wide md:absolute md:left-1/2 md:-translate-x-1/2">Closet <em>Circle</em></Link>
+          <Link to="/" className="font-display text-xl tracking-wide md:absolute md:left-1/2 md:-translate-x-1/2">Sis<em>Use</em></Link>
           <div className="flex items-center gap-6">
             <Link to="/auth" className="hidden text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground md:block">Sign in</Link>
             <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-[13px] tracking-[0.08em] text-primary-foreground transition hover:opacity-90">Open app</Link>
           </div>
         </nav>
         <div className="absolute inset-x-6 bottom-10 md:inset-x-12 md:bottom-14">
-          <p className="text-[12px] tracking-luxe text-ink-foreground/80">Now in San Francisco — Mission, Bernal, Noe & SoMa</p>
-          <h1 className="mt-4 max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Redesigning the way we <em>share fashion</em>.</h1>
+          <h1 className="max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Your sisterhood’s <em>shared wardrobe</em>.</h1>
+          <p className="mt-5 max-w-xl text-base text-ink-foreground/90 md:text-lg">Rent and lend clothing, bags, jewelry, and accessories. Discover new looks and connect with women who share your style.</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full bg-background px-7 py-3 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Find my look <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/community" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/50 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Meet the circle</Link>
+            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full bg-background px-7 py-3 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/closet" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/50 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Share Your Pieces</Link>
+            <Link to="/stylist" className="text-[13px] tracking-[0.1em] text-ink-foreground underline-offset-4 hover:underline">Find Your Next Look →</Link>
           </div>
         </div>
       </section>
 
       <Steps />
+      <Bridge text="Three ways to be part of it." />
 
       {/* FOUR SUB-SECTIONS — connected photo mosaic */}
-      <section className="px-4 pb-24 md:px-8">
+      <section className="px-4 pb-16 md:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-end justify-between pb-8">
-            <h2 className="font-display text-4xl md:text-5xl">Inside the <em>circle</em></h2>
+            <h2 className="font-display text-4xl md:text-5xl">Inside <em>SisUse</em></h2>
             <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
@@ -119,39 +141,15 @@ function Landing() {
         </div>
       </section>
 
-      {/* TRUST — Fit Guarantee + Damage Protection */}
-      <section id="trust" className="mx-auto max-w-7xl px-6 pb-28">
-        <div className="grid border-y border-border md:grid-cols-2 md:divide-x md:divide-border">
-          <div className="space-y-4 py-12 md:pr-12">
-            <h3 className="font-display text-4xl md:text-5xl">Fit <em>Guarantee</em></h3>
-            <p className="max-w-md text-muted-foreground">Preview the look on you and check how the garment's measurements compare with yours before you rent.</p>
-            <p className="max-w-md text-sm text-muted-foreground">Any fit issue — too small, too big, too long or simply not right — gets a refund or a free exchange, with your deposit returned in full.</p>
-            <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] tracking-[0.1em]">
-              <Link to="/fit-check" className="underline-offset-4 hover:underline">See how Fit Check works →</Link>
-              <Link to="/terms" hash="fit-guarantee" className="text-muted-foreground underline-offset-4 hover:underline">Eligibility & terms</Link>
-            </div>
-          </div>
-          <div className="space-y-4 border-t border-border py-12 md:border-t-0 md:pl-12">
-            <h3 className="font-display text-4xl md:text-5xl">Damage <em>Protection</em></h3>
-            <p className="max-w-md text-muted-foreground">See the deposit and damage terms before you request. Document the item's condition at pickup and return.</p>
-            <ul className="max-w-md space-y-1 text-sm text-muted-foreground">
-              <li>· Refundable deposit shown on every listing</li>
-              <li>· Normal wear and listed flaws are never charged</li>
-              <li>· Repairs charged at cost, capped at the deposit</li>
-              <li>· Not covered: damage above the deposit; loss or non-return is handled up to the deposit</li>
-            </ul>
-            <Link to="/terms" hash="damage" className="inline-block text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Rental terms →</Link>
-          </div>
-        </div>
-      </section>
+      <Bridge text="A wardrobe is more than clothes." />
 
       {/* CATEGORIES — serif index list with side image */}
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-28 md:grid-cols-2 md:gap-16">
+      <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-16 md:grid-cols-2 md:gap-16">
         <div className="relative hidden overflow-hidden md:block">
-          <img src={stepWear} alt="Wedding guest looks" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
+          <img src={occasion} alt="Wedding guest in a blush gown" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
         </div>
         <div className="flex flex-col justify-center">
-          <p className="text-[12px] tracking-luxe text-accent-foreground">Explore by occasion</p>
+          <p className="text-[12px] tracking-luxe text-accent-foreground">Everything for the full look</p>
           <div className="mt-8 divide-y divide-border border-y border-border">
             {cats.map((c) => (
               <Link key={c.label} to="/discover" className="group flex items-baseline justify-between py-5 md:py-6">
@@ -163,9 +161,11 @@ function Landing() {
         </div>
       </section>
 
+      <Bridge text="Here's what neighbors are wearing this week." />
+
       {/* TRENDING — best-seller style row */}
-      <section className="mx-auto max-w-7xl px-6 pb-28">
-        <p className="text-center text-[12px] tracking-luxe text-accent-foreground">This week in the circle</p>
+      <section className="mx-auto max-w-7xl px-6 pb-16">
+        <p className="text-center text-[12px] tracking-luxe text-accent-foreground">This week on SisUse</p>
         <h2 className="mt-6 text-center font-display text-4xl md:text-5xl">Discover what's <em>trending</em> nearby</h2>
         <div className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4">
           {items.slice(0, 4).map((it, i) => (
@@ -181,17 +181,19 @@ function Landing() {
         </div>
       </section>
 
+      <Bridge text="Your closet is waiting for its circle." />
+
       {/* JOIN — full-bleed photo with centered call to action */}
       <section className="relative">
         <img src={bottom} alt="Three friends in a circle laughing under a blue sky" loading="lazy" className="h-[90vh] w-full object-cover" />
         <div className="absolute inset-0 bg-ink/25" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-ink-foreground">
-          <p className="text-[13px] tracking-[0.1em]">Join the circle</p>
-          <h2 className="mt-4 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl">Be part of a closet where <em>women share with women</em></h2>
+          <p className="text-[13px] tracking-[0.1em]">Join SisUse</p>
+          <h2 className="mt-4 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl">Be part of a wardrobe where <em>women share with women</em></h2>
           <Link to="/signup" className="mt-10 inline-flex items-center gap-3 rounded-full bg-background px-8 py-3.5 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Create your free account <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
-      <p className="py-10 text-center text-[11px] tracking-luxe text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
+      <p className="py-10 text-center text-[11px] tracking-luxe text-muted-foreground">© 2026 SisUse · Your sisterhood’s shared wardrobe</p>
     </div>
   );
 }

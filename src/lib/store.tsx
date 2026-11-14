@@ -2,18 +2,19 @@ import type React from "react";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { seedPosts, isVerified, postPoints, type Post } from "./community";
 import type { FitProfile } from "./fit";
+import type { Block } from "./availability";
 import { supabase } from "@/integrations/supabase/client";
-import { ME, users, seedRentals, type Rental, type RentalStatus, type Item, items as seedItems } from "./data";
+import { ME, users, seedRentals, type Rental, type RentalStatus, type Item, items as seedItems, demoMyItems } from "./data";
 
 type State = { favorites: string[]; soulmates: string[]; rentals: Rental[]; points: number; myItems: Item[]; requests: string[]; likedPosts: string[]; savedPosts: string[]; myPosts: Post[]; skipped: string[]; account?: { name: string; email: string }; fitProfile?: FitProfile; lenderQuestions: { itemId: string; text: string }[]; savedOutfits: { id: string; name: string; place: string; itemIds: string[] }[] };
 export type Profile = { display_name: string; bio: string; neighborhood: string; zip: string; size: string; style_tags: string[] };
-const initial: State = { lenderQuestions: [], savedOutfits: [], likedPosts: [], savedPosts: [], myPosts: [], skipped: [], favorites: [], soulmates: [], rentals: seedRentals, points: 120, myItems: [], requests: [] };
+const initial: State = { lenderQuestions: [], savedOutfits: [], likedPosts: [], savedPosts: [], myPosts: [], skipped: [], favorites: [], soulmates: [], rentals: seedRentals, points: 120, myItems: demoMyItems, requests: [] };
 
 type Ctx = State & {
   toggleFav: (id: string) => void; toggleSoulmate: (id: string) => void;
   requestRental: (r: Omit<Rental, "id" | "status" | "messages" | "renterId">) => string;
   setStatus: (id: string, s: RentalStatus) => void; sendMessage: (id: string, text: string) => void;
-  review: (id: string) => void; addItem: (i: Item) => void; postRequest: (t: string) => void; allItems: Item[];
+  review: (id: string) => void; addItem: (i: Item) => void; setBlocks: (itemId: string, blocks: Block[]) => void; postRequest: (t: string) => void; allItems: Item[];
   allPosts: Post[]; earned: number; myCompleted: string[]; toggleLike: (id: string) => void; toggleSavePost: (id: string) => void; addPost: (p: Post) => void; skipPerson: (id: string) => void;
   authUser: { id: string; email: string } | null; authReady: boolean; profile: Profile | null; isDemo: boolean;
   updateProfile: (p: Profile) => Promise<string | null>; signOut: () => Promise<void>;
@@ -26,7 +27,7 @@ const KEY = "closet-circle-v1";
 
 const demoMe = { ...users[0]! };
 /** Signed-in users start clean: no demo rentals or points. */
-const fresh: State = { ...initial, rentals: [], points: 0 };
+const fresh: State = { ...initial, rentals: [], points: 0, myItems: [] };
 const applyProfile = (p: Profile | null, email?: string) => {
   const me = users[0]!;
   if (!p) { Object.assign(me, demoMe); return; }
@@ -53,7 +54,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!authReady) return;
     const base = authUser ? fresh : initial;
-    try { const v = localStorage.getItem(key); set(v ? { ...base, ...JSON.parse(v) } : base); } catch { set(base); }
+    try {
+      const v = localStorage.getItem(key);
+      const saved: State = v ? { ...base, ...JSON.parse(v) } : base;
+      // Guest demo: make sure newer demo listings and orders appear for returning visitors.
+      if (!authUser) {
+        const addMissing = <T extends { id: string }>(have: T[], seed: T[]) => [...have, ...seed.filter((x) => !have.some((h) => h.id === x.id))];
+        saved.myItems = addMissing(saved.myItems, demoMyItems); saved.rentals = addMissing(saved.rentals, seedRentals);
+      }
+      set(saved);
+    } catch { set(base); }
     setLoadedKey(key);
   }, [key, authReady]);
   useEffect(() => { if (loadedKey === key) localStorage.setItem(key, JSON.stringify(s)); }, [s, key, loadedKey]);
@@ -115,6 +125,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setStatus: (id, status) => upd(id, (r) => ({ ...r, status })),
     sendMessage: (id, text) => upd(id, (r) => ({ ...r, messages: [...r.messages, { from: ME, text, at: "now" }] })),
     review: (id) => { upd(id, (r) => ({ ...r, reviewed: true })); set((p) => ({ ...p, points: p.points + 50 })); },
+    setBlocks: (itemId, blocks) => set((p) => ({ ...p, myItems: p.myItems.map((i) => (i.id === itemId ? { ...i, blocks } : i)) })),
     addItem: (i) => set((p) => ({ ...p, myItems: [i, ...p.myItems] })),
     postRequest: (t) => set((p) => ({ ...p, requests: [t, ...p.requests] })),
   };

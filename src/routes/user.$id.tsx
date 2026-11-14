@@ -6,7 +6,7 @@ import { Avatar, ItemCard, btn, btnGhost } from "@/components/ui-kit";
 export const Route = createFileRoute("/user/$id")({
   loader: ({ params }) => { const u = users.find((x) => x.id === params.id); if (!u) throw notFound(); return { name: u.name, bio: u.bio }; },
   head: ({ loaderData }) => ({ meta: [
-    { title: `${loaderData?.name ?? "Closet"}'s closet — Closet Circle` },
+    { title: `${loaderData?.name ?? "Closet"}'s closet — SisUse` },
     { name: "description", content: loaderData?.bio ?? "A neighborhood closet." },
     { property: "og:title", content: `${loaderData?.name ?? "Closet"}'s closet` },
     { property: "og:description", content: loaderData?.bio ?? "A neighborhood closet." },

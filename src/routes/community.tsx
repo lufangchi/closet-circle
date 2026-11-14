@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/community")({
   head: () => ({ meta: [
-    { title: "Community — Closet Circle" },
+    { title: "Community — SisUse" },
     { name: "description", content: "An outfit feed from your neighbors: verified rental looks, owner styling and Closet Soulmates." },
-    { property: "og:title", content: "Community outfit feed — Closet Circle" },
+    { property: "og:title", content: "Community outfit feed — SisUse" },
     { property: "og:description", content: "Real looks from neighborhood rentals, styling ideas and style-matched neighbors." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

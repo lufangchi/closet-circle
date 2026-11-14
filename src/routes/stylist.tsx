@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/stylist")({
   head: () => ({ meta: [
-    { title: "AI Stylist — Closet Circle" },
+    { title: "AI Stylist — SisUse" },
     { name: "description", content: "Pick a place, choose a pose, and see a look styled from pieces you can actually rent from neighbors." },
-    { property: "og:title", content: "AI Stylist — Closet Circle" },
+    { property: "og:title", content: "AI Stylist — SisUse" },
     { property: "og:description", content: "Outfit ideas for your next photo spot, built only from rentable pieces." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

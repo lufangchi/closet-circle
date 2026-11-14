@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-ro
 import { useState } from "react";
 import { BadgeCheck, ShieldCheck, Star, MapPin, Clock, Ruler, Info } from "lucide-react";
 import { toast } from "sonner";
+import { isRangeBlocked, nextAvailable, addDays, fmt } from "@/lib/availability";
 import { getItem, getUser, priceRental, pickupSpots, compatibility, users, ME } from "@/lib/data";
 import { useStore } from "@/lib/store";
 import { isVerified, pieceTags } from "@/lib/community";
@@ -12,9 +13,9 @@ import { isClothing } from "@/lib/fit";
 export const Route = createFileRoute("/item/$id")({
   loader: ({ params }) => { const item = getItem(params.id); if (!item) throw notFound(); return { title: item.title, desc: item.description }; },
   head: ({ loaderData }) => ({ meta: [
-    { title: `${loaderData?.title ?? "Item"} — Closet Circle` },
+    { title: `${loaderData?.title ?? "Item"} — SisUse` },
     { name: "description", content: loaderData?.desc ?? "Rent this piece from a neighbor." },
-    { property: "og:title", content: `${loaderData?.title ?? "Item"} — Closet Circle` },
+    { property: "og:title", content: `${loaderData?.title ?? "Item"} — SisUse` },
     { property: "og:description", content: loaderData?.desc ?? "Rent this piece from a neighbor." },
   ] }),
   component: ItemPage,
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/item/$id")({
 function ItemPage() {
   const { id } = Route.useParams();
   const store = useStore();
-  const item = store.allItems.find((i) => i.id === id)!;
+  const item = store.allItems.find((i) => i.id === id) ?? getItem(id)!;
   const owner = getUser(item.ownerId);
   const nav = useNavigate();
   const [start, setStart] = useState("2026-11-20");
@@ -32,7 +33,9 @@ function ItemPage() {
   const [usePts, setUsePts] = useState(false);
   const pts = usePts ? Math.floor(store.points / 100) * 100 : 0;
   const p = priceRental(item, start, end, pts);
-  const blocked = item.blockedDates.some((d) => d >= start && d <= end);
+  const blocked = isRangeBlocked(item, start, end);
+  const nextFree = nextAvailable(item, start);
+  const mine = item.ownerId === ME;
   const isSoul = store.soulmates.includes(owner.id);
   const match = compatibility(users.find((u) => u.id === ME)!, owner);
 
@@ -96,8 +99,9 @@ function ItemPage() {
             {p.deposit > 0 && <Row l="Refundable deposit" r={p.deposit} />}
             <Row l="Final amount due" r={p.total} bold />
           </div>
-          {blocked && <p className="text-xs text-destructive">Some of these dates are blocked by the owner.</p>}
-          <button disabled={blocked} onClick={request} className={btn + " w-full"}>Request to rent</button>
+          {blocked && <div className="rounded-xl bg-secondary p-3 text-sm"><p className="font-medium">Unavailable for selected dates</p><p className="text-muted-foreground">Next available: {fmt(nextFree)}. <button className="underline" onClick={() => { setStart(nextFree); setEnd(addDays(nextFree, 1)); }}>Use {fmt(nextFree)}–{fmt(addDays(nextFree, 1))}</button></p></div>}
+          {mine && <p className="text-xs text-muted-foreground">This is your listing — manage dates in <Link to="/closet" className="underline">My Closet</Link>.</p>}
+          <button disabled={blocked || mine} onClick={request} className={btn + " w-full"}>Request to rent</button>
           <p className="flex gap-1 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4 shrink-0" />Free cancellation up to 48h before pickup. Condition photos at pickup & return; normal wear is never charged.</p>
           <p className="flex gap-1 text-xs text-muted-foreground"><Info className="h-4 w-4 shrink-0" />Prototype: no payment is taken. <Link to="/terms" className="underline">Rental terms</Link></p>
         </div>

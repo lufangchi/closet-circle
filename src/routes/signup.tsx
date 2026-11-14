@@ -9,9 +9,9 @@ import { btn, input } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({ meta: [
-    { title: "Join Closet Circle" },
-    { name: "description", content: "Create your Closet Circle account and set up a private Fit Profile." },
-    { property: "og:title", content: "Join Closet Circle" },
+    { title: "Join SisUse" },
+    { name: "description", content: "Create your SisUse account and set up a private Fit Profile." },
+    { property: "og:title", content: "Join SisUse" },
     { property: "og:description", content: "Rent from neighbors with fit you can trust." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
@@ -48,7 +48,7 @@ function Signup() {
     <div className="mx-auto max-w-xl space-y-8 py-6">
       <div className="text-center">
         <p className="tracking-luxe text-xs text-muted-foreground">Step {signedIn ? 2 : 1} of 2</p>
-        <h1 className="mt-2 text-5xl">{signedIn ? <>Your <em>Fit Profile</em></> : "Join the circle"}</h1>
+        <h1 className="mt-2 text-5xl">{signedIn ? <>Your <em>Fit Profile</em></> : "Join SisUse"}</h1>
         <p className="mt-2 text-muted-foreground">{signedIn ? "Four measurements help us estimate how each garment will fit you." : "Create your account to rent from neighbors."}</p>
       </div>
       {signedIn ? (
