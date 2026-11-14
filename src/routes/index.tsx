@@ -122,7 +122,7 @@ function Landing() {
       <section className="px-4 pb-16 md:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-end justify-between pb-8">
-            <h2 className="font-display text-4xl md:text-5xl">Inside the <em>circle</em></h2>
+            <h2 className="font-display text-4xl md:text-5xl">Inside <em>SisUse</em></h2>
             <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
@@ -188,8 +188,8 @@ function Landing() {
         <img src={bottom} alt="Three friends in a circle laughing under a blue sky" loading="lazy" className="h-[90vh] w-full object-cover" />
         <div className="absolute inset-0 bg-ink/25" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-ink-foreground">
-          <p className="text-[13px] tracking-[0.1em]">Join the circle</p>
-          <h2 className="mt-4 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl">Be part of a closet where <em>women share with women</em></h2>
+          <p className="text-[13px] tracking-[0.1em]">Join SisUse</p>
+          <h2 className="mt-4 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl">Be part of a wardrobe where <em>women share with women</em></h2>
           <Link to="/signup" className="mt-10 inline-flex items-center gap-3 rounded-full bg-background px-8 py-3.5 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Create your free account <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
