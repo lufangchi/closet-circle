@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as RentalsRouteImport } from './routes/rentals'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 import { Route as RentalsIdRouteImport } from './routes/rentals_.$id'
@@ -30,6 +31,11 @@ const ClosetRoute = ClosetRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RentalsRoute = RentalsRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
+  '/discover': typeof DiscoverRoute
   '/rentals': typeof RentalsRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
+  '/discover': typeof DiscoverRoute
   '/rentals': typeof RentalsRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
+  '/discover': typeof DiscoverRoute
   '/rentals': typeof RentalsRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals_/$id': typeof RentalsIdRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/closet'
     | '/community'
+    | '/discover'
     | '/rentals'
     | '/item/$id'
     | '/rentals/$id'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/closet'
     | '/community'
+    | '/discover'
     | '/rentals'
     | '/item/$id'
     | '/rentals/$id'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/closet'
     | '/community'
+    | '/discover'
     | '/rentals'
     | '/item/$id'
     | '/rentals_/$id'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClosetRoute: typeof ClosetRoute
   CommunityRoute: typeof CommunityRoute
+  DiscoverRoute: typeof DiscoverRoute
   RentalsRoute: typeof RentalsRoute
   ItemIdRoute: typeof ItemIdRoute
   RentalsIdRoute: typeof RentalsIdRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rentals': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClosetRoute: ClosetRoute,
   CommunityRoute: CommunityRoute,
+  DiscoverRoute: DiscoverRoute,
   RentalsRoute: RentalsRoute,
   ItemIdRoute: ItemIdRoute,
   RentalsIdRoute: RentalsIdRoute,
