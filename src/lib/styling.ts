@@ -192,7 +192,9 @@ function reason(slots: LookPiece[], p: StylingPrefs, owned: string[], shape: str
 /** Two or three distinct looks from real listings, budget and dates checked first. */
 export function buildLooks(pool: Item[], req: LookRequest, p: StylingPrefs, owned: string[], fit?: FitProfile, picks: Partial<Record<string, number>> = {}): Look[] {
   const shape = p.bodyShape === "measurements" ? derivedShape(fit) : p.bodyShape && p.bodyShape !== "skip" ? p.bodyShape : null;
-  const used = new Set<string>();
+  // Pieces the user already owns are worn, not rented: match them to listings so they never land in a total.
+  const ownedIds = new Set(pool.filter((i) => owned.some((o) => { const a = o.toLowerCase(); return i.title.toLowerCase().includes(a) || a.includes(i.title.toLowerCase()); })).map((i) => i.id));
+  const used = new Set<string>(ownedIds);
   const looks: Look[] = [];
   for (const pal of PALETTES) {
     const pieces: LookPiece[] = [];
