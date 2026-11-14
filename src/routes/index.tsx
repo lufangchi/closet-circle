@@ -57,7 +57,7 @@ function Discover() {
               {results!.map(({ item }, i) => (
                 <div key={item.id}>
                   <ItemCard item={item} badge={i === 0 ? "Best match" : soulmates.includes(item.ownerId) ? "From your Soulmate" : undefined} />
-                  <p className="-mt-2 px-1 text-xs text-muted-foreground">Why: fits {item.occasions[0].toLowerCase()} · size {item.size} · from {getUser(item.ownerId).name}'s closet</p>
+                  <p className="-mt-2 px-1 text-xs text-muted-foreground">Why: fits {(item.occasions[0] ?? "").toLowerCase()} · size {item.size} · from {getUser(item.ownerId).name}'s closet</p>
                 </div>
               ))}
             </div>

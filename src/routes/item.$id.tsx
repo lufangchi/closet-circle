@@ -25,7 +25,7 @@ function ItemPage() {
   const nav = useNavigate();
   const [start, setStart] = useState("2026-11-20");
   const [end, setEnd] = useState("2026-11-22");
-  const [pickup, setPickup] = useState(pickupSpots[0]);
+  const [pickup, setPickup] = useState<string>(pickupSpots[0]!);
   const [usePts, setUsePts] = useState(false);
   const pts = usePts ? Math.floor(store.points / 100) * 100 : 0;
   const p = priceRental(item, start, end, pts);
