@@ -6,6 +6,8 @@ import { ME, getUser, type Item } from "@/lib/data";
 import type { GarmentFit } from "@/lib/fit";
 import { useStore } from "@/lib/store";
 import { ItemCard, DemoTag, btn, input } from "@/components/ui-kit";
+import { ClosetListing } from "@/components/closet-listing";
+import { GarmentCare } from "@/components/garment-care";
 
 export const Route = createFileRoute("/closet")({
   head: () => ({ meta: [
@@ -81,7 +83,8 @@ function Closet() {
           <button onClick={submit} disabled={!f.title || !img || !verified} className={btn + " sm:col-span-2"}>List item</button>
         </div>
       </section>
-      {myItems.length > 0 && <section><h2 className="mb-4 text-3xl">Listed</h2><div className="columns-2 gap-4 md:columns-4">{myItems.map((i) => <ItemCard key={i.id} item={i} />)}</div></section>}
+      {myItems.length > 0 && <section><h2 className="mb-4 text-3xl">My listings</h2><div className="grid gap-3 md:grid-cols-2">{myItems.map((i) => <ClosetListing key={i.id} item={i} />)}</div></section>}
+      <GarmentCare item={myItems[0]} defaultArea={getUser(ME).zip || getUser(ME).neighborhood} />
       <section><h2 className="mb-4 text-3xl">Saved pieces</h2>
         {saved.length ? <div className="columns-2 gap-4 md:columns-4">{saved.map((i) => <ItemCard key={i.id} item={i} />)}</div> : <p className="text-sm text-muted-foreground">Tap the heart on any piece to save it here.</p>}
       </section>

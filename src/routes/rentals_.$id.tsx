@@ -90,7 +90,7 @@ function RentalDetail() {
 
         {!n && r.status === "Requested" && !lending && <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 text-sm"><span className="flex-1 text-muted-foreground">Waiting for {owner.name} to accept.</span><button onClick={() => { s.setStatus(r.id, "Declined"); toast("Request cancelled"); }} className={btnGhost}>Cancel request</button></div>}
         {r.status === "Returned" && !lending && <p className="text-sm text-muted-foreground">{owner.name} is checking the condition; your deposit is released after.</p>}
-        {!lending && <GarmentCare item={item} defaultArea={getUser(ME).zip || getUser(ME).neighborhood} />}
+        <GarmentCare item={item} defaultArea={getUser(ME).zip || getUser(ME).neighborhood} />
         <button onClick={() => toast("Report submitted. Our team will follow up.")} className="flex items-center gap-1 text-xs text-muted-foreground"><Flag className="h-3 w-3" />Report a problem (damage, late return, behavior)</button>
       </div>
 
