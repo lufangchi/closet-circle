@@ -194,7 +194,7 @@ function Composer({ onDone }: { onDone: () => void }) {
   const onFile = (f?: File) => { if (!f) return; const r = new FileReader(); r.onload = () => setPhoto(String(r.result)); r.readAsDataURL(f); };
   const publish = () => {
     if (!item) return;
-    s.addPost({ id: "mp" + Date.now(), userId: ME, kind, rentalId: kind === "rented" ? rentalId : undefined, image: photo || item.image, itemId: item.id, caption, styleTags: shownTags, occasion, review: kind === "rented" ? rv : undefined, likes: 0, saves: 0 });
+    s.addPost({ id: "mp" + Date.now(), userId: ME, kind, ...(kind === "rented" ? { rentalId, review: rv } : {}), image: photo || item.image, itemId: item.id, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
     toast.success(kind === "rented" ? "Posted! Verified looks earn points as neighbors like and save them." : "Styling post shared");
     onDone();
   };
