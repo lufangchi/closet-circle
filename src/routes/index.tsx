@@ -74,13 +74,13 @@ function Landing() {
         <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/10 to-ink/20" />
         <nav className="absolute inset-x-4 top-4 flex items-center justify-between rounded-full bg-background/90 px-6 py-3 backdrop-blur md:inset-x-8 md:px-8">
           <div className="hidden items-center gap-7 md:flex">
-            {[["Discover", "/discover"], ["Community", "/community"]].map(([l, to]) => (
+            {[["Discover", "/discover"], ["AI Stylist", "/stylist"], ["Community", "/community"]].map(([l, to]) => (
               <Link key={l} to={to as "/discover"} className="text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground">{l}</Link>
             ))}
           </div>
           <Link to="/" className="font-display text-xl tracking-wide md:absolute md:left-1/2 md:-translate-x-1/2">Closet <em>Circle</em></Link>
           <div className="flex items-center gap-6">
-            <Link to="/closet" className="hidden text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground md:block">List a piece</Link>
+            <Link to="/auth" className="hidden text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground md:block">Sign in</Link>
             <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-[13px] tracking-[0.08em] text-primary-foreground transition hover:opacity-90">Open app</Link>
           </div>
         </nav>
