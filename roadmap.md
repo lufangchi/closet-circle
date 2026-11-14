@@ -19,3 +19,4 @@
 
 - [x] Landing v3 (Victoria): remove SF line, new value prop, fan carousel how-it-works, no repeated photos, remove trust, smoother flow
 - [x] Rentals & My Closet update (Kaixi, uploaded brief)
+- [ ] Brand rename (Cuimei brief)
