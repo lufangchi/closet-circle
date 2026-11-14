@@ -47,7 +47,7 @@ function Steps() {
   useEffect(() => { const t = setInterval(() => setOn((v) => (v + 1) % steps.length), 4500); return () => clearInterval(t); }, []);
   const n = steps.length;
   return (
-    <section className="px-6 pb-24 pt-24 md:pt-32">
+    <section className="px-6 pb-16 pt-24 md:pt-32">
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 md:gap-16">
         <div>
           <p className="text-[13px] tracking-[0.08em] text-accent-foreground">How it works</p>
@@ -121,7 +121,7 @@ function Landing() {
       <Bridge text="Three ways to be part of it." />
 
       {/* FOUR SUB-SECTIONS — connected photo mosaic */}
-      <section className="px-4 pb-24 md:px-8">
+      <section className="px-4 pb-16 md:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-end justify-between pb-8">
             <h2 className="font-display text-4xl md:text-5xl">Inside the <em>circle</em></h2>
@@ -146,7 +146,7 @@ function Landing() {
       <Bridge text="Every closet in the circle is dressed for something." />
 
       {/* CATEGORIES — serif index list with side image */}
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-28 md:grid-cols-2 md:gap-16">
+      <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-16 md:grid-cols-2 md:gap-16">
         <div className="relative hidden overflow-hidden md:block">
           <img src={occasion} alt="Wedding guest in a blush gown" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
         </div>
@@ -166,7 +166,7 @@ function Landing() {
       <Bridge text="Here's what neighbors are wearing this week." />
 
       {/* TRENDING — best-seller style row */}
-      <section className="mx-auto max-w-7xl px-6 pb-28">
+      <section className="mx-auto max-w-7xl px-6 pb-16">
         <p className="text-center text-[12px] tracking-luxe text-accent-foreground">This week in the circle</p>
         <h2 className="mt-6 text-center font-display text-4xl md:text-5xl">Discover what's <em>trending</em> nearby</h2>
         <div className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4">
