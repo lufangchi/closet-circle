@@ -280,6 +280,20 @@ function Composer({ onDone }: { onDone: () => void }) {
               <div className="space-y-1.5"><p className="text-xs font-medium">My Closet</p>
                 {s.myItems.length ? s.myItems.map((i) => <Pick key={i.id} t={{ itemId: i.id, source: "closet" }} label={SOURCE_LABEL.closet} />) : <p className="text-xs text-muted-foreground">List a piece in My Closet to tag it.</p>}</div>
             </div>
+            {mode === "together" && co && tags.length > 0 && (
+              <div className="space-y-1.5">
+                <p className="text-xs font-medium">Who wore each piece?</p>
+                {tags.map((t) => { const it = find(t.itemId); return it ? (
+                  <div key={t.itemId} className="flex items-center justify-between gap-2 text-xs">
+                    <span className="truncate">{it.title}</span>
+                    <span className="flex shrink-0 gap-1">
+                      <Chip active={(t.wornBy ?? ME) === ME} onClick={() => setTags(tags.map((x) => (x.itemId === t.itemId ? { ...x, wornBy: ME } : x)))}>You</Chip>
+                      <Chip active={t.wornBy === co.id} onClick={() => setTags(tags.map((x) => (x.itemId === t.itemId ? { ...x, wornBy: co.id } : x)))}>{co.name}</Chip>
+                    </span>
+                  </div>
+                ) : null; })}
+              </div>
+            )}
           </div>
           <textarea className={input} rows={2} placeholder="Styling notes — what did you pair it with?" value={caption} onChange={(e) => setCaption(e.target.value)} />
           <div className="flex flex-wrap gap-1">{tagPool.map((t) => <Chip key={t} active={shownTags.includes(t)} onClick={() => setStyle(shownTags.includes(t) ? shownTags.filter((x) => x !== t) : [...shownTags, t])}>{t}</Chip>)}</div>
