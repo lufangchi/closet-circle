@@ -13,9 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as FitCheckRouteImport } from './routes/fit-check'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RentalsRouteImport } from './routes/rentals'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiPreviewOnMeRouteImport } from './routes/api/preview-on-me'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 import { Route as RentalsIdRouteImport } from './routes/rentals_.$id'
@@ -41,6 +43,11 @@ const DiscoverRoute = DiscoverRouteImport.update({
   path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FitCheckRoute = FitCheckRouteImport.update({
+  id: '/fit-check',
+  path: '/fit-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -54,6 +61,11 @@ const RentalsRoute = RentalsRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPreviewOnMeRoute = ApiPreviewOnMeRouteImport.update({
@@ -82,9 +94,11 @@ export interface FileRoutesByFullPath {
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/fit-check': typeof FitCheckRoute
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
@@ -95,9 +109,11 @@ export interface FileRoutesByTo {
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/fit-check': typeof FitCheckRoute
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
@@ -109,9 +125,11 @@ export interface FileRoutesById {
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/fit-check': typeof FitCheckRoute
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals_/$id': typeof RentalsIdRoute
@@ -124,9 +142,11 @@ export interface FileRouteTypes {
     | '/closet'
     | '/community'
     | '/discover'
+    | '/fit-check'
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/terms'
     | '/api/preview-on-me'
     | '/item/$id'
     | '/rentals/$id'
@@ -137,9 +157,11 @@ export interface FileRouteTypes {
     | '/closet'
     | '/community'
     | '/discover'
+    | '/fit-check'
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/terms'
     | '/api/preview-on-me'
     | '/item/$id'
     | '/rentals/$id'
@@ -150,9 +172,11 @@ export interface FileRouteTypes {
     | '/closet'
     | '/community'
     | '/discover'
+    | '/fit-check'
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/terms'
     | '/api/preview-on-me'
     | '/item/$id'
     | '/rentals_/$id'
@@ -164,9 +188,11 @@ export interface RootRouteChildren {
   ClosetRoute: typeof ClosetRoute
   CommunityRoute: typeof CommunityRoute
   DiscoverRoute: typeof DiscoverRoute
+  FitCheckRoute: typeof FitCheckRoute
   ProfileRoute: typeof ProfileRoute
   RentalsRoute: typeof RentalsRoute
   SignupRoute: typeof SignupRoute
+  TermsRoute: typeof TermsRoute
   ApiPreviewOnMeRoute: typeof ApiPreviewOnMeRoute
   ItemIdRoute: typeof ItemIdRoute
   RentalsIdRoute: typeof RentalsIdRoute
@@ -203,6 +229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fit-check': {
+      id: '/fit-check'
+      path: '/fit-check'
+      fullPath: '/fit-check'
+      preLoaderRoute: typeof FitCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -222,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/preview-on-me': {
@@ -260,9 +300,11 @@ const rootRouteChildren: RootRouteChildren = {
   ClosetRoute: ClosetRoute,
   CommunityRoute: CommunityRoute,
   DiscoverRoute: DiscoverRoute,
+  FitCheckRoute: FitCheckRoute,
   ProfileRoute: ProfileRoute,
   RentalsRoute: RentalsRoute,
   SignupRoute: SignupRoute,
+  TermsRoute: TermsRoute,
   ApiPreviewOnMeRoute: ApiPreviewOnMeRoute,
   ItemIdRoute: ItemIdRoute,
   RentalsIdRoute: RentalsIdRoute,

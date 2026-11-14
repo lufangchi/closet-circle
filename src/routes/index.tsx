@@ -19,9 +19,9 @@ export const Route = createFileRoute("/")({
 
 const collections = [
   { t: "Local rental", d: "Pieces from closets within a few miles — same-day pickup, no shipping.", img: yellow, to: "/discover", span: "md:col-span-3" },
-  { t: "AI styling", d: "Tell us the occasion, size and budget. Get complete outfit picks in seconds.", img: teal, to: "/discover", span: "md:col-span-2" },
+  { t: "AI styling", d: "Tell us the occasion, size and budget. Get complete outfit picks in seconds.", img: teal, to: "/stylist", span: "md:col-span-2" },
   { t: "Closet Soulmates", d: "Follow women whose style matches yours — their closets show up first.", img: field, to: "/community", span: "md:col-span-2" },
-  { t: "Trust & care", d: "Deposits and fees up front, condition photos at every handoff, reviews that respect.", img: pink, to: "/rentals", span: "md:col-span-3" },
+  { t: "Trust & care", d: "Deposits and fees up front, condition photos at every handoff, reviews that respect.", img: pink, to: "/terms", span: "md:col-span-3" },
 ];
 const cats = [
   { label: "Wedding Guest", img: items[1]!.image },
@@ -95,6 +95,32 @@ function Landing() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TRUST — Fit Guarantee + Damage Protection */}
+      <section id="trust" className="mx-auto max-w-7xl px-6 pb-28">
+        <div className="grid border-y border-border md:grid-cols-2 md:divide-x md:divide-border">
+          <div className="space-y-4 py-12 md:pr-12">
+            <h3 className="font-display text-4xl md:text-5xl">Fit <em>Guarantee</em></h3>
+            <p className="max-w-md text-muted-foreground">Preview the look on you and check how the garment's measurements compare with yours before you rent.</p>
+            <p className="max-w-md text-sm text-muted-foreground">Any fit issue — too small, too big, too long or simply not right — gets a refund or a free exchange, with your deposit returned in full.</p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] tracking-[0.1em]">
+              <Link to="/fit-check" className="underline-offset-4 hover:underline">See how Fit Check works →</Link>
+              <Link to="/terms" hash="fit-guarantee" className="text-muted-foreground underline-offset-4 hover:underline">Eligibility & terms</Link>
+            </div>
+          </div>
+          <div className="space-y-4 border-t border-border py-12 md:border-t-0 md:pl-12">
+            <h3 className="font-display text-4xl md:text-5xl">Damage <em>Protection</em></h3>
+            <p className="max-w-md text-muted-foreground">See the deposit and damage terms before you request. Document the item's condition at pickup and return.</p>
+            <ul className="max-w-md space-y-1 text-sm text-muted-foreground">
+              <li>· Refundable deposit shown on every listing</li>
+              <li>· Normal wear and listed flaws are never charged</li>
+              <li>· Repairs charged at cost, capped at the deposit</li>
+              <li>· Not covered: damage above the deposit; loss or non-return is handled up to the deposit</li>
+            </ul>
+            <Link to="/terms" hash="damage" className="inline-block text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Rental terms →</Link>
           </div>
         </div>
       </section>
