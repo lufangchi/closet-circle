@@ -8,6 +8,9 @@ import maya from "@/assets/avatar-maya.jpg";
 import lena from "@/assets/avatar-lena.jpg";
 import burgundy from "@/assets/item-burgundy-zip.jpg";
 import crescent from "@/assets/item-crescent-bag.jpg";
+import satin from "@/assets/item-champagne-satin.jpg";
+import blackBag from "@/assets/item-black-shoulder-bag.jpg";
+import ava from "@/assets/look-ava-satin.jpg";
 import type { GarmentFit } from "./fit";
 
 export type User = {
@@ -33,6 +36,7 @@ export const users: User[] = [
   { id: "maya", name: "Maya R.", avatar: maya, bio: "Stylist by day. My closet is your closet — especially for weddings.", zip: "94110", neighborhood: "Bernal Heights", styleTags: ["Romantic", "Silk", "Minimal", "Evening"], size: "S", rating: 4.95, reviews: 42, responseRate: 100, responseTime: "within 30 min", points: 860 },
   { id: "lena", name: "Lena K.", avatar: lena, bio: "Tailoring obsessive. Power suits & quiet luxury accessories.", zip: "94103", neighborhood: "SoMa", styleTags: ["Tailored", "Minimal", "Quiet luxury"], size: "S", rating: 4.88, reviews: 27, responseRate: 96, responseTime: "within 2 hrs", points: 540 },
   { id: "ines", name: "Inès D.", avatar: floral, bio: "Vintage florals and garden parties forever.", zip: "94114", neighborhood: "Noe Valley", styleTags: ["Vintage", "Romantic", "Boho"], size: "M", rating: 4.8, reviews: 15, responseRate: 91, responseTime: "within 3 hrs", points: 310 },
+  { id: "ava", name: "Ava T.", avatar: ava, bio: "Satin, loafers and a good shoulder bag. Hayes Valley.", zip: "94102", neighborhood: "Hayes Valley", styleTags: ["Minimal", "Silk", "Quiet luxury"], size: "S", rating: 4.9, reviews: 11, responseRate: 97, responseTime: "within 1 hr", points: 280 },
 ];
 
 export const items: Item[] = [
@@ -44,6 +48,8 @@ export const items: Item[] = [
   { id: "floral-sun", ownerId: "ines", title: "Ditsy Floral Linen Sundress", brand: "Doen", category: "Dress", size: "M", image: floral, dailyRate: 20, deposit: 60, retail: 298, cleaningFee: 10, occasions: ["Brunch", "Garden party", "Wedding"], styleTags: ["Vintage", "Romantic", "Boho"], condition: "Excellent", flaws: "None noted", distance: 2.6, measurements: { Bust: "35 in", Waist: "28 in", Length: "48 in" }, garment: { unit: "in", bust: 35, waist: 28, hips: 42, length: 48, stretch: "none", fit: "regular", confirmed: false }, blockedDates: [], minNotice: "1 day", description: "Sweetheart neckline, swishy skirt, actual pockets." },
   { id: "burgundy-zip", ownerId: "lena", title: "Burgundy Half-Zip Knit Pullover", brand: "Sézane", category: "Top", size: "M", image: burgundy, gallery: [burgundy], dailyRate: 14, deposit: 40, retail: 165, cleaningFee: 6, occasions: ["Brunch", "Work", "Weekend"], styleTags: ["Minimal", "Quiet luxury"], condition: "Excellent", flaws: "Light pilling under one arm", distance: 1.9, measurements: { Bust: "42 in", Length: "25 in", Sleeve: "31 in" }, garment: { unit: "in", bust: 42, length: 25, stretch: "some", fit: "relaxed", confirmed: true }, blockedDates: [], minNotice: "1 day", description: "Soft merino-blend half-zip with ribbed cuffs. Relaxed through the body — layer a knit over the shoulders." },
   { id: "crescent-bag", ownerId: "lena", title: "Tan Leather Crescent Shoulder Bag", brand: "Polène", category: "Bag", size: "One size", image: crescent, gallery: [crescent], dailyRate: 16, deposit: 120, retail: 0, cleaningFee: 0, occasions: ["Brunch", "Work", "Date night"], styleTags: ["Quiet luxury", "Minimal"], condition: "Like new", flaws: "None noted", distance: 1.9, measurements: { Width: "11 in", Height: "6 in", Strap: "Adjustable" }, blockedDates: [], minNotice: "1 day", description: "Smooth caramel leather half-moon with a gold clasp. Sits right under the arm." },
+  { id: "champagne-satin", ownerId: "maya", title: "Champagne Satin Slip Dress", brand: "Vince", category: "Dress", size: "S", image: satin, dailyRate: 26, deposit: 80, retail: 320, cleaningFee: 12, occasions: ["Date night", "Cocktail", "Wedding"], styleTags: ["Silk", "Minimal", "Quiet luxury"], condition: "Excellent", flaws: "None noted", distance: 0.8, measurements: { Bust: "34 in", Waist: "28 in", Hips: "37 in", Length: "46 in" }, garment: { unit: "in", bust: 34, waist: 28, hips: 37, length: 46, stretch: "none", fit: "regular", confirmed: true }, blockedDates: [], minNotice: "1 day", description: "Liquid satin cut on the bias. Dress it down with a cardigan and loafers." },
+  { id: "black-shoulder-bag", ownerId: "ava", title: "Black Leather Shoulder Bag", brand: "The Row", category: "Bag", size: "One size", image: blackBag, dailyRate: 24, deposit: 200, retail: 0, cleaningFee: 0, occasions: ["Work", "Date night", "Brunch"], styleTags: ["Minimal", "Quiet luxury"], condition: "Excellent", flaws: "Faint scuff on base", distance: 1.4, measurements: { Width: "13 in", Height: "10 in", Drop: "9 in" }, blockedDates: [], minNotice: "1 day", description: "Slouchy calf leather with gold links. Fits a laptop sleeve." },
 ];
 
 export const seedRentals: Rental[] = [

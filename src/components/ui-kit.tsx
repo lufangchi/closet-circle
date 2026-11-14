@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 const tabs = [
   { to: "/discover", label: "Discover", icon: Compass },
+  { to: "/stylist", label: "AI Stylist", icon: Sparkles },
   { to: "/community", label: "Community", icon: Users },
   { to: "/closet", label: "My Closet", icon: Shirt },
   { to: "/rentals", label: "Rentals", icon: CalendarCheck },
@@ -34,7 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-6 animate-fade-up" key={pathname}>{children}</main>
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-border bg-card/95 backdrop-blur md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border bg-card/95 backdrop-blur md:hidden">
         {tabs.map((t) => (
           <Link key={t.to} to={t.to} className={cn("flex flex-col items-center gap-1 py-3 text-[11px]", active(t.to) ? "text-foreground" : "text-muted-foreground")}>
             <t.icon className="h-5 w-5" />{t.label}

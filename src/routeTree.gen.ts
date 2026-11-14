@@ -10,13 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as FitCheckRouteImport } from './routes/fit-check'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RentalsRouteImport } from './routes/rentals'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as StylistRouteImport } from './routes/stylist'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiPreviewOnMeRouteImport } from './routes/api/preview-on-me'
+import { Route as ApiStylistLookRouteImport } from './routes/api/stylist-look'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 import { Route as RentalsIdRouteImport } from './routes/rentals_.$id'
 import { Route as UserIdRouteImport } from './routes/user.$id'
@@ -24,6 +29,11 @@ import { Route as UserIdRouteImport } from './routes/user.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClosetRoute = ClosetRouteImport.update({
@@ -41,6 +51,11 @@ const DiscoverRoute = DiscoverRouteImport.update({
   path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FitCheckRoute = FitCheckRouteImport.update({
+  id: '/fit-check',
+  path: '/fit-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -56,9 +71,24 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StylistRoute = StylistRouteImport.update({
+  id: '/stylist',
+  path: '/stylist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPreviewOnMeRoute = ApiPreviewOnMeRouteImport.update({
   id: '/api/preview-on-me',
   path: '/api/preview-on-me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStylistLookRoute = ApiStylistLookRouteImport.update({
+  id: '/api/stylist-look',
+  path: '/api/stylist-look',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ItemIdRoute = ItemIdRouteImport.update({
@@ -79,26 +109,36 @@ const UserIdRoute = UserIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/fit-check': typeof FitCheckRoute
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/stylist': typeof StylistRoute
+  '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
+  '/api/stylist-look': typeof ApiStylistLookRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/fit-check': typeof FitCheckRoute
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/stylist': typeof StylistRoute
+  '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
+  '/api/stylist-look': typeof ApiStylistLookRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -106,13 +146,18 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/fit-check': typeof FitCheckRoute
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/stylist': typeof StylistRoute
+  '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
+  '/api/stylist-look': typeof ApiStylistLookRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals_/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -121,39 +166,54 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/closet'
     | '/community'
     | '/discover'
+    | '/fit-check'
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/stylist'
+    | '/terms'
     | '/api/preview-on-me'
+    | '/api/stylist-look'
     | '/item/$id'
     | '/rentals/$id'
     | '/user/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/closet'
     | '/community'
     | '/discover'
+    | '/fit-check'
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/stylist'
+    | '/terms'
     | '/api/preview-on-me'
+    | '/api/stylist-look'
     | '/item/$id'
     | '/rentals/$id'
     | '/user/$id'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/closet'
     | '/community'
     | '/discover'
+    | '/fit-check'
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/stylist'
+    | '/terms'
     | '/api/preview-on-me'
+    | '/api/stylist-look'
     | '/item/$id'
     | '/rentals_/$id'
     | '/user/$id'
@@ -161,13 +221,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   ClosetRoute: typeof ClosetRoute
   CommunityRoute: typeof CommunityRoute
   DiscoverRoute: typeof DiscoverRoute
+  FitCheckRoute: typeof FitCheckRoute
   ProfileRoute: typeof ProfileRoute
   RentalsRoute: typeof RentalsRoute
   SignupRoute: typeof SignupRoute
+  StylistRoute: typeof StylistRoute
+  TermsRoute: typeof TermsRoute
   ApiPreviewOnMeRoute: typeof ApiPreviewOnMeRoute
+  ApiStylistLookRoute: typeof ApiStylistLookRoute
   ItemIdRoute: typeof ItemIdRoute
   RentalsIdRoute: typeof RentalsIdRoute
   UserIdRoute: typeof UserIdRoute
@@ -180,6 +245,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/closet': {
@@ -203,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fit-check': {
+      id: '/fit-check'
+      path: '/fit-check'
+      fullPath: '/fit-check'
+      preLoaderRoute: typeof FitCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -224,11 +303,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stylist': {
+      id: '/stylist'
+      path: '/stylist'
+      fullPath: '/stylist'
+      preLoaderRoute: typeof StylistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/preview-on-me': {
       id: '/api/preview-on-me'
       path: '/api/preview-on-me'
       fullPath: '/api/preview-on-me'
       preLoaderRoute: typeof ApiPreviewOnMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stylist-look': {
+      id: '/api/stylist-look'
+      path: '/api/stylist-look'
+      fullPath: '/api/stylist-look'
+      preLoaderRoute: typeof ApiStylistLookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/item/$id': {
@@ -257,13 +357,18 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   ClosetRoute: ClosetRoute,
   CommunityRoute: CommunityRoute,
   DiscoverRoute: DiscoverRoute,
+  FitCheckRoute: FitCheckRoute,
   ProfileRoute: ProfileRoute,
   RentalsRoute: RentalsRoute,
   SignupRoute: SignupRoute,
+  StylistRoute: StylistRoute,
+  TermsRoute: TermsRoute,
   ApiPreviewOnMeRoute: ApiPreviewOnMeRoute,
+  ApiStylistLookRoute: ApiStylistLookRoute,
   ItemIdRoute: ItemIdRoute,
   RentalsIdRoute: RentalsIdRoute,
   UserIdRoute: UserIdRoute,
