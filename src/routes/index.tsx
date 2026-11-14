@@ -113,7 +113,7 @@ function Landing() {
           </div>
         </nav>
         <div className="absolute inset-x-6 bottom-10 md:inset-x-12 md:bottom-14">
-          <h1 className="max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Your sisterhood’s <em>shared wardrobe</em>.</h1>
+          <h1 className="max-w-5xl font-display text-[40px] leading-[1.06] text-ink-foreground md:text-[68px]">Your sisterhood’s <em>shared wardrobe</em>.</h1>
           <p className="mt-5 max-w-xl text-base text-ink-foreground/90 md:text-lg">Rent and lend clothing, bags, jewelry, and accessories. Discover new looks and connect with women who share your style.</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link to="/discover" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 bg-ink/25 px-7 py-3 text-[13px] tracking-[-0.01em] text-ink-foreground backdrop-blur-sm transition hover:bg-ink-foreground/10">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>

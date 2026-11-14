@@ -167,7 +167,7 @@ function Recommended({ w }: { w: Record<string, number> }) {
           <div className="mt-3 overflow-hidden rounded-2xl bg-card shadow-soft sm:flex">
             <Link to="/user/$id" params={{ id: r.u.id }} className="block sm:w-2/5"><img src={r.u.avatar} alt={r.u.name} className="h-56 w-full object-cover sm:h-full" /></Link>
             <div className="flex-1 space-y-3 p-4">
-              <div><p className="font-display text-3xl">{r.u.name}</p><p className="text-xs text-muted-foreground">{r.u.neighborhood} · <Star className="inline h-3 w-3 fill-current" /> {r.u.rating}</p></div>
+              <div><p className="text-2xl font-medium">{r.u.name}</p><p className="text-xs text-muted-foreground">{r.u.neighborhood} · <Star className="inline h-3 w-3 fill-current" /> {r.u.rating}</p></div>
               <p className="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">{r.reason}</p>
               {r.reasons.length > 1 && <div className="flex flex-wrap gap-1">{r.reasons.slice(1).map((x) => <span key={x} className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">{x}</span>)}</div>}
               <div className="flex flex-wrap gap-1">{r.u.styleTags.map((t) => <span key={t} className={cn("rounded-full px-2 py-0.5 text-[11px]", w[t] ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground")}>{t}</span>)}</div>

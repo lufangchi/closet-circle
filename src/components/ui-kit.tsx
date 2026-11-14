@@ -59,7 +59,7 @@ export function HeartButton({ active, onClick, className }: { active: boolean; o
 export function Avatar({ id, size = 40 }: { id: string; size?: number }) {
   const u = getUser(id);
   return u.avatar ? <img src={u.avatar} alt={u.name} width={size} height={size} style={{ width: size, height: size }} className="rounded-full object-cover" loading="lazy" />
-    : <span style={{ width: size, height: size }} className="grid place-items-center rounded-full bg-secondary font-display text-secondary-foreground">{u.name[0]}</span>;
+    : <span style={{ width: size, height: size }} className="grid place-items-center rounded-full bg-secondary font-medium text-secondary-foreground">{u.name[0]}</span>;
 }
 
 export function ItemCard({ item, badge }: { item: Item; badge?: string | undefined }) {
