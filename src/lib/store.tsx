@@ -4,12 +4,13 @@ import { seedPosts, isVerified, postPoints, type Post } from "./community";
 import type { FitProfile } from "./fit";
 import type { Block } from "./availability";
 import { seedOutings, type Outing } from "./outings";
+import { DEFAULT_STYLING, type StylingPrefs } from "./styling";
 import { supabase } from "@/integrations/supabase/client";
 import { ME, users, seedRentals, type Rental, type RentalStatus, type Item, items as seedItems, demoMyItems } from "./data";
 
-type State = { favorites: string[]; soulmates: string[]; rentals: Rental[]; points: number; myItems: Item[]; requests: string[]; likedPosts: string[]; savedPosts: string[]; myPosts: Post[]; skipped: string[]; account?: { name: string; email: string }; fitProfile?: FitProfile; lenderQuestions: { itemId: string; text: string }[]; savedOutfits: { id: string; name: string; place: string; itemIds: string[] }[]; outings: Outing[] };
+type State = { favorites: string[]; soulmates: string[]; rentals: Rental[]; points: number; myItems: Item[]; requests: string[]; likedPosts: string[]; savedPosts: string[]; myPosts: Post[]; skipped: string[]; account?: { name: string; email: string }; fitProfile?: FitProfile; lenderQuestions: { itemId: string; text: string }[]; savedOutfits: { id: string; name: string; place: string; itemIds: string[] }[]; outings: Outing[]; styling: StylingPrefs; ownedPieces: string[] };
 export type Profile = { display_name: string; bio: string; neighborhood: string; zip: string; size: string; style_tags: string[] };
-const initial: State = { lenderQuestions: [], savedOutfits: [], likedPosts: [], savedPosts: [], myPosts: [], skipped: [], favorites: [], soulmates: [], rentals: seedRentals, points: 120, myItems: demoMyItems, requests: [], outings: seedOutings };
+const initial: State = { lenderQuestions: [], savedOutfits: [], likedPosts: [], savedPosts: [], myPosts: [], skipped: [], favorites: [], soulmates: [], rentals: seedRentals, points: 120, myItems: demoMyItems, requests: [], outings: seedOutings, styling: DEFAULT_STYLING, ownedPieces: [] };
 
 type Ctx = State & {
   toggleFav: (id: string) => void; toggleSoulmate: (id: string) => void;
@@ -20,6 +21,7 @@ type Ctx = State & {
   authUser: { id: string; email: string } | null; authReady: boolean; profile: Profile | null; isDemo: boolean;
   updateProfile: (p: Profile) => Promise<string | null>; signOut: () => Promise<void>;
   setAccount: (a: { name: string; email: string }) => void; setFitProfile: (f: FitProfile) => void; askLender: (itemId: string, text: string) => void; saveOutfit: (o: { name: string; place: string; itemIds: string[] }) => void;
+  setStyling: (p: StylingPrefs) => void; setOwnedPieces: (a: string[]) => void;
   sendInvite: (o: { toId: string; activity: string; time: string; area: string; note?: string }) => string;
   respondInvite: (id: string, status: "accepted" | "declined" | "proposed", proposedTime?: string) => void;
   setMeetup: (id: string, spot: string) => void; outingMessage: (id: string, text: string) => void;
@@ -117,6 +119,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     },
     askLender: (itemId, text) => set((p) => ({ ...p, lenderQuestions: [{ itemId, text }, ...p.lenderQuestions] })),
     saveOutfit: (o) => set((p) => ({ ...p, savedOutfits: [{ id: "o" + Date.now(), ...o }, ...p.savedOutfits] })),
+    setStyling: (styling) => set((p) => ({ ...p, styling })),
+    setOwnedPieces: (ownedPieces) => set((p) => ({ ...p, ownedPieces })),
     sendInvite: (o) => {
       const id = "o" + Date.now();
       set((p) => ({ ...p, outings: [{ id, fromId: ME, toId: o.toId, activity: o.activity, time: o.time, area: o.area, ...(o.note ? { note: o.note } : {}), status: "pending" as const, messages: [] }, ...p.outings] }));
