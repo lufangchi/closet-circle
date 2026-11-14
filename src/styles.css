@@ -76,8 +76,8 @@
   --color-denim: var(--denim);
   --color-clay: var(--clay);
   --color-olive: var(--olive);
-  --font-display: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", "DM Sans", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
   --shadow-soft: var(--shadow-soft);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -150,12 +150,20 @@
 }
 
 @layer base {
-  body { font-family: var(--font-sans); font-weight: 500; font-size: 1.0625rem; letter-spacing: -0.011em; }
-  h1, h2, h3, .font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; }
+  body { font-family: var(--font-sans); font-weight: 400; font-size: 1rem; line-height: 1.6; letter-spacing: 0; }
+  h1, h2, .font-display { font-family: var(--font-display); font-weight: 450; letter-spacing: -0.02em; line-height: 1.08; }
+  h3, h4 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.005em; line-height: 1.3; }
+  button, nav a, [role="tab"] { font-weight: 500; }
   em { font-style: italic; }
 }
 @utility tracking-luxe { letter-spacing: -0.01em; }
-@utility font-luxe { font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.01em; }
+@utility font-luxe { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }
+/* Shared type roles */
+@utility type-detail { font-family: var(--font-sans); font-weight: 600; }
+@utility type-caption { font-family: var(--font-sans); font-weight: 400; font-size: 0.8125rem; line-height: 1.5; }
+/* Display headings stay light even when a bold utility is attached */
+h1.font-bold, h2.font-bold, h1.font-semibold, h2.font-semibold, .font-display.font-bold, .font-display.font-semibold, .font-display.font-extrabold { font-weight: 500; }
+:where(h3, h4).font-bold { font-weight: 600; }
 @utility bg-hero { background-image: var(--gradient-hero); }
 @keyframes heart-pop { 0% { transform: scale(1) } 40% { transform: scale(1.35) } 100% { transform: scale(1) } }
 @utility animate-heart { animation: heart-pop 0.35s ease-out; }
