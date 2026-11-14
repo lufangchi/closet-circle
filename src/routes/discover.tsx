@@ -6,7 +6,7 @@ import { recommend, getUser } from "@/lib/data";
 import { useStore } from "@/lib/store";
 import { ItemCard, Chip, DemoTag, btn, input } from "@/components/ui-kit";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/discover")({
   head: () => ({ meta: [
     { title: "Discover — Closet Circle" },
     { name: "description", content: "Find outfits for any occasion from closets in your neighborhood." },

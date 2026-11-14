@@ -63,6 +63,14 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-blush: var(--blush);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-greige: var(--greige);
+  --color-swatch-yellow: oklch(0.78 0.15 85);
+  --color-swatch-orange: oklch(0.58 0.15 40);
+  --color-swatch-teal: oklch(0.6 0.09 225);
+  --color-swatch-pink: oklch(0.76 0.13 355);
   --color-sage: var(--sage);
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Karla", system-ui, sans-serif;
@@ -94,6 +102,10 @@
   --accent: oklch(0.88 0.04 140);
   --accent-foreground: oklch(0.33 0.05 145);
   --blush: oklch(0.82 0.06 15);
+  --ink: oklch(0.16 0.005 40);
+  --ink-foreground: oklch(0.97 0.006 85);
+  --ink-muted: oklch(0.62 0.01 60);
+  --greige: oklch(0.83 0.012 70);
   --sage: oklch(0.68 0.06 145);
   --destructive: oklch(0.577 0.2 27);
   --destructive-foreground: oklch(0.98 0 0);
@@ -137,3 +149,6 @@
 @utility animate-heart { animation: heart-pop 0.35s ease-out; }
 @keyframes fade-up { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
 @utility animate-fade-up { animation: fade-up 0.4s ease-out both; }
+@utility arch { border-radius: 9999px 9999px 0 0; }
+@keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+@utility animate-marquee { animation: marquee 40s linear infinite; }
