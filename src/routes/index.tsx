@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
 });
 
 const collections = [
-  { t: "Local rental", d: "Pieces from closets within a few miles — same-day pickup, no shipping.", img: street, to: "/discover", span: "md:col-span-3" },
+  { t: "Local rental", d: "Pieces from closets within a few miles — same-day pickup, no shipping.", img: yellow, to: "/discover", span: "md:col-span-3" },
   { t: "AI styling", d: "Tell us the occasion, size and budget. Get complete outfit picks in seconds.", img: teal, to: "/discover", span: "md:col-span-2" },
   { t: "Closet Soulmates", d: "Follow women whose style matches yours — their closets show up first.", img: field, to: "/community", span: "md:col-span-2" },
   { t: "Trust & care", d: "Deposits and fees up front, condition photos at every handoff, reviews that respect.", img: pink, to: "/rentals", span: "md:col-span-3" },
@@ -87,7 +87,7 @@ function Landing() {
             {collections.map((c) => (
               <Link key={c.t} to={c.to as "/discover"} className={`group relative block overflow-hidden ${c.span} h-[380px] md:h-[440px]`}>
                 <img src={c.img} alt={c.t} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/10 to-transparent" />
                 <div className="absolute inset-x-6 top-6 md:inset-x-8 md:top-8">
                   <h3 className="font-display text-3xl text-ink-foreground md:text-4xl">{c.t}</h3>
                   <p className="mt-2 max-w-xs text-sm text-ink-foreground/85">{c.d}</p>
@@ -102,7 +102,7 @@ function Landing() {
       {/* CATEGORIES — serif index list with side image */}
       <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-28 md:grid-cols-2 md:gap-16">
         <div className="relative hidden overflow-hidden md:block">
-          <img src={yellow} alt="Wedding guest looks" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
+          <img src={street} alt="Wedding guest looks" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
         </div>
         <div className="flex flex-col justify-center">
           <p className="text-[12px] tracking-luxe text-accent-foreground">Explore by occasion</p>
