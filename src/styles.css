@@ -73,7 +73,7 @@
   --color-swatch-pink: oklch(0.76 0.13 355);
   --color-sage: var(--sage);
   --font-display: "Playfair Display", Georgia, serif;
-  --font-sans: "Jost", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
   --shadow-soft: var(--shadow-soft);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
