@@ -17,6 +17,7 @@ import { Route as FitCheckRouteImport } from './routes/fit-check'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RentalsRouteImport } from './routes/rentals'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as StylistRouteImport } from './routes/stylist'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiPreviewOnMeRouteImport } from './routes/api/preview-on-me'
 import { Route as ApiStylistLookRouteImport } from './routes/api/stylist-look'
@@ -64,6 +65,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StylistRoute = StylistRouteImport.update({
+  id: '/stylist',
+  path: '/stylist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/stylist': typeof StylistRoute
   '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/api/stylist-look': typeof ApiStylistLookRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/stylist': typeof StylistRoute
   '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/api/stylist-look': typeof ApiStylistLookRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/stylist': typeof StylistRoute
   '/terms': typeof TermsRoute
   '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/api/stylist-look': typeof ApiStylistLookRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/stylist'
     | '/terms'
     | '/api/preview-on-me'
     | '/api/stylist-look'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/stylist'
     | '/terms'
     | '/api/preview-on-me'
     | '/api/stylist-look'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/stylist'
     | '/terms'
     | '/api/preview-on-me'
     | '/api/stylist-look'
@@ -204,6 +216,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RentalsRoute: typeof RentalsRoute
   SignupRoute: typeof SignupRoute
+  StylistRoute: typeof StylistRoute
   TermsRoute: typeof TermsRoute
   ApiPreviewOnMeRoute: typeof ApiPreviewOnMeRoute
   ApiStylistLookRoute: typeof ApiStylistLookRoute
@@ -270,6 +283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stylist': {
+      id: '/stylist'
+      path: '/stylist'
+      fullPath: '/stylist'
+      preLoaderRoute: typeof StylistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -324,6 +344,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RentalsRoute: RentalsRoute,
   SignupRoute: SignupRoute,
+  StylistRoute: StylistRoute,
   TermsRoute: TermsRoute,
   ApiPreviewOnMeRoute: ApiPreviewOnMeRoute,
   ApiStylistLookRoute: ApiStylistLookRoute,

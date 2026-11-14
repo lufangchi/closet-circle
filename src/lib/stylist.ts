@@ -22,8 +22,8 @@ const SPOTS: Record<string, Spot[]> = {
 };
 export function getHotspots(place: string): { city: string; spots: Spot[] } {
   const q = place.toLowerCase();
-  if (/new york|nyc|soho|central park|manhattan|brooklyn/.test(q)) return { city: "New York", spots: SPOTS.nyc! };
-  return { city: "San Francisco", spots: SPOTS.sf! };
+  if (/new york|nyc|soho|central park|manhattan|brooklyn/.test(q)) return { city: "New York", spots: SPOTS["nyc"]! };
+  return { city: "San Francisco", spots: SPOTS["sf"]! };
 }
 
 export type Prefs = { occasion: string; style: string; size: string; budget: number; days: number; radius: number; start?: string; end?: string };

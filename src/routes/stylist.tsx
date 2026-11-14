@@ -61,7 +61,7 @@ function Stylist() {
   const search = () => { const h = getHotspots(place); setHot(h); setSpot(h.spots[0]!); };
   const swap = (slot: Slot) => {
     const n = candidates(slot, s.allItems, prefs).length;
-    if (n < 2) return toast("No other matching piece for this slot right now");
+    if (n < 2) { toast("No other matching piece for this slot right now"); return; }
     setPick({ ...pick, [slot]: ((pick[slot] ?? 0) + 1) % n });
   };
   const generate = async () => {
