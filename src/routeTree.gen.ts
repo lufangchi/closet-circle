@@ -16,6 +16,7 @@ import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RentalsRouteImport } from './routes/rentals'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as ApiPreviewOnMeRouteImport } from './routes/api/preview-on-me'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 import { Route as RentalsIdRouteImport } from './routes/rentals_.$id'
 import { Route as UserIdRouteImport } from './routes/user.$id'
@@ -55,6 +56,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPreviewOnMeRoute = ApiPreviewOnMeRouteImport.update({
+  id: '/api/preview-on-me',
+  path: '/api/preview-on-me',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ItemIdRoute = ItemIdRouteImport.update({
   id: '/item/$id',
   path: '/item/$id',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
   '/signup': typeof SignupRoute
+  '/api/preview-on-me': typeof ApiPreviewOnMeRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals_/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/api/preview-on-me'
     | '/item/$id'
     | '/rentals/$id'
     | '/user/$id'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/api/preview-on-me'
     | '/item/$id'
     | '/rentals/$id'
     | '/user/$id'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/rentals'
     | '/signup'
+    | '/api/preview-on-me'
     | '/item/$id'
     | '/rentals_/$id'
     | '/user/$id'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RentalsRoute: typeof RentalsRoute
   SignupRoute: typeof SignupRoute
+  ApiPreviewOnMeRoute: typeof ApiPreviewOnMeRoute
   ItemIdRoute: typeof ItemIdRoute
   RentalsIdRoute: typeof RentalsIdRoute
   UserIdRoute: typeof UserIdRoute
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/preview-on-me': {
+      id: '/api/preview-on-me'
+      path: '/api/preview-on-me'
+      fullPath: '/api/preview-on-me'
+      preLoaderRoute: typeof ApiPreviewOnMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/item/$id': {
       id: '/item/$id'
       path: '/item/$id'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RentalsRoute: RentalsRoute,
   SignupRoute: SignupRoute,
+  ApiPreviewOnMeRoute: ApiPreviewOnMeRoute,
   ItemIdRoute: ItemIdRoute,
   RentalsIdRoute: RentalsIdRoute,
   UserIdRoute: UserIdRoute,
