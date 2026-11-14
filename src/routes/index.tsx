@@ -19,11 +19,11 @@ export const Route = createFileRoute("/")({
 });
 
 const arches = [
-  { img: yellow, bg: "bg-swatch-yellow", h: "h-[300px] md:h-[380px]" },
-  { img: teal, bg: "bg-swatch-teal", h: "h-[340px] md:h-[420px]" },
-  { img: orange, bg: "bg-swatch-orange", h: "h-[380px] md:h-[460px]", tag: true },
-  { img: pink, bg: "bg-swatch-pink", h: "h-[340px] md:h-[420px]" },
-  { img: street, bg: "bg-greige", h: "h-[300px] md:h-[380px]" },
+  { img: yellow, bg: "bg-secondary", h: "h-[300px] md:h-[380px]" },
+  { img: teal, bg: "bg-accent", h: "h-[340px] md:h-[420px]" },
+  { img: orange, bg: "bg-secondary", h: "h-[380px] md:h-[460px]", tag: true },
+  { img: pink, bg: "bg-accent", h: "h-[340px] md:h-[420px]" },
+  { img: items[0]!.image, bg: "bg-secondary", h: "h-[300px] md:h-[380px]" },
 ];
 const cats = [
   { label: "Wedding Guest", img: items[1]!.image },
@@ -43,7 +43,7 @@ function Landing() {
           <span className="font-display text-2xl">Closet <em>Circle</em></span>
           <div className="hidden gap-1 rounded-full bg-foreground/5 p-1 md:flex">
             {[["Discover", "/discover"], ["Community", "/community"], ["List a piece", "/closet"], ["Rentals", "/rentals"]].map(([l, to], i) => (
-              <Link key={l} to={to as "/discover"} className={"rounded-full px-5 py-2 text-sm transition " + (i === 0 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>{l}</Link>
+              <Link key={l} to={to as "/discover"} className={"rounded-full px-5 py-2 text-sm transition " + "text-secondary-foreground hover:bg-background/60"}>{l}</Link>
             ))}
           </div>
           <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground">Open app</Link>
@@ -64,10 +64,26 @@ function Landing() {
         </div>
       </section>
 
+      {/* HOW IT WORKS — split imagery */}
+      <section className="mx-2 grid overflow-hidden rounded-[2rem] md:mx-4 md:grid-cols-2">
+        <div className="relative"><img src={street} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" /><div className="absolute inset-0 bg-blush/35 mix-blend-multiply" /></div>
+        <div className="relative">
+          <img src={field} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" />
+          <div className="absolute inset-0 bg-sage/35 mix-blend-multiply" />
+          <div className="absolute inset-x-6 bottom-6 bg-secondary/95 p-6 text-secondary-foreground backdrop-blur md:inset-x-10 md:bottom-10 md:p-8">
+            <h2 className="text-4xl">How it works</h2>
+            <ol className="mt-4 space-y-3">
+              {["Search by occasion, size & budget", "Request & message the owner", "Meet at a public spot, snap condition photos", "Return, review, earn points"].map((s, i) => (
+                <li key={s} className="flex items-baseline gap-4"><span className="font-display text-2xl text-muted-foreground">0{i + 1}</span><span>{s}</span></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
       {/* VALUE PROPS */}
       <section className="mx-auto max-w-6xl px-6 py-24">
-        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Why Closet Circle</p>
-        <h2 className="mt-3 max-w-3xl text-4xl uppercase md:text-6xl">Three things, in one place</h2>
+                <h2 className="mt-3 max-w-3xl text-4xl md:text-6xl">Three things, in one place</h2>
         <div className="mt-12 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
           {[
             { icon: MapPin, t: "Local rental", d: "Pieces from closets within a few miles. Same-day pickup at public spots — no shipping, no waiting." },
@@ -86,7 +102,7 @@ function Landing() {
       {/* CATEGORIES */}
       <section className="mx-auto max-w-6xl px-6">
         <div className="flex items-end justify-between">
-          <h2 className="text-4xl uppercase md:text-5xl">Shop by occasion</h2>
+          <h2 className="text-4xl md:text-5xl">Shop by occasion</h2>
           <Link to="/discover" className="flex items-center gap-1 text-sm underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-5">
@@ -119,25 +135,9 @@ function Landing() {
         </div>
       </section>
 
-      {/* HOW IT WORKS — split imagery */}
-      <section className="grid md:grid-cols-2">
-        <img src={street} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" />
-        <div className="relative">
-          <img src={field} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" />
-          <div className="absolute inset-x-6 bottom-6 bg-card/95 p-6 backdrop-blur md:inset-x-10 md:bottom-10 md:p-8">
-            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">How it works</p>
-            <ol className="mt-4 space-y-3">
-              {["Search by occasion, size & budget", "Request & message the owner", "Meet at a public spot, snap condition photos", "Return, review, earn points"].map((s, i) => (
-                <li key={s} className="flex items-baseline gap-4"><span className="font-display text-2xl text-muted-foreground">0{i + 1}</span><span>{s}</span></li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
       {/* TRUST */}
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-24 md:grid-cols-[1fr_1.2fr]">
-        <h2 className="text-4xl uppercase md:text-5xl">Built on trust, not just transactions</h2>
+        <h2 className="text-4xl md:text-5xl">Built on trust, not just transactions</h2>
         <div className="grid gap-6 sm:grid-cols-2">
           {[
             { icon: ShieldCheck, t: "Transparent & safe", d: "Only neighborhoods are public. Meetup details unlock after confirmation. Deposits and fees shown up front." },
