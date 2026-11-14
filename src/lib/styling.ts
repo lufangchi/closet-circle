@@ -138,7 +138,7 @@ export type Slot = "main" | "bag" | "shoes" | "jewelry";
 export const SLOT_LABEL: Record<Slot, string> = { main: "Outfit", bag: "Bag", shoes: "Shoes", jewelry: "Jewelry" };
 const SLOT_CATS: Record<Slot, Item["category"][]> = { main: ["Dress", "Suit", "Top", "Bottom"], bag: ["Bag"], shoes: ["Shoes"], jewelry: ["Jewelry"] };
 
-export type LookPiece = { slot: Slot; item: Item; price: number; why: string };
+export type LookPiece = { slot: Slot; item: Item; price: number; why: string; options: number };
 export type Look = { id: string; name: string; reason: string; pieces: LookPiece[]; total: number; missing: Slot[]; pickup: string; nextFree?: string };
 
 const PALETTES = [
@@ -207,7 +207,7 @@ export function buildLooks(pool: Item[], req: LookRequest, p: StylingPrefs, owne
       const start = picks[`${pal.id}:${slot}`] ?? 0;
       const ordered = [...cands.slice(start), ...cands.slice(0, start)];
       const pick = ordered.find((x) => spent + x.item.dailyRate * req.days <= req.budget);
-      if (pick) { pieces.push({ slot, item: pick.item, price: pick.item.dailyRate * req.days, why: pick.why[0] ?? "" }); spent += pick.item.dailyRate * req.days; used.add(pick.item.id); }
+      if (pick) { pieces.push({ slot, item: pick.item, price: pick.item.dailyRate * req.days, why: pick.why[0] ?? "", options: cands.length }); spent += pick.item.dailyRate * req.days; used.add(pick.item.id); }
       else {
         missing.push(slot);
         const nf = nextAvailable(ordered[0]!.item, req.start);

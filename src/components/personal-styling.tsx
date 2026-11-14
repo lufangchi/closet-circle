@@ -54,7 +54,8 @@ export function PersonalStyling() {
 
   const setOwned = (a: string[]) => { setOwnedList(a); s.setOwnedPieces(a); };
 
-  const swap = (lookId: string, slot: Slot) => {
+  const swap = (lookId: string, slot: Slot, options: number) => {
+    if (options < 2) { toast("No other matching piece for this slot right now"); return; }
     const key = `${lookId}:${slot}`;
     setPicks({ ...picks, [key]: (picks[key] ?? 0) + 1 });
   };
@@ -213,7 +214,7 @@ export function PersonalStyling() {
                   <Link to="/user/$id" params={{ id: pc.item.ownerId }} className="flex items-center gap-2 text-xs"><Avatar id={pc.item.ownerId} size={20} />{getUser(pc.item.ownerId).name}</Link>
                   <div className="flex items-center gap-2 text-xs">
                     <Link to="/item/$id" params={{ id: pc.item.id }} className="rounded-full border border-border px-3 py-1">Listing</Link>
-                    <button onClick={() => swap(look.id, pc.slot)} className="ml-auto flex items-center gap-1 text-muted-foreground"><Repeat className="h-3 w-3" />Swap a piece</button>
+                    <button onClick={() => swap(look.id, pc.slot, pc.options)} className="ml-auto flex items-center gap-1 text-muted-foreground"><Repeat className="h-3 w-3" />Swap a piece</button>
                   </div>
                 </div>
               ))}
