@@ -57,7 +57,7 @@ export function Avatar({ id, size = 40 }: { id: string; size?: number }) {
     : <span style={{ width: size, height: size }} className="grid place-items-center rounded-full bg-secondary font-display text-secondary-foreground">{u.name[0]}</span>;
 }
 
-export function ItemCard({ item, badge }: { item: Item; badge?: string }) {
+export function ItemCard({ item, badge }: { item: Item; badge?: string | undefined }) {
   const { favorites, toggleFav } = useStore();
   const owner = getUser(item.ownerId);
   return (
