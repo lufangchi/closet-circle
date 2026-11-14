@@ -68,7 +68,7 @@ function Landing() {
       {/* EDITORIAL BANNER */}
       <section className="mx-2 mt-16 md:mx-4">
         <div className="relative overflow-hidden bg-greige">
-          <h2 className="pointer-events-none absolute inset-x-0 top-6 z-0 text-center text-[11vw] uppercase leading-none text-foreground/60 md:top-10">Borrow brilliantly</h2>
+          <h2 className="pointer-events-none absolute inset-x-0 top-6 z-20 text-center text-[9vw] uppercase leading-none text-foreground/70 md:top-10">Borrow brilliantly</h2>
           <img src={trio} alt="Three women in black and white outfits" className="relative z-10 w-full object-cover" loading="lazy" />
           <div className="absolute bottom-6 right-6 z-20 max-w-[220px] text-right font-display uppercase leading-tight text-foreground md:bottom-12 md:right-12">
             <p className="text-xs tracking-widest">Save up to</p>
