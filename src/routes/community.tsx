@@ -65,8 +65,8 @@ function Community() {
               <button key={k} onClick={() => setTab(k)} className={cn("rounded-full px-4 py-1.5 text-sm", tab === k ? "bg-card shadow-soft" : "text-muted-foreground")}>{l}</button>
             ))}
           </div>
-          <select aria-label="Style" className={input + " w-auto py-1.5"} value={style} onChange={(e) => setStyle(e.target.value)}>{styles.map((x) => <option key={x}>{x}</option>)}</select>
-          <select aria-label="Neighborhood" className={input + " w-auto py-1.5"} value={hood} onChange={(e) => setHood(e.target.value)}>{hoods.map((x) => <option key={x}>{x}</option>)}</select>
+          <select aria-label="Style" className={input.replace("w-full", "w-auto") + " py-1.5"} value={style} onChange={(e) => setStyle(e.target.value)}>{styles.map((x) => <option key={x}>{x}</option>)}</select>
+          <select aria-label="Neighborhood" className={input.replace("w-full", "w-auto") + " py-1.5"} value={hood} onChange={(e) => setHood(e.target.value)}>{hoods.map((x) => <option key={x}>{x}</option>)}</select>
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1">{needs.map((n) => <Chip key={n} active={need === n} onClick={() => setNeed(n)}>{n}</Chip>)}</div>
         {feed.length ? (
