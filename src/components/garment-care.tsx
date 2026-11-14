@@ -22,7 +22,7 @@ export function careType(item?: Item): Kind | null {
   return "Laundry";
 }
 
-export function GarmentCare({ item, defaultArea }: { item?: Item; defaultArea: string }) {
+export function GarmentCare({ item, defaultArea }: { item?: Item | undefined; defaultArea: string }) {
   const [area, setArea] = useState(defaultArea);
   const rec = careType(item);
   const list = [...SAMPLE].sort((a, b) => Number(rec ? b.kind.includes(rec) : 0) - Number(rec ? a.kind.includes(rec) : 0) || a.mi - b.mi);

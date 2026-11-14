@@ -54,7 +54,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!authReady) return;
     const base = authUser ? fresh : initial;
-    try { const v = localStorage.getItem(key); set(v ? { ...base, ...JSON.parse(v) } : base); } catch { set(base); }
+    try {
+      const v = localStorage.getItem(key);
+      const saved: State = v ? { ...base, ...JSON.parse(v) } : base;
+      // Guest demo: make sure newer demo listings and orders appear for returning visitors.
+      if (!authUser) {
+        const addMissing = <T extends { id: string }>(have: T[], seed: T[]) => [...have, ...seed.filter((x) => !have.some((h) => h.id === x.id))];
+        saved.myItems = addMissing(saved.myItems, demoMyItems); saved.rentals = addMissing(saved.rentals, seedRentals);
+      }
+      set(saved);
+    } catch { set(base); }
     setLoadedKey(key);
   }, [key, authReady]);
   useEffect(() => { if (loadedKey === key) localStorage.setItem(key, JSON.stringify(s)); }, [s, key, loadedKey]);
