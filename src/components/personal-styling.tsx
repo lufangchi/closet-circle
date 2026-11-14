@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bookmark, Lock, MapPin, Repeat, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
@@ -10,7 +10,7 @@ import { FitCheckCard, PreviewOnMe } from "@/components/preview-on-me";
 import { Avatar, Chip, btn, btnGhost, input } from "@/components/ui-kit";
 import { cn } from "@/lib/utils";
 import {
-  BODY_SHAPES, COVERAGE_OPTS, COLOR_FAMILIES, FIT_OPTS, SKIN_TONES, SILHOUETTES, UNDERTONES,
+  BODY_SHAPES, COVERAGE_OPTS, COLOR_FAMILIES, FIT_OPTS, SKIN_TONES, SILHOUETTES, SLOT_LABEL, UNDERTONES,
   buildLooks, type Coverage, type LookRequest, type Slot, type StylingPrefs,
 } from "@/lib/styling";
 
@@ -22,7 +22,7 @@ const daysBetween = (a: string, b: string) => Math.max(1, Math.round((Date.parse
 const DEMO_PREFS: StylingPrefs = { undertone: "warm", skinTone: "sand", bodyShape: "hourglass", colors: ["olive", "gold", "cream"], silhouettes: ["Wrap"], coverage: "balanced", fit: "regular" };
 const covOrder: Coverage[] = ["show-skin", "balanced", "more-coverage"];
 
-function Field({ label, note, children }: { label: string; note?: string; children: React.ReactNode }) {
+function Field({ label, note, children }: { label: string; note?: string; children: ReactNode }) {
   return (
     <div className="space-y-1.5">
       <p className="text-sm">{label}{note && <span className="ml-1 text-xs text-muted-foreground">{note}</span>}</p>
@@ -41,7 +41,7 @@ export function PersonalStyling() {
   const [zip, setZip] = useState("94110");
   const [budget, setBudget] = useState(60);
   const [radius, setRadius] = useState(3);
-  const [owned, setOwned] = useState<string[]>(s.ownedPieces.length ? s.ownedPieces : ["cream heels"]);
+  const [owned, setOwnedList] = useState<string[]>(s.ownedPieces.length ? s.ownedPieces : ["cream heels"]);
   const [ownInput, setOwnInput] = useState("");
   const [picks, setPicks] = useState<Partial<Record<string, number>>>({});
   const [open, setOpen] = useState<Record<string, "preview" | "fit" | null>>({});
@@ -52,8 +52,7 @@ export function PersonalStyling() {
     [s.allItems, occ, start, end, zip, budget, radius, owned, prefs, s.fitProfile, picks]);
   const hasMeasurements = !!(s.fitProfile?.bust && s.fitProfile?.waist && s.fitProfile?.hips);
 
-  const setOwned = (a: string[]) => { setOwnedState(a); s.setOwnedPieces(a); };
-  function setOwnedState(a: string[]) { setOwned(a); }
+  const setOwned = (a: string[]) => { setOwnedList(a); s.setOwnedPieces(a); };
 
   const swap = (lookId: string, slot: Slot) => {
     const key = `${lookId}:${slot}`;
