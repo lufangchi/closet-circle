@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Heart, Compass, Users, Shirt, CalendarCheck, Sparkles } from "lucide-react";
+import { Heart, Compass, Users, Shirt, CalendarCheck, Sparkles, UserRound } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { getUser, type Item } from "@/lib/data";
 import { useStore } from "@/lib/store";
@@ -27,7 +27,10 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Link key={t.to} to={t.to} className={cn("rounded-full px-4 py-2 text-sm transition", active(t.to) ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted")}>{t.label}</Link>
             ))}
           </nav>
-          <span className="flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground"><Sparkles className="h-3 w-3" />{points} pts</span>
+          <div className="flex items-center gap-2">
+            <span className="flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground"><Sparkles className="h-3 w-3" />{points} pts</span>
+            <Link to="/profile" aria-label="Profile" className={cn("grid h-9 w-9 place-items-center rounded-full border border-border", pathname === "/profile" ? "bg-primary text-primary-foreground" : "bg-card")}><UserRound className="h-4 w-4" /></Link>
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-6 animate-fade-up" key={pathname}>{children}</main>

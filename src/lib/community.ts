@@ -1,18 +1,21 @@
 import { items, users, ME, getItem, type User } from "./data";
-import sage from "@/assets/item-sage-dress.jpg";
-import blush from "@/assets/item-blush-dress.jpg";
-import bag from "@/assets/item-handbag.jpg";
-import blazer from "@/assets/item-blazer.jpg";
-import heels from "@/assets/item-heels.jpg";
-import floral from "@/assets/item-floral.jpg";
-import street from "@/assets/split-street.jpg";
-import field from "@/assets/split-field.jpg";
 import archTeal from "@/assets/arch-teal.jpg";
 import archYellow from "@/assets/arch-yellow.jpg";
+import lookBurgundy from "@/assets/look-burgundy-mirror.jpg";
+import lookSage from "@/assets/look-sage-mission.jpg";
+import lookSuit from "@/assets/look-suit-mirror.jpg";
+import lookFloral from "@/assets/look-floral-dolores.jpg";
+import lookBlush from "@/assets/look-blush-hallway.jpg";
 
 export type PostKind = "rented" | "closet";
 export type Post = {
   id: string; userId: string; kind: PostKind; image: string; caption: string; itemId: string;
+  /** Extra tagged pieces worn in the photo — only listings that are available to rent. */
+  alsoTagged?: string[];
+  /** Where it was shot, e.g. "Valencia St murals · 94110". */
+  place?: string;
+  /** Seeded sample content. */
+  demo?: boolean;
   styleTags: string[]; occasion: string; rentalId?: string;
   review?: { condition: number; accuracy: number; experience: number };
   likes: number; saves: number; // seeded engagement from other accounts
@@ -23,20 +26,17 @@ export const communityRentals = [
   { id: "cr1", itemId: "sage-slip", renterId: "ines", status: "Completed" },
   { id: "cr2", itemId: "cream-bag", renterId: "maya", status: "Completed" },
   { id: "cr3", itemId: "floral-sun", renterId: "maya", status: "Completed" },
-  { id: "cr4", itemId: "nude-heels", renterId: "lena", status: "Completed" },
+  { id: "cr5", itemId: "burgundy-zip", renterId: "maya", status: "Completed" },
 ];
 
 export const seedPosts: Post[] = [
-  { id: "p1", userId: "ines", kind: "rented", rentalId: "cr1", image: sage, itemId: "sage-slip", caption: "Wore Maya's sage slip to a Sonoma garden wedding. Fit exactly like the measurements said.", styleTags: ["Silk", "Minimal", "Romantic"], occasion: "Wedding Guest", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 14, saves: 6 },
-  { id: "p2", userId: "maya", kind: "closet", image: blush, itemId: "blush-pleat", caption: "How I style my blush chiffon: pearl studs, bare shoulders, nothing else.", styleTags: ["Romantic", "Evening"], occasion: "Wedding Guest", likes: 32, saves: 11 },
-  { id: "p3", userId: "maya", kind: "rented", rentalId: "cr2", image: street, itemId: "cream-bag", caption: "Lena's Mulberry bag made my linen blazer look expensive. Spotless condition, quick handoff.", styleTags: ["Quiet luxury", "Minimal"], occasion: "Work", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 9, saves: 4 },
-  { id: "p4", userId: "lena", kind: "closet", image: blazer, itemId: "black-suit", caption: "Suit set for graduation photos — add white sneakers to soften it.", styleTags: ["Tailored", "Minimal"], occasion: "Graduation Photos", likes: 21, saves: 8 },
-  { id: "p5", userId: "maya", kind: "rented", rentalId: "cr3", image: field, itemId: "floral-sun", caption: "Inès's floral sundress + my pink knit for a windy picnic. Pockets!", styleTags: ["Vintage", "Romantic", "Boho"], occasion: "Brunch", review: { condition: 5, accuracy: 4, experience: 5 }, likes: 11, saves: 3 },
-  { id: "p6", userId: "ines", kind: "closet", image: floral, itemId: "floral-sun", caption: "Garden party season isn't over in SF. Linen forever.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 18, saves: 5 },
-  { id: "p7", userId: "lena", kind: "rented", rentalId: "cr4", image: heels, itemId: "nude-heels", caption: "Maya's sandals lasted a full reception. Light sole wear, exactly as listed.", styleTags: ["Minimal", "Evening"], occasion: "Wedding Guest", review: { condition: 4, accuracy: 5, experience: 5 }, likes: 7, saves: 2 },
-  { id: "p8", userId: "lena", kind: "closet", image: bag, itemId: "cream-bag", caption: "Quiet luxury, loud compliments.", styleTags: ["Quiet luxury"], occasion: "Work", likes: 25, saves: 9 },
-  { id: "p9", userId: "maya", kind: "closet", image: archTeal, itemId: "sage-slip", caption: "Same sage slip, office edition: white shirt layered on top.", styleTags: ["Minimal", "Silk"], occasion: "Work", likes: 16, saves: 7 },
-  { id: "p10", userId: "ines", kind: "closet", image: archYellow, itemId: "floral-sun", caption: "Florals on florals. Ask me about the matching sundress.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 12, saves: 4 },
+  { id: "p11", demo: true, userId: "maya", kind: "rented", rentalId: "cr5", image: lookBurgundy, itemId: "burgundy-zip", alsoTagged: ["crescent-bag"], place: "Home in Bernal Heights · 94110", caption: "Lena's burgundy half-zip with my green cable knit over the shoulders, a khaki wrap skirt and her crescent bag. Size M, roomy in the best way.", styleTags: ["Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 23, saves: 9 },
+  { id: "p1", demo: true, userId: "ines", kind: "rented", rentalId: "cr1", image: lookSage, itemId: "sage-slip", place: "Balmy Alley murals · 94110", caption: "Maya's sage slip, dressed down with a chunky cardigan and sneakers for a Mission walk. Fit exactly like the measurements said.", styleTags: ["Silk", "Minimal", "Romantic"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 14, saves: 6 },
+  { id: "p3", demo: true, userId: "maya", kind: "rented", rentalId: "cr2", image: lookSuit, itemId: "cream-bag", alsoTagged: ["black-suit"], place: "Bedroom mirror · 94110", caption: "Lena's cream bag made the whole suit look expensive. Spotless condition, quick handoff at Mint Plaza.", styleTags: ["Quiet luxury", "Tailored", "Minimal"], occasion: "Work", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 19, saves: 8 },
+  { id: "p5", demo: true, userId: "maya", kind: "rented", rentalId: "cr3", image: lookFloral, itemId: "floral-sun", place: "Dolores Park · 94114", caption: "Inès's floral sundress + my pink cardigan for a windy picnic. Pockets!", styleTags: ["Vintage", "Romantic", "Boho"], occasion: "Brunch", review: { condition: 5, accuracy: 4, experience: 5 }, likes: 11, saves: 3 },
+  { id: "p2", demo: true, userId: "maya", kind: "closet", image: lookBlush, itemId: "blush-pleat", alsoTagged: ["nude-heels"], place: "Getting ready · 94110", caption: "How I style my blush chiffon for a wedding: nude sandals, low bun, nothing else.", styleTags: ["Romantic", "Evening"], occasion: "Wedding Guest", likes: 32, saves: 11 },
+  { id: "p9", demo: true, userId: "maya", kind: "closet", image: archTeal, itemId: "sage-slip", place: "Bernal Hill · 94110", caption: "Same sage slip, evening edition.", styleTags: ["Minimal", "Silk"], occasion: "Wedding Guest", likes: 16, saves: 7 },
+  { id: "p10", demo: true, userId: "ines", kind: "closet", image: archYellow, itemId: "floral-sun", place: "24th St · 94114", caption: "Florals on florals. Ask me about the matching sundress.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 12, saves: 4 },
 ];
 
 export const isVerified = (p: Post, myCompleted: string[]) =>
@@ -77,3 +77,4 @@ export function recommendPeople(me: User, w: Record<string, number>, exclude: st
   }).sort((a, b) => b.score - a.score);
 }
 export const taggedItem = (p: Post) => getItem(p.itemId);
+export const taggedIds = (p: Post) => [p.itemId, ...(p.alsoTagged ?? [])];
