@@ -1,10 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import yellow from "@/assets/arch-yellow.jpg";
-import teal from "@/assets/arch-teal.jpg";
-import pink from "@/assets/arch-pink.jpg";
-import street from "@/assets/split-street.jpg";
-import field from "@/assets/split-field.jpg";
+import { useState } from "react";
+import hero from "@/assets/landing-hero-sky.jpg";
+import bottom from "@/assets/landing-bottom-circle.jpg";
+import stepBrowse from "@/assets/step-browse.jpg";
+import stepMessage from "@/assets/step-message.jpg";
+import stepWear from "@/assets/step-wear.jpg";
+import stepFriends from "@/assets/step-friends.jpg";
+import tileDiscover from "@/assets/tile-discover.jpg";
+import tileCommunity from "@/assets/tile-community.jpg";
+import tileCloset from "@/assets/tile-closet.jpg";
 import { items } from "@/lib/data";
 
 export const Route = createFileRoute("/")({
@@ -18,10 +23,9 @@ export const Route = createFileRoute("/")({
 });
 
 const collections = [
-  { t: "Local rental", d: "Pieces from closets within a few miles — same-day pickup, no shipping.", img: yellow, to: "/discover", span: "md:col-span-3" },
-  { t: "AI styling", d: "Tell us the occasion, size and budget. Get complete outfit picks in seconds.", img: teal, to: "/stylist", span: "md:col-span-2" },
-  { t: "Closet Soulmates", d: "Follow women whose style matches yours — their closets show up first.", img: field, to: "/community", span: "md:col-span-2" },
-  { t: "Trust & care", d: "Deposits and fees up front, condition photos at every handoff, reviews that respect.", img: pink, to: "/terms", span: "md:col-span-3" },
+  { t: "Discover", d: "Browse neighbors' closets or let AI style a full look for your plans — then preview it on you.", img: tileDiscover, to: "/discover" },
+  { t: "Meet your community", d: "Real outfits from real neighbors. Save looks and follow women who share your taste.", img: tileCommunity, to: "/community" },
+  { t: "Manage your closet", d: "List what you rarely wear, set your price and dates, and earn from every rental.", img: tileCloset, to: "/closet" },
 ];
 const cats = [
   { label: "Wedding Guest", img: items[1]!.image },
@@ -30,14 +34,43 @@ const cats = [
   { label: "Shoes", img: items[4]!.image },
   { label: "Tailoring", img: items[3]!.image },
 ];
-const steps = ["Search by occasion, size & budget", "Request & message the owner", "Meet at a public spot, snap condition photos", "Return, review, earn points"];
+const steps = [
+  { t: "Browse, AI Discover & AI Try-On", d: "Search by occasion, size and budget, get an AI-styled look, and preview pieces on yourself.", img: stepBrowse },
+  { t: "Message the owner", d: "Ask about fit, agree on dates, and pick a public spot to meet nearby.", img: stepMessage },
+  { t: "Get the clothes & put them on", d: "Pick up, snap condition photos together, and wear it out — return it the same way.", img: stepWear },
+  { t: "Talk with people who share your taste", d: "Post your look, save others', and find your Closet Soulmates.", img: stepFriends },
+];
+
+function Steps() {
+  const [on, setOn] = useState(0);
+  return (
+    <section className="mx-auto max-w-7xl px-6 pb-28 pt-24 md:pt-32">
+      <p className="text-[12px] tracking-luxe text-accent-foreground">How it works</p>
+      <h2 className="mt-6 max-w-4xl font-display text-4xl leading-[1.1] md:text-6xl">One closet is never enough. <em>A whole neighborhood's is.</em></h2>
+      <div className="mt-16 grid items-center gap-12 md:grid-cols-[1.2fr_1fr]">
+        <ol className="space-y-8">{steps.map((st, i) => (
+          <li key={st.t}>
+            <button onMouseEnter={() => setOn(i)} onFocus={() => setOn(i)} onClick={() => setOn(i)} className={`block border-l-2 pl-5 text-left transition ${on === i ? "border-foreground" : "border-transparent opacity-45 hover:opacity-80"}`}>
+              <span className="block text-xs font-medium tracking-[0.1em]">0.0{i + 1}</span>
+              <span className="mt-1 block font-display text-3xl md:text-4xl">{st.t}</span>
+              {on === i && <span className="mt-2 block max-w-md text-sm text-muted-foreground">{st.d}</span>}
+            </button>
+          </li>))}</ol>
+        <div className="mx-auto w-full max-w-sm overflow-hidden rounded-[2rem] shadow-soft">
+          <img key={on} src={steps[on]!.img} alt={steps[on]!.t} loading="lazy" className="aspect-square w-full object-cover animate-fade-up" />
+        </div>
+      </div>
+      <Link to="/signup" className="mt-12 inline-block border-b border-foreground pb-0.5 text-[13px] tracking-[0.1em]">Join the circle</Link>
+    </section>
+  );
+}
 
 function Landing() {
   return (
     <div className="bg-background text-foreground">
       {/* HERO — full-bleed photo, floating nav, value prop */}
       <section className="relative">
-        <img src={street} alt="A neighbor lending a dress" className="h-[92vh] w-full object-cover" />
+        <img src={hero} alt="Two friends laughing in blush and sage silk" className="h-[92vh] w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/10 to-ink/20" />
         <nav className="absolute inset-x-4 top-4 flex items-center justify-between rounded-full bg-background/90 px-6 py-3 backdrop-blur md:inset-x-8 md:px-8">
           <div className="hidden items-center gap-7 md:flex">
@@ -61,20 +94,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* WHAT WE DO — centered statement + numbered steps, flows straight off the hero */}
-      <section className="mx-auto max-w-4xl px-6 pb-24 pt-24 text-center md:pt-32">
-        <p className="text-[12px] tracking-luxe text-accent-foreground">What we're doing</p>
-        <h2 className="mt-6 font-display text-4xl leading-[1.15] md:text-6xl">One closet is never enough. <em>A whole neighborhood's is.</em></h2>
-        <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-muted-foreground">Closet Circle turns the closets around you into one shared wardrobe — rent the dress for Saturday's wedding from a neighbor three blocks away, get AI outfit picks for any occasion, and meet the women who share your taste.</p>
-        <ol className="mt-16 grid gap-px overflow-hidden border border-border bg-border text-left sm:grid-cols-2 md:grid-cols-4">
-          {steps.map((s, i) => (
-            <li key={s} className="bg-background p-6">
-              <span className="font-display text-3xl text-accent-foreground">0{i + 1}</span>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{s}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <Steps />
 
       {/* FOUR SUB-SECTIONS — connected photo mosaic */}
       <section className="px-4 pb-24 md:px-8">
@@ -83,9 +103,9 @@ function Landing() {
             <h2 className="font-display text-4xl md:text-5xl">Inside the <em>circle</em></h2>
             <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
-          <div className="grid gap-3 md:grid-cols-5">
+          <div className="grid gap-3 md:grid-cols-3">
             {collections.map((c) => (
-              <Link key={c.t} to={c.to as "/discover"} className={`group relative block overflow-hidden ${c.span} h-[380px] md:h-[440px]`}>
+              <Link key={c.t} to={c.to as "/discover"} className="group relative block h-[420px] overflow-hidden md:h-[520px]">
                 <img src={c.img} alt={c.t} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/10 to-transparent" />
                 <div className="absolute inset-x-6 top-6 md:inset-x-8 md:top-8">
@@ -128,7 +148,7 @@ function Landing() {
       {/* CATEGORIES — serif index list with side image */}
       <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-28 md:grid-cols-2 md:gap-16">
         <div className="relative hidden overflow-hidden md:block">
-          <img src={street} alt="Wedding guest looks" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
+          <img src={stepWear} alt="Wedding guest looks" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
         </div>
         <div className="flex flex-col justify-center">
           <p className="text-[12px] tracking-luxe text-accent-foreground">Explore by occasion</p>
@@ -161,15 +181,17 @@ function Landing() {
         </div>
       </section>
 
-      {/* CTA — quiet, same canvas */}
-      <section className="border-t border-border px-6 py-28 text-center">
-        <h2 className="mx-auto max-w-3xl font-display text-4xl leading-[1.12] md:text-6xl">Your next look is <em>around the corner</em>.</h2>
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Link to="/discover" className="inline-flex items-center gap-3 rounded-full bg-primary px-8 py-3 text-[13px] tracking-[0.1em] text-primary-foreground transition hover:opacity-90">Start discovering <ArrowRight className="h-4 w-4" /></Link>
-          <Link to="/closet" className="inline-flex items-center rounded-full border border-foreground/30 px-8 py-3 text-[13px] tracking-[0.1em] transition hover:bg-muted">List your closet</Link>
+      {/* JOIN — full-bleed photo with centered call to action */}
+      <section className="relative">
+        <img src={bottom} alt="Three friends in a circle laughing under a blue sky" loading="lazy" className="h-[90vh] w-full object-cover" />
+        <div className="absolute inset-0 bg-ink/25" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-ink-foreground">
+          <p className="text-[13px] tracking-[0.1em]">Join the circle</p>
+          <h2 className="mt-4 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl">Be part of a closet where <em>women share with women</em></h2>
+          <Link to="/signup" className="mt-10 inline-flex items-center gap-3 rounded-full bg-background px-8 py-3.5 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Create your free account <ArrowRight className="h-4 w-4" /></Link>
         </div>
-        <p className="mt-24 text-[11px] tracking-luxe text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
       </section>
+      <p className="py-10 text-center text-[11px] tracking-luxe text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
     </div>
   );
 }
