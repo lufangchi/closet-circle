@@ -4,7 +4,7 @@ import { BadgeCheck, ShieldCheck, Star, MapPin, Clock, Ruler, Info } from "lucid
 import { toast } from "sonner";
 import { getItem, getUser, priceRental, pickupSpots, compatibility, users, ME } from "@/lib/data";
 import { useStore } from "@/lib/store";
-import { isVerified } from "@/lib/community";
+import { isVerified, taggedIds } from "@/lib/community";
 import { Avatar, HeartButton, btn, btnGhost, input } from "@/components/ui-kit";
 import { PreviewOnMe, FitCheckCard } from "@/components/preview-on-me";
 import { isClothing } from "@/lib/fit";
@@ -109,7 +109,7 @@ function ItemPage() {
 
 function VisualReviews({ itemId }: { itemId: string }) {
   const store = useStore();
-  const looks = store.allPosts.filter((p) => p.itemId === itemId && isVerified(p, store.myCompleted));
+  const looks = store.allPosts.filter((p) => taggedIds(p).includes(itemId) && isVerified(p, store.myCompleted));
   if (!looks.length) return null;
   return (
     <section className="md:col-span-2">

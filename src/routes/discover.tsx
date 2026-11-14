@@ -20,7 +20,7 @@ const cats = ["All", "Dress", "Suit", "Bag", "Shoes"];
 
 function Discover() {
   const { soulmates, allItems, postRequest, favorites, savedPosts, allPosts } = useStore();
-  const savedPostItems = allPosts.filter((p) => savedPosts.includes(p.id)).map((p) => p.itemId);
+  const savedPostItems = allPosts.filter((p) => savedPosts.includes(p.id)).flatMap((p) => [p.itemId, ...(p.alsoTagged ?? [])]);
   const [q, setQ] = useState({ occasion: "Wedding", date: "2026-11-21", size: "S", budget: 80, zip: "94110" });
   const [results, setResults] = useState<ReturnType<typeof recommend> | null>(null);
   const [loading, setLoading] = useState(false);
