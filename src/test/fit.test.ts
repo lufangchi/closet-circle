@@ -21,7 +21,7 @@ describe("fit check", () => {
   });
   it("missing profile or garment data or unconfirmed → more measurements needed", () => {
     expect(fitCheck("Dress", { unit: "in", bust: 32 }, dress).missingProfile).toEqual(["waist", "hips"]);
-    expect(fitCheck("Dress", { unit: "in", bust: 32, waist: 25, hips: 34 }, { ...dress, hips: undefined }).verdict).toBe("More measurements needed");
+    expect(fitCheck("Dress", { unit: "in", bust: 32, waist: 25, hips: 34 }, (({ hips: _h, ...rest }) => rest)(dress)).verdict).toBe("More measurements needed");
     expect(fitCheck("Dress", { unit: "in", bust: 32, waist: 25, hips: 34 }, { ...dress, confirmed: false }).verdict).toBe("More measurements needed");
   });
 });
