@@ -1,3 +1,4 @@
+import { isRangeBlocked } from "./availability";
 import type { Item } from "./data";
 import painted from "@/assets/spot-painted-ladies.jpg";
 import ferry from "@/assets/spot-ferry-building.jpg";
@@ -34,7 +35,7 @@ const OCC: Record<string, string[]> = { Date: ["Date night", "Cocktail"], Brunch
 const STY: Record<string, string[]> = { Minimal: ["Minimal", "Tailored"], French: ["Silk", "Minimal", "Quiet luxury"], Sweet: ["Romantic"], Vintage: ["Vintage", "Boho"], Street: ["Tailored", "Minimal"], Elegant: ["Evening", "Silk", "Quiet luxury"] };
 const SLOT_CATS: Record<Slot, Item["category"][]> = { main: ["Dress", "Suit", "Top"], bag: ["Bag"], shoes: ["Shoes"] };
 
-const blocked = (i: Item, p: Prefs) => !!p.start && !!p.end && i.blockedDates.some((d) => d >= p.start! && d <= p.end!);
+const blocked = (i: Item, p: Prefs) => !!p.start && !!p.end && isRangeBlocked(i, p.start, p.end);
 const sizeOk = (i: Item, p: Prefs) => !p.size || i.size === p.size || i.size === "One size" || i.category === "Shoes" || i.category === "Top";
 
 /** Rentable candidates for a slot, best first. Only real listings. */
