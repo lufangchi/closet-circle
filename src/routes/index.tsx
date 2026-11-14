@@ -38,21 +38,21 @@ function Landing() {
   return (
     <div className="bg-background">
       {/* HERO — dark, arched model cards */}
-      <section className="m-2 overflow-hidden rounded-[2rem] bg-ink text-ink-foreground md:m-4">
+      <section className="m-2 overflow-hidden rounded-[2rem] bg-secondary text-secondary-foreground md:m-4">
         <nav className="flex items-center justify-between px-6 py-6 md:px-10">
           <span className="font-display text-2xl">Closet <em>Circle</em></span>
-          <div className="hidden gap-1 rounded-full bg-ink-foreground/5 p-1 md:flex">
+          <div className="hidden gap-1 rounded-full bg-foreground/5 p-1 md:flex">
             {[["Discover", "/discover"], ["Community", "/community"], ["List a piece", "/closet"], ["Rentals", "/rentals"]].map(([l, to], i) => (
-              <Link key={l} to={to as "/discover"} className={"rounded-full px-5 py-2 text-sm transition " + (i === 0 ? "bg-ink-foreground text-ink" : "text-ink-muted hover:text-ink-foreground")}>{l}</Link>
+              <Link key={l} to={to as "/discover"} className={"rounded-full px-5 py-2 text-sm transition " + (i === 0 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>{l}</Link>
             ))}
           </div>
-          <Link to="/discover" className="rounded-full bg-ink-foreground px-5 py-2 text-sm font-medium text-ink">Open app</Link>
+          <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground">Open app</Link>
         </nav>
         <div className="mx-auto max-w-3xl px-6 pt-8 text-center">
-          <span className="inline-block rounded-full border border-ink-foreground/20 px-5 py-1.5 text-xs tracking-wide text-ink-muted">Now in San Francisco · Mission, Bernal, Noe & SoMa</span>
+          <span className="inline-block rounded-full border border-foreground/20 px-5 py-1.5 text-xs tracking-wide text-muted-foreground">Now in San Francisco · Mission, Bernal, Noe & SoMa</span>
           <h1 className="mt-6 text-5xl leading-[1.05] md:text-7xl">Your neighborhood's <em>shared wardrobe</em></h1>
-          <p className="mx-auto mt-5 max-w-xl text-ink-muted">Rent the dress for Saturday's wedding from a neighbor three blocks away. Get AI outfit picks, meet women who share your taste, and earn rewards for every honest review.</p>
-          <Link to="/discover" className={pill + " mt-8"}>Find my look <span className="grid h-9 w-9 place-items-center rounded-full bg-ink text-ink-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
+          <p className="mx-auto mt-5 max-w-xl text-muted-foreground">Rent the dress for Saturday's wedding from a neighbor three blocks away. Get AI outfit picks, meet women who share your taste, and earn rewards for every honest review.</p>
+          <Link to="/discover" className={pill + " mt-8"}>Find my look <span className="grid h-9 w-9 place-items-center rounded-full bg-background text-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
         </div>
         <div className="mt-14 flex items-end justify-center gap-3 px-2 md:gap-5">
           {arches.map((a, i) => (
@@ -151,13 +151,13 @@ function Landing() {
       </section>
 
       {/* CTA */}
-      <section className="m-2 rounded-[2rem] bg-ink px-6 py-20 text-center text-ink-foreground md:m-4">
+      <section className="m-2 rounded-[2rem] bg-accent px-6 py-20 text-center text-accent-foreground md:m-4">
         <h2 className="mx-auto max-w-2xl text-5xl leading-tight md:text-6xl">Your next look is <em>around the corner</em></h2>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/discover" className={pill}>Start discovering <span className="grid h-9 w-9 place-items-center rounded-full bg-ink text-ink-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
-          <Link to="/closet" className="rounded-full border border-ink-foreground/30 px-6 py-3 text-sm">List your closet</Link>
+          <Link to="/discover" className={pill}>Start discovering <span className="grid h-9 w-9 place-items-center rounded-full bg-background text-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
+          <Link to="/closet" className="rounded-full border border-foreground/30 px-6 py-3 text-sm">List your closet</Link>
         </div>
-        <p className="mt-16 text-xs text-ink-muted">© 2026 Closet Circle · Made for neighbors</p>
+        <p className="mt-16 text-xs text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
       </section>
     </div>
   );
