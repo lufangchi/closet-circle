@@ -14,7 +14,7 @@ import coat from "@/assets/pink-satin-coat.png.asset.json";
 import gown from "@/assets/olive-column-gown.png.asset.json";
 import knit from "@/assets/blush-oversized-knit.jpg.asset.json";
 import furMini from "@/assets/jacquard-fur-trim-mini.png.asset.json";
-import tryOn from "@/assets/sample-preview-burgundy.jpg";
+import tryOn from "@/assets/tile-tryon.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -39,7 +39,6 @@ const popular = [
   { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "left-3 top-4", to: "/discover", fit: "object-top" },
   { img: furMini.url, tag: "Fur-trim holiday mini", tone: "bg-clay", pos: "right-[12%] bottom-[6%]", tagPos: "right-3 bottom-4", to: "/discover", fit: "object-[50%_62%]" },
 ];
-const chips = ["Clothing", "Bags", "Jewelry", "Shoes", "Accessories"];
 const steps = [
   { t: "Browse, AI Discover & AI Try-On", d: "Search by occasion, size and budget, get an AI-styled look, and preview pieces on yourself.", img: stepBrowse },
   { t: "Message the owner", d: "Ask about fit, agree on dates, and pick a public spot to meet nearby.", img: stepMessage },
@@ -117,9 +116,9 @@ function Landing() {
           <h1 className="max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Your sisterhood’s <em>shared wardrobe</em>.</h1>
           <p className="mt-5 max-w-xl text-base text-ink-foreground/90 md:text-lg">Rent and lend clothing, bags, jewelry, and accessories. Discover new looks and connect with women who share your style.</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full bg-background px-7 py-3 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/closet" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/50 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Share Your Pieces</Link>
-            <Link to="/stylist" className="text-[13px] tracking-[0.1em] text-ink-foreground underline-offset-4 hover:underline">Find Your Next Look →</Link>
+            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/closet" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Share Your Pieces <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/stylist" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Find Your Next Look <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </section>
@@ -164,7 +163,6 @@ function Landing() {
           <p className="text-[13px] tracking-[0.08em] text-muted-foreground">This week on SisUse</p>
           <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
           <p className="mt-4 text-sm text-muted-foreground">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">{chips.map((c) => <Link key={c} to="/discover" className="rounded-full border border-border bg-background px-4 py-1.5 text-xs transition hover:bg-muted">{c}</Link>)}</div>
           <Link to="/discover" className="mt-6 inline-block border-b border-foreground pb-0.5 text-[13px] tracking-[0.1em]">Explore the Wardrobe</Link>
         </div>
       </section>
