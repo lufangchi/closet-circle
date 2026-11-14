@@ -4,8 +4,8 @@ import { seedPosts, isVerified, postPoints, type Post } from "./community";
 import type { FitProfile } from "./fit";
 import { ME, seedRentals, type Rental, type RentalStatus, type Item, items as seedItems } from "./data";
 
-type State = { favorites: string[]; soulmates: string[]; rentals: Rental[]; points: number; myItems: Item[]; requests: string[]; likedPosts: string[]; savedPosts: string[]; myPosts: Post[]; skipped: string[]; account?: { name: string; email: string }; fitProfile?: FitProfile; lenderQuestions: { itemId: string; text: string }[] };
-const initial: State = { lenderQuestions: [], likedPosts: [], savedPosts: [], myPosts: [], skipped: [], favorites: [], soulmates: [], rentals: seedRentals, points: 120, myItems: [], requests: [] };
+type State = { favorites: string[]; soulmates: string[]; rentals: Rental[]; points: number; myItems: Item[]; requests: string[]; likedPosts: string[]; savedPosts: string[]; myPosts: Post[]; skipped: string[]; account?: { name: string; email: string }; fitProfile?: FitProfile; lenderQuestions: { itemId: string; text: string }[]; savedOutfits: { id: string; name: string; place: string; itemIds: string[] }[] };
+const initial: State = { lenderQuestions: [], savedOutfits: [], likedPosts: [], savedPosts: [], myPosts: [], skipped: [], favorites: [], soulmates: [], rentals: seedRentals, points: 120, myItems: [], requests: [] };
 
 type Ctx = State & {
   toggleFav: (id: string) => void; toggleSoulmate: (id: string) => void;
@@ -13,7 +13,7 @@ type Ctx = State & {
   setStatus: (id: string, s: RentalStatus) => void; sendMessage: (id: string, text: string) => void;
   review: (id: string) => void; addItem: (i: Item) => void; postRequest: (t: string) => void; allItems: Item[];
   allPosts: Post[]; earned: number; myCompleted: string[]; toggleLike: (id: string) => void; toggleSavePost: (id: string) => void; addPost: (p: Post) => void; skipPerson: (id: string) => void;
-  setAccount: (a: { name: string; email: string }) => void; setFitProfile: (f: FitProfile) => void; askLender: (itemId: string, text: string) => void;
+  setAccount: (a: { name: string; email: string }) => void; setFitProfile: (f: FitProfile) => void; askLender: (itemId: string, text: string) => void; saveOutfit: (o: { name: string; place: string; itemIds: string[] }) => void;
 };
 // Keep one context instance across hot reloads so provider and consumers never mismatch.
 const g = globalThis as unknown as { __closetCtx?: React.Context<Ctx | null> };
@@ -37,6 +37,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setAccount: (account) => set((p) => ({ ...p, account })),
     setFitProfile: (fitProfile) => set((p) => ({ ...p, fitProfile })),
     askLender: (itemId, text) => set((p) => ({ ...p, lenderQuestions: [{ itemId, text }, ...p.lenderQuestions] })),
+    saveOutfit: (o) => set((p) => ({ ...p, savedOutfits: [{ id: "o" + Date.now(), ...o }, ...p.savedOutfits] })),
     skipPerson: (id) => set((p) => ({ ...p, skipped: [...p.skipped, id] })),
     allItems: [...s.myItems, ...seedItems],
     toggleFav: (id) => set((p) => ({ ...p, favorites: tog(p.favorites, id) })),
