@@ -6,7 +6,7 @@ import { getUser, priceRental, ME, type RentalStatus } from "@/lib/data";
 import { useStore } from "@/lib/store";
 import { Avatar, DemoTag, btn, btnGhost, input } from "@/components/ui-kit";
 
-export const Route = createFileRoute("/rentals/$id")({
+export const Route = createFileRoute("/rentals_/$id")({
   head: () => ({ meta: [
     { title: "Rental details — Closet Circle" },
     { name: "description", content: "Pricing, pickup, messages and review for your rental." },

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { getUser, type RentalStatus } from "@/lib/data";
 import { useStore } from "@/lib/store";
 
@@ -15,9 +15,7 @@ export const Route = createFileRoute("/rentals")({
 export const statusTone: Record<RentalStatus, string> = { Requested: "bg-secondary text-secondary-foreground", Confirmed: "bg-accent text-accent-foreground", "Picked Up": "bg-primary text-primary-foreground", Returned: "bg-muted", Completed: "bg-muted text-muted-foreground", Declined: "bg-destructive/10 text-destructive" };
 
 function Rentals() {
-  const { pathname } = useLocation();
   const { rentals, allItems } = useStore();
-  if (pathname !== "/rentals") return <Outlet />;
   return (
     <div className="space-y-6">
       <h1 className="text-4xl font-semibold">Rentals</h1>
