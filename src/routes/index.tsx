@@ -4,7 +4,6 @@ import yellow from "@/assets/arch-yellow.jpg";
 import orange from "@/assets/arch-orange.jpg";
 import teal from "@/assets/arch-teal.jpg";
 import pink from "@/assets/arch-pink.jpg";
-import trio from "@/assets/landing-trio.jpg";
 import street from "@/assets/split-street.jpg";
 import field from "@/assets/split-field.jpg";
 import { items } from "@/lib/data";
@@ -62,19 +61,6 @@ function Landing() {
               {a.tag && <div className="arch absolute bottom-6 left-1/2 w-28 -translate-x-1/2 bg-blush/90 px-3 pb-4 pt-10 text-center text-xs text-secondary-foreground">From<br /><b className="font-display text-2xl">$28</b>/day</div>}
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* EDITORIAL BANNER */}
-      <section className="mx-2 mt-16 md:mx-4">
-        <div className="relative overflow-hidden bg-greige">
-          <h2 className="pointer-events-none absolute inset-x-0 top-6 z-20 text-center text-[9vw] uppercase leading-none text-foreground/70 md:top-10">Borrow brilliantly</h2>
-          <img src={trio} alt="Three women in black and white outfits" className="relative z-10 w-full object-cover" loading="lazy" />
-          <div className="absolute bottom-6 right-6 z-20 max-w-[220px] text-right font-display uppercase leading-tight text-foreground md:bottom-12 md:right-12">
-            <p className="text-xs tracking-widest">Save up to</p>
-            <p className="text-5xl">90%</p>
-            <p className="text-sm">vs. buying retail. Every single occasion.</p>
-          </div>
         </div>
       </section>
 
