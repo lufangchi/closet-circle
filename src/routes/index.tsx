@@ -37,7 +37,7 @@ const popular = [
   { img: coat.url, tag: "Soft satin, worn with denim", tone: "bg-blush", pos: "left-[4%] top-[4%]", tagPos: "left-3 top-4", to: "/discover", fit: "object-top" },
   { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "right-3 top-6", to: "/discover", fit: "object-top" },
   { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "left-3 top-4", to: "/discover", fit: "object-top" },
-  { img: furMini.url, tag: "Fur-trim holiday mini", tone: "bg-clay", pos: "right-[12%] bottom-[6%]", tagPos: "right-3 bottom-4", to: "/discover", fit: "object-[50%_62%]" },
+  { img: furMini.url, tag: "Fur-trim holiday mini", tone: "bg-clay", pos: "right-[6%] bottom-[6%]", tagPos: "right-3 bottom-4", to: "/discover", fit: "object-[50%_62%]" },
 ];
 const steps = [
   { t: "Browse, AI Discover & AI Try-On", d: "Search by occasion, size and budget, get an AI-styled look, and preview pieces on yourself.", img: stepBrowse },
@@ -54,7 +54,7 @@ function Steps() {
     <section className="px-6 pb-16 pt-24 md:pt-32">
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 md:gap-16">
         <div>
-          <p className="text-[13px] tracking-[0.08em] text-accent-foreground">How it works</p>
+          <p className="text-[13px] tracking-[-0.01em] text-accent-foreground">How it works</p>
           <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">A closet built for women, <em>by women</em></h2>
         </div>
         <p className="self-end text-lg leading-relaxed text-muted-foreground md:text-xl">SisUse connects women in the same neighborhood to borrow, lend and style each other's pieces. Find a look, meet the woman who owns it, wear it out, and keep the conversation going with people who share your taste.</p>
@@ -73,7 +73,7 @@ function Steps() {
         })}
       </div>
       <div className="mx-auto mt-10 max-w-xl text-center">
-        <p className="text-sm font-medium tracking-[0.1em]">0.0{on + 1}</p>
+        <p className="text-sm font-medium tracking-[-0.01em]">0.0{on + 1}</p>
         <h3 key={on} className="mt-2 animate-fade-up font-display text-3xl leading-tight md:text-4xl">{steps[on]!.t}</h3>
         <p className="mt-3 text-muted-foreground">{steps[on]!.d}</p>
         <div className="mt-6 flex justify-center gap-2">{steps.map((st, i) => (
@@ -103,22 +103,22 @@ function Landing() {
         <nav className="absolute inset-x-4 top-4 flex items-center justify-between rounded-full bg-background/90 px-6 py-3 backdrop-blur md:inset-x-8 md:px-8">
           <div className="hidden items-center gap-7 md:flex">
             {[["Discover", "/discover"], ["AI Stylist", "/stylist"], ["Community", "/community"]].map(([l, to]) => (
-              <Link key={l} to={to as "/discover"} className="text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground">{l}</Link>
+              <Link key={l} to={to as "/discover"} className="text-[13px] tracking-[-0.01em] text-foreground/70 transition hover:text-foreground">{l}</Link>
             ))}
           </div>
-          <Link to="/" className="font-display text-xl tracking-wide md:absolute md:left-1/2 md:-translate-x-1/2">Sis<em>Use</em></Link>
+          <Link to="/" className="font-display text-xl tracking-normal md:absolute md:left-1/2 md:-translate-x-1/2">Sis<em>Use</em></Link>
           <div className="flex items-center gap-6">
-            <Link to="/auth" className="hidden text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground md:block">Sign in</Link>
-            <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-[13px] tracking-[0.08em] text-primary-foreground transition hover:opacity-90">Open app</Link>
+            <Link to="/auth" className="hidden text-[13px] tracking-[-0.01em] text-foreground/70 transition hover:text-foreground md:block">Sign in</Link>
+            <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-[13px] tracking-[-0.01em] text-primary-foreground transition hover:opacity-90">Open app</Link>
           </div>
         </nav>
         <div className="absolute inset-x-6 bottom-10 md:inset-x-12 md:bottom-14">
           <h1 className="max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Your sisterhood’s <em>shared wardrobe</em>.</h1>
           <p className="mt-5 max-w-xl text-base text-ink-foreground/90 md:text-lg">Rent and lend clothing, bags, jewelry, and accessories. Discover new looks and connect with women who share your style.</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/closet" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Share Your Pieces <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/stylist" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Find Your Next Look <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 bg-ink/25 px-7 py-3 text-[13px] tracking-[-0.01em] text-ink-foreground backdrop-blur-sm transition hover:bg-ink-foreground/10">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/closet" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 bg-ink/25 px-7 py-3 text-[13px] tracking-[-0.01em] text-ink-foreground backdrop-blur-sm transition hover:bg-ink-foreground/10">Share Your Pieces <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/stylist" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/60 bg-ink/25 px-7 py-3 text-[13px] tracking-[-0.01em] text-ink-foreground backdrop-blur-sm transition hover:bg-ink-foreground/10">Find Your Next Look <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </section>
@@ -131,7 +131,7 @@ function Landing() {
         <div className="mx-auto max-w-7xl">
           <div className="flex items-end justify-between pb-8">
             <h2 className="font-display text-4xl md:text-5xl">Inside <em>SisUse</em></h2>
-            <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
+            <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[-0.01em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {collections.map((c) => (
@@ -141,7 +141,7 @@ function Landing() {
                 <div className="absolute inset-x-6 top-6 md:inset-x-8 md:top-8">
                   <h3 className="font-display text-3xl text-ink-foreground md:text-4xl">{c.t}</h3>
                   <p className="mt-2 max-w-xs text-sm text-ink-foreground/85">{c.d}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-ink-foreground/60 px-5 py-2 text-[12px] tracking-[0.1em] text-ink-foreground transition group-hover:bg-ink-foreground group-hover:text-ink">Explore <ArrowUpRight className="h-3.5 w-3.5" /></span>
+                  <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-ink-foreground/60 px-5 py-2 text-[12px] tracking-[-0.01em] text-ink-foreground transition group-hover:bg-ink-foreground group-hover:text-ink">Explore <ArrowUpRight className="h-3.5 w-3.5" /></span>
                 </div>
               </Link>
             ))}
@@ -152,18 +152,18 @@ function Landing() {
       <Bridge text="Here’s what everyone is borrowing." />
 
       {/* POPULAR — scattered photo collage around a centered headline */}
-      <section className="relative mx-auto h-[980px] max-w-7xl px-6 md:h-[860px]">
+      <section className="relative mx-auto h-[1080px] max-w-7xl px-6 md:h-[1160px]">
         {popular.map((p) => (
-          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-36 md:w-56 ${p.pos}`}>
+          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-52 md:w-64 lg:w-80 ${p.pos}`}>
             <img src={p.img} alt={p.tag} loading="lazy" className={`aspect-[4/5] w-full rounded-[1.75rem] object-cover ${p.fit} shadow-soft transition duration-500 group-hover:-translate-y-1`} />
             <span className={`absolute max-w-[calc(100%-1.5rem)] rounded-full px-4 py-2 text-center text-xs leading-snug text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
           </Link>
         ))}
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6 text-center">
-          <p className="text-[13px] tracking-[0.08em] text-muted-foreground">This week on SisUse</p>
-          <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
-          <p className="mt-4 text-sm text-muted-foreground">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
-          <Link to="/discover" className="mt-6 inline-block border-b border-foreground pb-0.5 text-[13px] tracking-[0.1em]">Explore the Wardrobe</Link>
+          <p className="text-sm tracking-[-0.015em] text-foreground/70">This week on SisUse</p>
+          <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-6xl lg:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
+          <p className="mt-3 text-base leading-relaxed text-foreground/80 lg:text-lg">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
+          <Link to="/discover" className="mt-6 inline-block border-b border-foreground pb-0.5 text-sm tracking-[-0.015em]">Explore the Wardrobe</Link>
         </div>
       </section>
 
@@ -174,9 +174,9 @@ function Landing() {
         <img src={bottom} alt="Three friends in a circle laughing under a blue sky" loading="lazy" className="h-[90vh] w-full object-cover" />
         <div className="absolute inset-0 bg-ink/25" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-ink-foreground">
-          <p className="text-[13px] tracking-[0.1em]">Join SisUse</p>
+          <p className="text-[13px] tracking-[-0.01em]">Join SisUse</p>
           <h2 className="mt-4 max-w-4xl font-display text-5xl leading-[1.05] md:text-7xl">Be part of a wardrobe where <em>women share with women</em></h2>
-          <Link to="/signup" className="mt-10 inline-flex items-center gap-3 rounded-full bg-background px-8 py-3.5 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Create your free account <ArrowRight className="h-4 w-4" /></Link>
+          <Link to="/signup" className="mt-10 inline-flex items-center gap-3 rounded-full bg-background px-8 py-3.5 text-[13px] tracking-[-0.01em] text-foreground transition hover:opacity-90">Create your free account <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
       <p className="py-10 text-center text-[11px] tracking-luxe text-muted-foreground">© 2026 SisUse · Your sisterhood’s shared wardrobe</p>

@@ -54,7 +54,7 @@ function ItemPage() {
       </div>
       <div className="space-y-6">
         <div>
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">{item.brand} · {item.category}</p>
+          <p className="text-xs uppercase tracking-normalst text-muted-foreground">{item.brand} · {item.category}</p>
           <h1 className="text-4xl font-semibold">{item.title}</h1>
           <p className="mt-2 text-muted-foreground">{item.description}</p>
           <p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground"><MapPin className="h-4 w-4" />{owner.neighborhood}, {owner.zip} · {item.distance} mi away (exact spot shared after confirmation)</p>

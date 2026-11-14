@@ -7,10 +7,11 @@ import lookSuit from "@/assets/look-suit-mirror.jpg";
 import lookFloral from "@/assets/look-floral-dolores.jpg";
 import lookBlush from "@/assets/look-blush-hallway.jpg";
 import lookAva from "@/assets/look-ava-satin.jpg";
+import lookAvaMaya from "@/assets/look-ava-maya-walk.jpg";
 
 export type PieceSource = "rented" | "closet";
-export type PieceTag = { itemId: string; source: PieceSource; rentalId?: string };
-export type PostKind = "rented" | "closet";
+export type PieceTag = { itemId: string; source: PieceSource; rentalId?: string; /** Which person in the photo wore this piece. */ wornBy?: string };
+export type PostKind = "rented" | "closet" | "together";
 export type Post = {
   id: string; userId: string; kind: PostKind; image: string; caption: string; itemId: string;
   /** Extra tagged pieces worn in the photo — only listings that are available to rent. */
@@ -21,6 +22,8 @@ export type Post = {
   place?: string;
   /** Seeded sample content. */
   demo?: boolean;
+  /** "Styled Together" posts: the second person in the photo, invited to co-author. */
+  coAuthorId?: string; coAuthorAccepted?: boolean; outingId?: string;
   styleTags: string[]; occasion: string; rentalId?: string;
   review?: { condition: number; accuracy: number; experience: number };
   likes: number; saves: number; // seeded engagement from other accounts
@@ -33,9 +36,12 @@ export const communityRentals = [
   { id: "cr3", itemId: "floral-sun", renterId: "maya", status: "Completed" },
   { id: "cr6", itemId: "champagne-satin", renterId: "ava", status: "Completed" },
   { id: "cr5", itemId: "burgundy-zip", renterId: "maya", status: "Completed" },
+  { id: "cr7", itemId: "burgundy-jacket", renterId: "ava", status: "Completed" },
+  { id: "cr8", itemId: "black-shoulder-bag", renterId: "maya", status: "Completed" },
 ];
 
 export const seedPosts: Post[] = [
+  { id: "p13", demo: true, userId: "ava", kind: "together", coAuthorId: "maya", coAuthorAccepted: true, outingId: "o1", image: lookAvaMaya, itemId: "burgundy-jacket", tags: [{ itemId: "burgundy-jacket", source: "rented", rentalId: "cr7", wornBy: "ava" }, { itemId: "black-shoulder-bag", source: "rented", rentalId: "cr8", wornBy: "maya" }], place: "Ritual Coffee, Valencia St · 94110", caption: "Saturday photo walk with Maya. I wore her burgundy wool jacket; she carried my black shoulder bag. Both pieces are up for rent.", styleTags: ["Vintage", "Minimal", "Quiet luxury"], occasion: "Photo walk", likes: 34, saves: 18 },
   { id: "p12", demo: true, userId: "ava", kind: "rented", rentalId: "cr6", image: lookAva, itemId: "champagne-satin", tags: [{ itemId: "champagne-satin", source: "rented", rentalId: "cr6" }, { itemId: "black-shoulder-bag", source: "closet" }], place: "Hayes Street · 94102", caption: "Maya's champagne satin slip with my black shoulder bag (you can rent it too!) and loafers. The satin is even prettier in person.", styleTags: ["Silk", "Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 27, saves: 12 },
   { id: "p11", demo: true, userId: "maya", kind: "rented", rentalId: "cr5", image: lookBurgundy, itemId: "burgundy-zip", alsoTagged: ["crescent-bag"], place: "Home in Bernal Heights · 94110", caption: "Lena's burgundy half-zip with my green cable knit over the shoulders, a khaki wrap skirt and her crescent bag. Size M, roomy in the best way.", styleTags: ["Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 23, saves: 9 },
   { id: "p1", demo: true, userId: "ines", kind: "rented", rentalId: "cr1", image: lookSage, itemId: "sage-slip", place: "Balmy Alley murals · 94110", caption: "Maya's sage slip, dressed down with a chunky cardigan and sneakers for a Mission walk. Fit exactly like the measurements said.", styleTags: ["Silk", "Minimal", "Romantic"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 14, saves: 6 },
@@ -46,8 +52,15 @@ export const seedPosts: Post[] = [
   { id: "p10", demo: true, userId: "ines", kind: "closet", image: lookFloral24, itemId: "floral-sun", place: "24th St · 94114", caption: "My ditsy floral sundress on a coffee run down 24th. Swishy skirt, real pockets.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 12, saves: 4 },
 ];
 
+/** A tagged piece is a verified rental when its own order is complete. */
+export function verifiedPiece(t: PieceTag, myCompleted: string[]) {
+  const rid = t.rentalId;
+  return t.source === "rented" && !!rid && (communityRentals.some((r) => r.id === rid && r.status === "Completed") || myCompleted.includes(rid));
+}
+
 export const isVerified = (p: Post, myCompleted: string[]) =>
-  p.kind === "rented" && !!p.rentalId && (communityRentals.some((r) => r.id === p.rentalId && r.status === "Completed") || myCompleted.includes(p.rentalId));
+  (p.kind === "rented" && !!p.rentalId && (communityRentals.some((r) => r.id === p.rentalId && r.status === "Completed") || myCompleted.includes(p.rentalId)))
+  || (p.kind === "together" && (p.tags ?? []).some((t) => verifiedPiece(t, myCompleted)));
 
 /** Points rule: verified rental posts only. Like = 1 pt, save = 3 pts, capped at 50 per post. Self-engagement never counts. */
 export const LIKE_PTS = 1, SAVE_PTS = 3, POST_CAP = 50;
@@ -76,11 +89,22 @@ export function scorePost(p: Post, me: User, w: Record<string, number>, t: Taste
   if (users.find((u) => u.id === p.userId)?.neighborhood === me.neighborhood) s += 1;
   return s + p.saves * 0.05;
 }
+/** Plain-English reasons two neighbors match: shared style tags, tags the viewer saves, same size, same area. */
+export function sharedStyleReasons(me: User, other: User, w: Record<string, number>) {
+  const out: string[] = [];
+  const both = me.styleTags.filter((t) => other.styleTags.includes(t));
+  both.slice(0, 2).forEach((t) => out.push(`You both like ${t.toLowerCase()} looks`));
+  other.styleTags.filter((t) => (w[t] ?? 0) > 0 && !both.includes(t)).slice(0, 1).forEach((t) => out.push(`You both save ${t.toLowerCase()} looks`));
+  if (me.size === other.size) out.push(`You wear the same size (${me.size})`);
+  if (me.neighborhood === other.neighborhood) out.push(`Both nearby in ${me.neighborhood}`);
+  return out.slice(0, 3);
+}
+
 export function recommendPeople(me: User, w: Record<string, number>, exclude: string[]) {
   return users.filter((u) => u.id !== ME && !exclude.includes(u.id)).map((u) => {
     const shared = u.styleTags.filter((x) => w[x]).sort((a, b) => (w[b] ?? 0) - (w[a] ?? 0));
     const reason = shared.length ? `You both save ${shared[0]!.toLowerCase()} looks` : `Lends nearby in ${u.neighborhood}`;
-    return { u, reason, score: shared.reduce((a, x) => a + (w[x] ?? 0), 0), closet: items.filter((i) => i.ownerId === u.id) };
+    return { u, reason, reasons: sharedStyleReasons(me, u, w), score: shared.reduce((a, x) => a + (w[x] ?? 0), 0), closet: items.filter((i) => i.ownerId === u.id) };
   }).sort((a, b) => b.score - a.score);
 }
 export const taggedItem = (p: Post) => getItem(p.itemId);

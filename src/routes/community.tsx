@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star, MapPin } from "lucide-react";
+import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star, MapPin, Users } from "lucide-react";
 import { toast } from "sonner";
 import { users, getUser, getItem, ME } from "@/lib/data";
-import { isVerified, taggedIds, pieceTags, SOURCE_LABEL, type PieceTag, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
+import { isVerified, taggedIds, pieceTags, verifiedPiece, SOURCE_LABEL, type PieceTag, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
 import { useStore } from "@/lib/store";
 import { Avatar, Chip, btn, btnGhost, input } from "@/components/ui-kit";
+import { Plans, MakePlanButton } from "@/components/invite";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/community")({
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/community")({
   component: Community,
 });
 
-const needs = ["All", "Wedding Guest", "Graduation Photos", "Brunch", "Work", "Under $40"];
+const needs = ["All", "Wedding Guest", "Graduation Photos", "Brunch", "Work", "Photo walk", "Under $40"];
 const styles = ["Any style", "Romantic", "Minimal", "Silk", "Evening", "Tailored", "Quiet luxury", "Vintage", "Boho"];
 const hoods = ["Anywhere", ...new Set(users.filter((u) => u.id !== ME).map((u) => u.neighborhood))];
 
@@ -55,6 +56,8 @@ function Community() {
       </section>
 
       {composing && <Composer onDone={() => setComposing(false)} />}
+
+      <Plans />
 
       <Recommended w={w} />
 
@@ -94,9 +97,9 @@ function PostCard({ p }: { p: Post }) {
     <article className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
       <div className="relative">
         <img src={p.image} alt={p.caption} loading="lazy" className="aspect-[3/4] w-full object-cover" />
-        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[0.1em]">{p.kind === "rented" ? "Demo rental review" : "Demo post"}</span>}
-        <span className={cn("absolute left-3 top-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium", verified ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>
-          {verified ? <><BadgeCheck className="h-3 w-3" />Verified Rental</> : <><Shirt className="h-3 w-3" />Owner styling</>}
+        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[-0.01em]">{p.kind === "rented" ? "Demo rental review" : p.kind === "together" ? "Demo outing post" : "Demo post"}</span>}
+        <span className={cn("absolute left-3 top-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium", p.kind === "together" ? "bg-secondary text-secondary-foreground" : verified ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>
+          {p.kind === "together" ? <><Users className="h-3 w-3" />Styled Together</> : verified ? <><BadgeCheck className="h-3 w-3" />Verified Rental</> : <><Shirt className="h-3 w-3" />Owner styling</>}
         </span>
         <button aria-label={saved ? "Unsave look" : "Save look"} onClick={() => { s.toggleSavePost(p.id); if (!saved) toast.success("Look saved to your inspiration"); }}
           className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-card/90 shadow-soft">
@@ -110,13 +113,18 @@ function PostCard({ p }: { p: Post }) {
         {p.place && <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" />{p.place}</p>}
         {tagged.length > 0 && (
           <div className="space-y-2">
-            <p className="text-[11px] tracking-[0.1em] text-muted-foreground">Pieces in this look</p>
+            <p className="text-[11px] tracking-[-0.01em] text-muted-foreground">Pieces in this look</p>
             <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{tagged.map(({ t, item }) => (
               <div key={item.id} className="relative w-28 shrink-0">
                 <Link to="/item/$id" params={{ id: item.id }} className="block overflow-hidden rounded-xl bg-muted">
                   <img src={item.image} alt={`${item.title} product photo`} className="aspect-[3/4] w-full object-cover" loading="lazy" />
                   <span className="block space-y-0.5 p-2"><span className="block truncate text-[11px] font-medium">{item.title}</span><span className="block text-[11px] text-muted-foreground">${item.dailyRate}/day</span>
-                    <span className={cn("inline-block rounded-full px-1.5 py-0.5 text-[10px]", t.source === "rented" ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>{SOURCE_LABEL[t.source]}</span></span>
+                    <span className={cn("inline-block rounded-full px-1.5 py-0.5 text-[10px]", t.source === "rented" ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>{SOURCE_LABEL[t.source]}</span>
+                    {p.kind === "together" && <span className="block space-y-0.5 pt-1 text-[10px] leading-snug text-muted-foreground">
+                      {t.wornBy && <span className="block">Worn by {getUser(t.wornBy).name}</span>}
+                      <span className="block">{t.source === "rented" ? `Rented from ${getUser(item.ownerId).name}` : `From ${getUser(item.ownerId).name}'s closet`}</span>
+                      {verifiedPiece(t, s.myCompleted) && <span className="block text-accent-foreground">Verified Rental</span>}
+                    </span>}</span>
                 </Link>
                 <button aria-label={s.favorites.includes(item.id) ? `Unsave ${item.title}` : `Save ${item.title}`} onClick={() => { s.toggleFav(item.id); if (!s.favorites.includes(item.id)) toast.success(`${item.title} saved`); }} className="absolute right-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-full bg-card/90">
                   <Heart className={cn("h-3.5 w-3.5", s.favorites.includes(item.id) && "fill-blush text-blush")} />
@@ -125,7 +133,11 @@ function PostCard({ p }: { p: Post }) {
           </div>
         )}
         <div className="flex items-center justify-between gap-2">
-          <Link to="/user/$id" params={{ id: u.id }} className="flex min-w-0 items-center gap-2 text-xs font-medium"><Avatar id={u.id} size={24} /><span className="truncate">{self ? "You" : u.name}</span></Link>
+          <div className="flex min-w-0 items-center gap-2 text-xs font-medium">
+            <Link to="/user/$id" params={{ id: u.id }} className="flex min-w-0 items-center gap-1"><Avatar id={u.id} size={24} /><span className="truncate">{self ? "You" : u.name}</span></Link>
+            {p.coAuthorId && <Link to="/user/$id" params={{ id: p.coAuthorId }} className="flex min-w-0 items-center gap-1"><span className="text-muted-foreground">{"&"}</span><Avatar id={p.coAuthorId} size={24} /><span className="truncate">{getUser(p.coAuthorId).name}</span></Link>}
+            {p.coAuthorId && !p.coAuthorAccepted && <span className="text-[10px] text-muted-foreground">waiting for {getUser(p.coAuthorId).name} to accept</span>}
+          </div>
           <div className="flex items-center gap-2">
             {!self && <button aria-label={s.soulmates.includes(u.id) ? "Remove Soulmate" : "Save as Soulmate"} title="Save as Closet Soulmate" onClick={() => { s.toggleSoulmate(u.id); if (!s.soulmates.includes(u.id)) toast.success(`${u.name} saved as a Closet Soulmate`); }} className="text-muted-foreground">
               {s.soulmates.includes(u.id) ? <UserCheck className="h-4 w-4 text-accent-foreground" /> : <UserPlus className="h-4 w-4" />}
@@ -157,12 +169,14 @@ function Recommended({ w }: { w: Record<string, number> }) {
             <div className="flex-1 space-y-3 p-4">
               <div><p className="font-display text-3xl">{r.u.name}</p><p className="text-xs text-muted-foreground">{r.u.neighborhood} · <Star className="inline h-3 w-3 fill-current" /> {r.u.rating}</p></div>
               <p className="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">{r.reason}</p>
+              {r.reasons.length > 1 && <div className="flex flex-wrap gap-1">{r.reasons.slice(1).map((x) => <span key={x} className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">{x}</span>)}</div>}
               <div className="flex flex-wrap gap-1">{r.u.styleTags.map((t) => <span key={t} className={cn("rounded-full px-2 py-0.5 text-[11px]", w[t] ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground")}>{t}</span>)}</div>
               <div className="flex gap-2">{r.closet.slice(0, 3).map((i) => <Link key={i.id} to="/item/$id" params={{ id: i.id }}><img src={i.image} alt={i.title} className="h-14 w-14 rounded-lg object-cover" /></Link>)}</div>
               <div className="flex gap-2">
                 <button onClick={() => s.skipPerson(r.u.id)} className={btnGhost + " flex-1"}><X className="h-4 w-4" />Skip</button>
                 <button onClick={() => { s.toggleSoulmate(r.u.id); toast.success(`${r.u.name} saved as a Closet Soulmate`); }} className={btn + " flex-1"}><Heart className="h-4 w-4" />Save as Soulmate</button>
               </div>
+              <MakePlanButton toId={r.u.id} />
             </div>
           </div>
         ) : <p className="mt-3 text-sm text-muted-foreground">You've seen everyone nearby for now.</p>}
@@ -194,6 +208,11 @@ function Composer({ onDone }: { onDone: () => void }) {
   const [occasion, setOccasion] = useState(occasions[0]!);
   const [rv, setRv] = useState({ condition: 5, accuracy: 5, experience: 5 });
   const [style, setStyle] = useState<string[]>([]);
+  const [mode, setMode] = useState<"solo" | "together">("solo");
+  const [coAuthor, setCoAuthor] = useState("");
+  const [outingId, setOutingId] = useState("");
+  const co = coAuthor ? getUser(coAuthor) : null;
+  const acceptedOutings = s.outings.filter((o) => o.status === "accepted" && (o.fromId === ME || o.toId === ME));
   const find = (id: string) => s.allItems.find((i) => i.id === id);
   const has = (id: string) => tags.some((t) => t.itemId === id);
   const toggle = (t: PieceTag) => setTags(has(t.itemId) ? tags.filter((x) => x.itemId !== t.itemId) : [...tags, t]);
@@ -204,6 +223,14 @@ function Composer({ onDone }: { onDone: () => void }) {
   const onFile = (f?: File) => { if (!f) return; const r = new FileReader(); r.onload = () => setPhoto(String(r.result)); r.readAsDataURL(f); };
   const publish = () => {
     if (!tags.length || !photo) return;
+    if (mode === "together") {
+      if (!coAuthor) return;
+      s.addPost({ id: "mp" + Date.now(), userId: ME, kind: "together", coAuthorId: coAuthor, coAuthorAccepted: false, ...(outingId ? { outingId } : {}),
+        image: photo, itemId: tags[0]!.itemId, tags, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
+      toast.success(`Outing post shared — ${getUser(coAuthor).name} can accept as co-author`);
+      onDone();
+      return;
+    }
     s.addPost({ id: "mp" + Date.now(), userId: ME, kind: firstRented ? "rented" : "closet", ...(firstRented?.rentalId ? { rentalId: firstRented.rentalId, review: rv } : {}),
       image: photo, itemId: tags[0]!.itemId, tags, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
     toast.success(firstRented ? "Posted! Your review shows on the rented piece's listing." : "Styling post shared");
@@ -221,10 +248,31 @@ function Composer({ onDone }: { onDone: () => void }) {
     <section className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-soft">
       <div className="grid gap-4 md:grid-cols-[180px_1fr]">
         <label className="relative block cursor-pointer overflow-hidden rounded-2xl bg-muted">
-          {photo ? <img src={photo} alt="Your outfit" className="aspect-[3/4] w-full object-cover" /> : <span className="grid aspect-[3/4] place-items-center p-4 text-center text-xs text-muted-foreground">Upload your outfit photo</span>}
+          {photo ? <img src={photo} alt="Your outfit" className="aspect-[3/4] w-full object-cover" /> : <span className="grid aspect-[3/4] place-items-center p-4 text-center text-xs text-muted-foreground">Upload {mode === "together" ? "a photo from the outing" : "your outfit photo"}</span>}
           <input type="file" accept="image/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
         </label>
         <div className="space-y-4">
+          <div className="flex rounded-full bg-muted p-1">
+            {([["solo", "Solo look"], ["together", "Styled Together"]] as const).map(([k, l]) => (
+              <button key={k} onClick={() => setMode(k)} className={cn("rounded-full px-4 py-1.5 text-sm", mode === k ? "bg-card shadow-soft" : "text-muted-foreground")}>{l}</button>
+            ))}
+          </div>
+          {mode === "together" && (
+            <div className="space-y-2">
+              <p className="font-display text-2xl">Who was in the photo?</p>
+              <select className={input} value={coAuthor} onChange={(e) => setCoAuthor(e.target.value)}>
+                <option value="">Choose a co-author…</option>
+                {users.filter((u) => u.id !== ME).map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
+              </select>
+              {acceptedOutings.length > 0 && (
+                <select className={input} value={outingId} onChange={(e) => setOutingId(e.target.value)}>
+                  <option value="">Link one of your plans (optional)</option>
+                  {acceptedOutings.map((o) => <option key={o.id} value={o.id}>{o.activity} · {o.time}</option>)}
+                </select>
+              )}
+              <p className="text-xs text-muted-foreground">Both names appear on the post once they accept the co-author invite.</p>
+            </div>
+          )}
           <div className="space-y-2">
             <p className="font-display text-2xl">Tag items in this look</p>
             <p className="text-xs text-muted-foreground">Tag only pieces neighbors can rent. Anything else in the photo can stay untagged.</p>
@@ -234,6 +282,20 @@ function Composer({ onDone }: { onDone: () => void }) {
               <div className="space-y-1.5"><p className="text-xs font-medium">My Closet</p>
                 {s.myItems.length ? s.myItems.map((i) => <Pick key={i.id} t={{ itemId: i.id, source: "closet" }} label={SOURCE_LABEL.closet} />) : <p className="text-xs text-muted-foreground">List a piece in My Closet to tag it.</p>}</div>
             </div>
+            {mode === "together" && co && tags.length > 0 && (
+              <div className="space-y-1.5">
+                <p className="text-xs font-medium">Who wore each piece?</p>
+                {tags.map((t) => { const it = find(t.itemId); return it ? (
+                  <div key={t.itemId} className="flex items-center justify-between gap-2 text-xs">
+                    <span className="truncate">{it.title}</span>
+                    <span className="flex shrink-0 gap-1">
+                      <Chip active={(t.wornBy ?? ME) === ME} onClick={() => setTags(tags.map((x) => (x.itemId === t.itemId ? { ...x, wornBy: ME } : x)))}>You</Chip>
+                      <Chip active={t.wornBy === co.id} onClick={() => setTags(tags.map((x) => (x.itemId === t.itemId ? { ...x, wornBy: co.id } : x)))}>{co.name}</Chip>
+                    </span>
+                  </div>
+                ) : null; })}
+              </div>
+            )}
           </div>
           <textarea className={input} rows={2} placeholder="Styling notes — what did you pair it with?" value={caption} onChange={(e) => setCaption(e.target.value)} />
           <div className="flex flex-wrap gap-1">{tagPool.map((t) => <Chip key={t} active={shownTags.includes(t)} onClick={() => setStyle(shownTags.includes(t) ? shownTags.filter((x) => x !== t) : [...shownTags, t])}>{t}</Chip>)}</div>
@@ -246,8 +308,8 @@ function Composer({ onDone }: { onDone: () => void }) {
                 ))}
               </div></div>
           )}
-          <div className="flex gap-2"><button disabled={caption.trim().length < 5 || !tags.length || !photo} onClick={publish} className={btn}>Publish</button><button onClick={onDone} className={btnGhost}>Cancel</button></div>
-          {(!photo || !tags.length) && <p className="text-xs text-muted-foreground">Add a photo and tag at least one piece to publish.</p>}
+          <div className="flex gap-2"><button disabled={caption.trim().length < 5 || !tags.length || !photo || (mode === "together" && !coAuthor)} onClick={publish} className={btn}>Publish</button><button onClick={onDone} className={btnGhost}>Cancel</button></div>
+          {(!photo || !tags.length || (mode === "together" && !coAuthor)) && <p className="text-xs text-muted-foreground">Add a photo, {mode === "together" ? "a co-author and " : ""}tag at least one piece to publish.</p>}
         </div>
       </div>
     </section>
