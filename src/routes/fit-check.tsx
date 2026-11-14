@@ -3,9 +3,9 @@ import { btn } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/fit-check")({
   head: () => ({ meta: [
-    { title: "How Fit Check works — Closet Circle" },
+    { title: "How Fit Check works — SisUse" },
     { name: "description", content: "Compare your private measurements with an owner-confirmed garment before you rent, and preview the look on you." },
-    { property: "og:title", content: "How Fit Check works — Closet Circle" },
+    { property: "og:title", content: "How Fit Check works — SisUse" },
     { property: "og:description", content: "Measurement-based fit results plus an AI styling preview." },
     { property: "og:type", content: "article" },
     { name: "twitter:card", content: "summary" },

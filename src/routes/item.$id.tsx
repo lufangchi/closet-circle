@@ -13,9 +13,9 @@ import { isClothing } from "@/lib/fit";
 export const Route = createFileRoute("/item/$id")({
   loader: ({ params }) => { const item = getItem(params.id); if (!item) throw notFound(); return { title: item.title, desc: item.description }; },
   head: ({ loaderData }) => ({ meta: [
-    { title: `${loaderData?.title ?? "Item"} — Closet Circle` },
+    { title: `${loaderData?.title ?? "Item"} — SisUse` },
     { name: "description", content: loaderData?.desc ?? "Rent this piece from a neighbor." },
-    { property: "og:title", content: `${loaderData?.title ?? "Item"} — Closet Circle` },
+    { property: "og:title", content: `${loaderData?.title ?? "Item"} — SisUse` },
     { property: "og:description", content: loaderData?.desc ?? "Rent this piece from a neighbor." },
   ] }),
   component: ItemPage,

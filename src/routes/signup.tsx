@@ -9,9 +9,9 @@ import { btn, input } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({ meta: [
-    { title: "Join Closet Circle" },
-    { name: "description", content: "Create your Closet Circle account and set up a private Fit Profile." },
-    { property: "og:title", content: "Join Closet Circle" },
+    { title: "Join SisUse" },
+    { name: "description", content: "Create your SisUse account and set up a private Fit Profile." },
+    { property: "og:title", content: "Join SisUse" },
     { property: "og:description", content: "Rent from neighbors with fit you can trust." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

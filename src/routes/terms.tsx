@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({ meta: [
-    { title: "Rental terms, Fit Guarantee & Damage Protection — Closet Circle" },
-    { name: "description", content: "Eligibility and terms for the Closet Circle Fit Guarantee, deposits and Damage Protection." },
-    { property: "og:title", content: "Rental terms — Closet Circle" },
+    { title: "Rental terms, Fit Guarantee & Damage Protection — SisUse" },
+    { name: "description", content: "Eligibility and terms for the SisUse Fit Guarantee, deposits and Damage Protection." },
+    { property: "og:title", content: "Rental terms — SisUse" },
     { property: "og:description", content: "Fit Guarantee, deposits, damage terms and condition photos." },
     { property: "og:type", content: "article" },
     { name: "twitter:card", content: "summary" },
@@ -18,7 +18,7 @@ function Terms() {
   return (
     <article className="mx-auto max-w-2xl space-y-4 pb-16 text-[15px] leading-relaxed">
       <h1 className="text-6xl">Rental terms</h1>
-      <p className="rounded-2xl bg-secondary/60 p-4 text-sm text-secondary-foreground">Draft for the prototype. Time windows marked “placeholder” still need to be confirmed by the Closet Circle team.</p>
+      <p className="rounded-2xl bg-secondary/60 p-4 text-sm text-secondary-foreground">Draft for the prototype. Time windows marked “placeholder” still need to be confirmed by the SisUse team.</p>
 
       <H id="fit-guarantee">Fit Guarantee</H>
       <p>If a rented piece doesn't fit, you're covered — for any fit issue.</p>

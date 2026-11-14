@@ -10,9 +10,9 @@ import { Avatar, DemoTag, btn, btnGhost, input } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/rentals_/$id")({
   head: () => ({ meta: [
-    { title: "Rental details — Closet Circle" },
+    { title: "Rental details — SisUse" },
     { name: "description", content: "Pricing, pickup, messages and review for your rental." },
-    { property: "og:title", content: "Rental details — Closet Circle" },
+    { property: "og:title", content: "Rental details — SisUse" },
     { property: "og:description", content: "Pricing, pickup, messages and review for your rental." },
   ] }),
   component: RentalDetail,

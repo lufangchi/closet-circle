@@ -8,9 +8,9 @@ import { Chip, btn, btnGhost, input } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [
-    { title: "Profile — Closet Circle" },
-    { name: "description", content: "Edit your Closet Circle profile and private Fit Profile." },
-    { property: "og:title", content: "Profile — Closet Circle" },
+    { title: "Profile — SisUse" },
+    { name: "description", content: "Edit your SisUse profile and private Fit Profile." },
+    { property: "og:title", content: "Profile — SisUse" },
     { property: "og:description", content: "Manage your account and private measurements." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

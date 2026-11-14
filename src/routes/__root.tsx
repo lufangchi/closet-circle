@@ -84,9 +84,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Closet Circle — Your neighborhood's shared wardrobe" },
+      { title: "SisUse — Your sisterhood’s shared wardrobe" },
       { name: "description", content: "Rent clothes, shoes and accessories from stylish neighbors nearby." },
-      { property: "og:title", content: "Closet Circle" },
+      { property: "og:title", content: "SisUse" },
       { property: "og:description", content: "Your neighborhood's shared wardrobe." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

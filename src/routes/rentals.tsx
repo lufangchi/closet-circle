@@ -7,9 +7,9 @@ import { Avatar } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/rentals")({
   head: () => ({ meta: [
-    { title: "Rentals — Closet Circle" },
+    { title: "Rentals — SisUse" },
     { name: "description", content: "Track what you borrow and what you lend: requests, pickups, returns and reviews." },
-    { property: "og:title", content: "Rentals — Closet Circle" },
+    { property: "og:title", content: "Rentals — SisUse" },
     { property: "og:description", content: "Borrowing and lending, from request to review." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
   ] }),

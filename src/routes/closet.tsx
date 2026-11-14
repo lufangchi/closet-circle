@@ -11,9 +11,9 @@ import { GarmentCare } from "@/components/garment-care";
 
 export const Route = createFileRoute("/closet")({
   head: () => ({ meta: [
-    { title: "My Closet — Closet Circle" },
+    { title: "My Closet — SisUse" },
     { name: "description", content: "List your clothes, shoes and accessories for neighbors to rent." },
-    { property: "og:title", content: "My Closet — Closet Circle" },
+    { property: "og:title", content: "My Closet — SisUse" },
     { property: "og:description", content: "Manage your listings, availability and saved looks." },
   ] }),
   component: Closet,

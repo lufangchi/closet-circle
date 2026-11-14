@@ -15,9 +15,9 @@ import { items } from "@/lib/data";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Closet Circle — Your neighborhood's shared wardrobe" },
+    { title: "SisUse — Your sisterhood’s shared wardrobe" },
     { name: "description", content: "Rent dresses, shoes and bags from stylish neighbors, get AI outfit picks for any occasion, and meet your Closet Soulmates." },
-    { property: "og:title", content: "Closet Circle — Your neighborhood's shared wardrobe" },
+    { property: "og:title", content: "SisUse — Your sisterhood’s shared wardrobe" },
     { property: "og:description", content: "Local fashion rental, AI styling and a style-first community in one place." },
   ] }),
   component: Landing,
@@ -29,11 +29,7 @@ const collections = [
   { t: "Manage your closet", d: "List what you rarely wear, set your price and dates, and earn from every rental.", img: tileCloset, to: "/closet" },
 ];
 const cats = [
-  { label: "Wedding Guest", img: items[1]!.image },
-  { label: "Evening & Gala", img: items[0]!.image },
-  { label: "Handbags", img: items[2]!.image },
-  { label: "Shoes", img: items[4]!.image },
-  { label: "Tailoring", img: items[3]!.image },
+  { label: "Clothing" }, { label: "Bags" }, { label: "Jewelry" }, { label: "Shoes" }, { label: "Accessories" },
 ];
 const steps = [
   { t: "Browse, AI Discover & AI Try-On", d: "Search by occasion, size and budget, get an AI-styled look, and preview pieces on yourself.", img: stepBrowse },
@@ -53,7 +49,7 @@ function Steps() {
           <p className="text-[13px] tracking-[0.08em] text-accent-foreground">How it works</p>
           <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-6xl">A closet built for women, <em>by women</em></h2>
         </div>
-        <p className="self-end text-lg leading-relaxed text-muted-foreground md:text-xl">Closet Circle connects women in the same neighborhood to borrow, lend and style each other's pieces. Find a look, meet the woman who owns it, wear it out, and keep the conversation going with people who share your taste.</p>
+        <p className="self-end text-lg leading-relaxed text-muted-foreground md:text-xl">SisUse connects women in the same neighborhood to borrow, lend and style each other's pieces. Find a look, meet the woman who owns it, wear it out, and keep the conversation going with people who share your taste.</p>
       </div>
       <div className="relative mx-auto mt-20 h-[300px] max-w-5xl md:h-[360px]">
         {steps.map((st, i) => {
@@ -102,17 +98,19 @@ function Landing() {
               <Link key={l} to={to as "/discover"} className="text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground">{l}</Link>
             ))}
           </div>
-          <Link to="/" className="font-display text-xl tracking-wide md:absolute md:left-1/2 md:-translate-x-1/2">Closet <em>Circle</em></Link>
+          <Link to="/" className="font-display text-xl tracking-wide md:absolute md:left-1/2 md:-translate-x-1/2">Sis<em>Use</em></Link>
           <div className="flex items-center gap-6">
             <Link to="/auth" className="hidden text-[13px] tracking-[0.08em] text-foreground/70 transition hover:text-foreground md:block">Sign in</Link>
             <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-[13px] tracking-[0.08em] text-primary-foreground transition hover:opacity-90">Open app</Link>
           </div>
         </nav>
         <div className="absolute inset-x-6 bottom-10 md:inset-x-12 md:bottom-14">
-          <h1 className="max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Redesigning the way women <em>share fashion</em>.</h1>
+          <h1 className="max-w-5xl font-display text-5xl leading-[1.04] text-ink-foreground md:text-8xl">Your sisterhood’s <em>shared wardrobe</em>.</h1>
+          <p className="mt-5 max-w-xl text-base text-ink-foreground/90 md:text-lg">Rent and lend clothing, bags, jewelry, and accessories. Discover new looks and connect with women who share your style.</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full bg-background px-7 py-3 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Find my look <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/community" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/50 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Meet the circle</Link>
+            <Link to="/discover" className="inline-flex items-center gap-3 rounded-full bg-background px-7 py-3 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Explore the Wardrobe <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/closet" className="inline-flex items-center gap-3 rounded-full border border-ink-foreground/50 px-7 py-3 text-[13px] tracking-[0.1em] text-ink-foreground transition hover:bg-ink-foreground/10">Share Your Pieces</Link>
+            <Link to="/stylist" className="text-[13px] tracking-[0.1em] text-ink-foreground underline-offset-4 hover:underline">Find Your Next Look →</Link>
           </div>
         </div>
       </section>
@@ -143,7 +141,7 @@ function Landing() {
         </div>
       </section>
 
-      <Bridge text="Every closet in the circle is dressed for something." />
+      <Bridge text="A wardrobe is more than clothes." />
 
       {/* CATEGORIES — serif index list with side image */}
       <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-16 md:grid-cols-2 md:gap-16">
@@ -151,7 +149,7 @@ function Landing() {
           <img src={occasion} alt="Wedding guest in a blush gown" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
         </div>
         <div className="flex flex-col justify-center">
-          <p className="text-[12px] tracking-luxe text-accent-foreground">Explore by occasion</p>
+          <p className="text-[12px] tracking-luxe text-accent-foreground">Everything for the full look</p>
           <div className="mt-8 divide-y divide-border border-y border-border">
             {cats.map((c) => (
               <Link key={c.label} to="/discover" className="group flex items-baseline justify-between py-5 md:py-6">
@@ -195,7 +193,7 @@ function Landing() {
           <Link to="/signup" className="mt-10 inline-flex items-center gap-3 rounded-full bg-background px-8 py-3.5 text-[13px] tracking-[0.1em] text-foreground transition hover:opacity-90">Create your free account <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
-      <p className="py-10 text-center text-[11px] tracking-luxe text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
+      <p className="py-10 text-center text-[11px] tracking-luxe text-muted-foreground">© 2026 SisUse · Your sisterhood’s shared wardrobe</p>
     </div>
   );
 }
