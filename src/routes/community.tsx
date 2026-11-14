@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star, MapPin } from "lucide-react";
+import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star, MapPin, Users } from "lucide-react";
 import { toast } from "sonner";
 import { users, getUser, getItem, ME } from "@/lib/data";
-import { isVerified, taggedIds, pieceTags, SOURCE_LABEL, type PieceTag, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
+import { isVerified, taggedIds, pieceTags, verifiedPiece, SOURCE_LABEL, type PieceTag, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
 import { useStore } from "@/lib/store";
 import { Avatar, Chip, btn, btnGhost, input } from "@/components/ui-kit";
+import { Plans, MakePlanButton } from "@/components/invite";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/community")({
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/community")({
   component: Community,
 });
 
-const needs = ["All", "Wedding Guest", "Graduation Photos", "Brunch", "Work", "Under $40"];
+const needs = ["All", "Wedding Guest", "Graduation Photos", "Brunch", "Work", "Photo walk", "Under $40"];
 const styles = ["Any style", "Romantic", "Minimal", "Silk", "Evening", "Tailored", "Quiet luxury", "Vintage", "Boho"];
 const hoods = ["Anywhere", ...new Set(users.filter((u) => u.id !== ME).map((u) => u.neighborhood))];
 
@@ -55,6 +56,8 @@ function Community() {
       </section>
 
       {composing && <Composer onDone={() => setComposing(false)} />}
+
+      <Plans />
 
       <Recommended w={w} />
 
