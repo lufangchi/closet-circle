@@ -38,7 +38,6 @@ const popular = [
   { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "-left-28 top-10", to: "/discover" },
   { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "-right-20 top-4", to: "/discover" },
   { img: items[0]!.image, tag: "Wedding-guest silk", tone: "bg-accent", pos: "right-[12%] bottom-[6%]", tagPos: "-left-24 -top-4", to: "/item/sage-slip" },
-  { img: items[2]!.image, tag: "Quiet-luxury bags", tone: "bg-clay", pos: "left-[36%] top-[0%] hidden w-40 lg:block md:w-44", tagPos: "-right-28 top-6", to: "/item/cream-bag" },
 ];
 const chips = ["Clothing", "Bags", "Jewelry", "Shoes", "Accessories"];
 const steps = [
@@ -170,7 +169,7 @@ function Landing() {
         </div>
       </section>
 
-      <Bridge text="Your closet is waiting for its circle." />
+      <Bridge text="Your wardrobe is waiting for its sisters." />
 
       {/* JOIN — full-bleed photo with centered call to action */}
       <section className="relative">
