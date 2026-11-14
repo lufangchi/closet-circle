@@ -66,10 +66,9 @@ function Landing() {
 
       {/* HOW IT WORKS — split imagery */}
       <section className="mx-2 grid overflow-hidden rounded-[2rem] md:mx-4 md:grid-cols-2">
-        <div className="relative"><img src={street} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" /><div className="absolute inset-0 bg-blush/35 mix-blend-multiply" /></div>
+        <div className="relative"><img src={street} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" /></div>
         <div className="relative">
           <img src={field} alt="" loading="lazy" className="h-[520px] w-full object-cover md:h-[720px]" />
-          <div className="absolute inset-0 bg-sage/35 mix-blend-multiply" />
           <div className="absolute inset-x-6 bottom-6 bg-secondary/95 p-6 text-secondary-foreground backdrop-blur md:inset-x-10 md:bottom-10 md:p-8">
             <h2 className="text-4xl">How it works</h2>
             <ol className="mt-4 space-y-3">
