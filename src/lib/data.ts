@@ -93,12 +93,11 @@ export function priceRental(item: Item, start: string, end: string, points = 0):
 
 export type RecCtx = { soulmates: string[]; favorites: string[]; savedPostItems: string[] };
 export type Rec = { item: Item; score: number; reasons: string[] };
-/** Two-step demo ranking: hard eligibility (size, budget for 2 days, date, ≤5 mi), then score. Saves visibly boost rank. */
+/** Two-step demo ranking: hard eligibility (size, budget for 2 days, ≤5 mi; date-blocked items stay visible), then score. Saves visibly boost rank. */
 export function recommend(q: { occasion: string; size: string; budget: number; date?: string }, ctx: RecCtx, pool: Item[] = items): Rec[] {
   return pool
     .filter((i) => (!q.size || i.size === q.size || i.size === "One size" || i.category === "Shoes")
       && (!q.budget || i.dailyRate * 2 <= q.budget)
-      && (!q.date || !i.blockedDates.includes(q.date))
       && i.distance <= 5)
     .map((i) => {
       let s = 0; const reasons: string[] = [];
