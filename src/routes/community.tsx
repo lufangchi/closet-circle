@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star } from "lucide-react";
+import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { users, getUser, getItem, ME } from "@/lib/data";
-import { isVerified, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
+import { isVerified, taggedIds, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
 import { useStore } from "@/lib/store";
 import { Avatar, Chip, btn, btnGhost, input } from "@/components/ui-kit";
 import { cn } from "@/lib/utils";
@@ -37,7 +37,7 @@ function Community() {
 
   const feed = useMemo(() => s.allPosts
     .filter((p) => tab === "foryou" || s.savedPosts.includes(p.id))
-    .filter((p) => need === "All" || (need === "Under $40" ? (getItem(p.itemId)?.dailyRate ?? 99) < 40 : p.occasion === need))
+    .filter((p) => need === "All" || (need === "Under $40" ? taggedIds(p).every((id) => (getItem(id)?.dailyRate ?? 99) < 40) : p.occasion === need))
     .filter((p) => style === styles[0] || p.styleTags.includes(style))
     .filter((p) => hood === hoods[0] || getUser(p.userId).neighborhood === hood)
     .sort((a, b) => (a.userId === ME ? -1 : b.userId === ME ? 1 : scorePost(b, me, w, taste) - scorePost(a, me, w, taste))),
@@ -82,7 +82,7 @@ function Community() {
 function PostCard({ p }: { p: Post }) {
   const s = useStore();
   const u = getUser(p.userId);
-  const item = getItem(p.itemId) ?? s.allItems.find((i) => i.id === p.itemId);
+  const tagged = taggedIds(p).map((id) => getItem(id) ?? s.allItems.find((i) => i.id === id)).filter((i): i is NonNullable<typeof i> => !!i);
   const liked = s.likedPosts.includes(p.id), saved = s.savedPosts.includes(p.id);
   const verified = isVerified(p, s.myCompleted);
   const self = p.userId === ME;
@@ -91,7 +91,8 @@ function PostCard({ p }: { p: Post }) {
   return (
     <article className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
       <div className="relative">
-        <img src={p.image} alt={p.caption} loading="lazy" className="w-full object-cover" />
+        <img src={p.image} alt={p.caption} loading="lazy" className="aspect-[3/4] w-full object-cover" />
+        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[0.1em]">{p.kind === "rented" ? "Demo rental review" : "Demo post"}</span>}
         <span className={cn("absolute left-3 top-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium", verified ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>
           {verified ? <><BadgeCheck className="h-3 w-3" />Verified Rental</> : <><Shirt className="h-3 w-3" />Owner styling</>}
         </span>
@@ -104,17 +105,19 @@ function PostCard({ p }: { p: Post }) {
         <p className="text-sm leading-snug">{p.caption}</p>
         {p.review && <p className="flex flex-wrap gap-x-3 text-[11px] text-muted-foreground"><span>Condition {p.review.condition}/5</span><span>As described {p.review.accuracy}/5</span><span>Exchange {p.review.experience}/5</span></p>}
         <div className="flex flex-wrap gap-1">{p.styleTags.map((t) => <span key={t} className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">{t}</span>)}</div>
-        {item && (
-          <div className="flex items-center gap-2 rounded-xl bg-muted/70 p-2">
+        {p.place && <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" />{p.place}</p>}
+        {tagged.length > 0 && <p className="text-[11px] text-muted-foreground">{tagged.length === 1 ? "Rent this piece" : `Rent ${tagged.length} pieces from this look`}</p>}
+        {tagged.map((item) => (
+          <div key={item.id} className="flex items-center gap-2 rounded-xl bg-muted/70 p-2">
             <Link to="/item/$id" params={{ id: item.id }} className="flex min-w-0 flex-1 items-center gap-2">
-              <img src={item.image} alt="" className="h-10 w-10 rounded-lg object-cover" />
-              <span className="min-w-0"><span className="block truncate text-xs font-medium">{item.title}</span><span className="text-[11px] text-muted-foreground">${item.dailyRate}/day · Rent it</span></span>
+              <img src={item.image} alt={`${item.title} product photo`} className="h-12 w-12 rounded-lg object-cover" />
+              <span className="min-w-0"><span className="block truncate text-xs font-medium">{item.title}</span><span className="text-[11px] text-muted-foreground">{item.condition} · ${item.dailyRate}/day</span></span>
             </Link>
             <button aria-label={s.favorites.includes(item.id) ? "Remove from wishlist" : "Add to wishlist"} onClick={() => { s.toggleFav(item.id); if (!s.favorites.includes(item.id)) toast.success("Added to your rental wishlist"); }} className="grid h-8 w-8 place-items-center rounded-full bg-card">
               <Heart className={cn("h-4 w-4", s.favorites.includes(item.id) && "fill-blush text-blush")} />
             </button>
           </div>
-        )}
+        ))}
         <div className="flex items-center justify-between gap-2">
           <Link to="/user/$id" params={{ id: u.id }} className="flex min-w-0 items-center gap-2 text-xs font-medium"><Avatar id={u.id} size={24} /><span className="truncate">{self ? "You" : u.name}</span></Link>
           <div className="flex items-center gap-2">

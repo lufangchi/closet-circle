@@ -57,7 +57,7 @@ export function PreviewOnMe({ item }: { item: Item }) {
   const [isSample, setIsSample] = useState(false);
   const sample = samples[item.id];
 
-  const pick = (f?: File) => { if (!f) return; if (f.size > 8 * 1024 * 1024) return toast.error("Please use a photo under 8 MB"); setPhoto(f); setPhotoUrl(URL.createObjectURL(f)); setImg(""); };
+  const pick = (f?: File) => { if (!f) return; if (f.size > 8 * 1024 * 1024) { toast.error("Please use a photo under 8 MB"); return; } setPhoto(f); setPhotoUrl(URL.createObjectURL(f)); setImg(""); };
   const run = async () => {
     if (!photo) return;
     setBusy(true); setErr(""); setImg(""); setFinal(false); setIsSample(false);
