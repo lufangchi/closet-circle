@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      fit_profiles: {
+        Row: {
+          bust: number | null
+          height: number | null
+          hips: number | null
+          unit: string
+          updated_at: string
+          user_id: string
+          waist: number | null
+        }
+        Insert: {
+          bust?: number | null
+          height?: number | null
+          hips?: number | null
+          unit?: string
+          updated_at?: string
+          user_id: string
+          waist?: number | null
+        }
+        Update: {
+          bust?: number | null
+          height?: number | null
+          hips?: number | null
+          unit?: string
+          updated_at?: string
+          user_id?: string
+          waist?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          bio: string
+          created_at: string
+          display_name: string
+          id: string
+          neighborhood: string
+          size: string
+          style_tags: string[]
+          updated_at: string
+          zip: string
+        }
+        Insert: {
+          bio?: string
+          created_at?: string
+          display_name?: string
+          id: string
+          neighborhood?: string
+          size?: string
+          style_tags?: string[]
+          updated_at?: string
+          zip?: string
+        }
+        Update: {
+          bio?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          neighborhood?: string
+          size?: string
+          style_tags?: string[]
+          updated_at?: string
+          zip?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
