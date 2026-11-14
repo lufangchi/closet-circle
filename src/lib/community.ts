@@ -7,10 +7,11 @@ import lookSuit from "@/assets/look-suit-mirror.jpg";
 import lookFloral from "@/assets/look-floral-dolores.jpg";
 import lookBlush from "@/assets/look-blush-hallway.jpg";
 import lookAva from "@/assets/look-ava-satin.jpg";
+import lookAvaMaya from "@/assets/look-ava-maya-walk.jpg";
 
 export type PieceSource = "rented" | "closet";
-export type PieceTag = { itemId: string; source: PieceSource; rentalId?: string };
-export type PostKind = "rented" | "closet";
+export type PieceTag = { itemId: string; source: PieceSource; rentalId?: string; /** Which person in the photo wore this piece. */ wornBy?: string };
+export type PostKind = "rented" | "closet" | "together";
 export type Post = {
   id: string; userId: string; kind: PostKind; image: string; caption: string; itemId: string;
   /** Extra tagged pieces worn in the photo — only listings that are available to rent. */
@@ -21,6 +22,8 @@ export type Post = {
   place?: string;
   /** Seeded sample content. */
   demo?: boolean;
+  /** "Styled Together" posts: the second person in the photo, invited to co-author. */
+  coAuthorId?: string; coAuthorAccepted?: boolean; outingId?: string;
   styleTags: string[]; occasion: string; rentalId?: string;
   review?: { condition: number; accuracy: number; experience: number };
   likes: number; saves: number; // seeded engagement from other accounts
@@ -33,9 +36,12 @@ export const communityRentals = [
   { id: "cr3", itemId: "floral-sun", renterId: "maya", status: "Completed" },
   { id: "cr6", itemId: "champagne-satin", renterId: "ava", status: "Completed" },
   { id: "cr5", itemId: "burgundy-zip", renterId: "maya", status: "Completed" },
+  { id: "cr7", itemId: "burgundy-jacket", renterId: "ava", status: "Completed" },
+  { id: "cr8", itemId: "black-shoulder-bag", renterId: "maya", status: "Completed" },
 ];
 
 export const seedPosts: Post[] = [
+  { id: "p13", demo: true, userId: "ava", kind: "together", coAuthorId: "maya", coAuthorAccepted: true, outingId: "o1", image: lookAvaMaya, itemId: "burgundy-jacket", tags: [{ itemId: "burgundy-jacket", source: "rented", rentalId: "cr7", wornBy: "ava" }, { itemId: "black-shoulder-bag", source: "rented", rentalId: "cr8", wornBy: "maya" }], place: "Ritual Coffee, Valencia St · 94110", caption: "Saturday photo walk with Maya. I wore her burgundy wool jacket; she carried my black shoulder bag. Both pieces are up for rent.", styleTags: ["Vintage", "Minimal", "Quiet luxury"], occasion: "Photo walk", likes: 34, saves: 18 },
   { id: "p12", demo: true, userId: "ava", kind: "rented", rentalId: "cr6", image: lookAva, itemId: "champagne-satin", tags: [{ itemId: "champagne-satin", source: "rented", rentalId: "cr6" }, { itemId: "black-shoulder-bag", source: "closet" }], place: "Hayes Street · 94102", caption: "Maya's champagne satin slip with my black shoulder bag (you can rent it too!) and loafers. The satin is even prettier in person.", styleTags: ["Silk", "Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 27, saves: 12 },
   { id: "p11", demo: true, userId: "maya", kind: "rented", rentalId: "cr5", image: lookBurgundy, itemId: "burgundy-zip", alsoTagged: ["crescent-bag"], place: "Home in Bernal Heights · 94110", caption: "Lena's burgundy half-zip with my green cable knit over the shoulders, a khaki wrap skirt and her crescent bag. Size M, roomy in the best way.", styleTags: ["Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 23, saves: 9 },
   { id: "p1", demo: true, userId: "ines", kind: "rented", rentalId: "cr1", image: lookSage, itemId: "sage-slip", place: "Balmy Alley murals · 94110", caption: "Maya's sage slip, dressed down with a chunky cardigan and sneakers for a Mission walk. Fit exactly like the measurements said.", styleTags: ["Silk", "Minimal", "Romantic"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 14, saves: 6 },
