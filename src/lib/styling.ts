@@ -214,7 +214,8 @@ export function buildLooks(pool: Item[], req: LookRequest, p: StylingPrefs, owne
     }
     if (!pieces.length) continue;
     looks.push({
-      id: pal.id, name: pal.name, pieces, total: spent, missing, nextFree,
+      id: pal.id, name: pal.name, pieces, total: spent, missing,
+      ...(nextFree ? { nextFree } : {}),
       reason: reason(pieces, p, owned, shape),
       pickup: `Available for ${req.start === req.end ? "your date" : "your dates"} · pickup within ${req.radius} mi of ${req.zip}`,
     });

@@ -105,7 +105,7 @@ export function PersonalStyling() {
                 className={cn("h-9 w-9 rounded-full ring-2 ring-offset-2 ring-offset-background transition", prefs.skinTone === t.id ? "ring-foreground" : "ring-transparent")}
                 style={{ backgroundColor: t.hex }} />
             ))}
-            <button onClick={() => save({ ...prefs, skinTone: undefined })} className="rounded-full border border-border px-3 py-1 text-xs">Not sure</button>
+            <button onClick={() => { const { skinTone, ...rest } = prefs; save(rest); }} className="rounded-full border border-border px-3 py-1 text-xs">Not sure</button>
           </div>
         </Field>
 
