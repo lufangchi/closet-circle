@@ -12,6 +12,10 @@ import tileDiscover from "@/assets/tile-discover.jpg";
 import tileCommunity from "@/assets/tile-community.jpg";
 import tileCloset from "@/assets/tile-closet.jpg";
 import { items } from "@/lib/data";
+import coat from "@/assets/pink-satin-coat.png.asset.json";
+import gown from "@/assets/olive-column-gown.png.asset.json";
+import knit from "@/assets/blush-oversized-knit.png.asset.json";
+import tryOn from "@/assets/sample-preview-burgundy.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -25,12 +29,19 @@ export const Route = createFileRoute("/")({
 
 const collections = [
   { t: "Discover", d: "Browse neighbors' closets or let AI style a full look for your plans — then preview it on you.", img: tileDiscover, to: "/discover" },
+  { t: "AI Try-On", d: "Upload a photo — or stay face-free — and preview any piece on you before you ask to borrow it.", img: tryOn, to: "/item/burgundy-zip" },
   { t: "Meet your community", d: "Real outfits from real neighbors. Save looks and follow women who share your taste.", img: tileCommunity, to: "/community" },
   { t: "Manage your closet", d: "List what you rarely wear, set your price and dates, and earn from every rental.", img: tileCloset, to: "/closet" },
 ];
-const cats = [
-  { label: "Clothing" }, { label: "Bags" }, { label: "Jewelry" }, { label: "Shoes" }, { label: "Accessories" },
+/** Popular-this-week collage: real outfit photos with mood tags (positions are % of the stage). */
+const popular = [
+  { img: coat.url, tag: "Soft satin, worn with denim", tone: "bg-blush", pos: "left-[4%] top-[4%]", tagPos: "-right-24 bottom-6", to: "/discover" },
+  { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "-left-28 top-10", to: "/discover" },
+  { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "-right-20 top-4", to: "/discover" },
+  { img: items[0]!.image, tag: "Wedding-guest silk", tone: "bg-accent", pos: "right-[12%] bottom-[6%]", tagPos: "-left-24 -top-4", to: "/item/sage-slip" },
+  { img: items[2]!.image, tag: "Quiet-luxury bags", tone: "bg-clay", pos: "left-[34%] top-[0%] hidden lg:block", tagPos: "-right-16 bottom-2", to: "/item/cream-bag" },
 ];
+const chips = ["Clothing", "Bags", "Jewelry", "Shoes", "Accessories"];
 const steps = [
   { t: "Browse, AI Discover & AI Try-On", d: "Search by occasion, size and budget, get an AI-styled look, and preview pieces on yourself.", img: stepBrowse },
   { t: "Message the owner", d: "Ask about fit, agree on dates, and pick a public spot to meet nearby.", img: stepMessage },
@@ -125,7 +136,7 @@ function Landing() {
             <h2 className="font-display text-4xl md:text-5xl">Inside <em>SisUse</em></h2>
             <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[0.1em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {collections.map((c) => (
               <Link key={c.t} to={c.to as "/discover"} className="group relative block h-[420px] overflow-hidden md:h-[520px]">
                 <img src={c.img} alt={c.t} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
@@ -141,43 +152,22 @@ function Landing() {
         </div>
       </section>
 
-      <Bridge text="A wardrobe is more than clothes." />
+      <Bridge text="Here’s what everyone is borrowing." />
 
-      {/* CATEGORIES — serif index list with side image */}
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 pb-16 md:grid-cols-2 md:gap-16">
-        <div className="relative hidden overflow-hidden md:block">
-          <img src={occasion} alt="Wedding guest in a blush gown" loading="lazy" className="h-full min-h-[560px] w-full object-cover" />
-        </div>
-        <div className="flex flex-col justify-center">
-          <p className="text-[12px] tracking-luxe text-accent-foreground">Everything for the full look</p>
-          <div className="mt-8 divide-y divide-border border-y border-border">
-            {cats.map((c) => (
-              <Link key={c.label} to="/discover" className="group flex items-baseline justify-between py-5 md:py-6">
-                <span className="font-display text-3xl transition group-hover:italic md:text-5xl">{c.label}</span>
-                <ArrowUpRight className="h-5 w-5 text-muted-foreground opacity-0 transition group-hover:opacity-100" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Bridge text="Here's what neighbors are wearing this week." />
-
-      {/* TRENDING — best-seller style row */}
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <p className="text-center text-[12px] tracking-luxe text-accent-foreground">This week on SisUse</p>
-        <h2 className="mt-6 text-center font-display text-4xl md:text-5xl">Discover what's <em>trending</em> nearby</h2>
-        <div className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4">
-          {items.slice(0, 4).map((it, i) => (
-            <Link key={it.id} to="/item/$id" params={{ id: it.id }} className="group">
-              <div className="relative aspect-[3/4] overflow-hidden bg-muted">
-                {i % 2 === 0 && <span className="absolute right-3 top-3 z-10 bg-background px-2.5 py-1 text-[10px] tracking-[0.12em]">{i === 0 ? "Most rented" : "Trending"}</span>}
-                <img src={it.image} alt={it.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-              </div>
-              <p className="mt-3 text-sm">{it.title}</p>
-              <p className="text-xs text-muted-foreground">{it.brand} · <span className="line-through">${it.retail}</span> <span className="text-foreground">${it.dailyRate}/day</span></p>
-            </Link>
-          ))}
+      {/* POPULAR — scattered photo collage around a centered headline */}
+      <section className="relative mx-auto h-[980px] max-w-7xl px-6 md:h-[860px]">
+        {popular.map((p) => (
+          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-36 md:w-56 ${p.pos}`}>
+            <img src={p.img} alt={p.tag} loading="lazy" className="aspect-[4/5] w-full rounded-[1.75rem] object-cover object-top shadow-soft transition duration-500 group-hover:-translate-y-1" />
+            <span className={`absolute whitespace-nowrap rounded-full px-4 py-2 text-xs text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
+          </Link>
+        ))}
+        <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6 text-center">
+          <p className="text-[13px] tracking-[0.08em] text-muted-foreground">This week on SisUse</p>
+          <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
+          <p className="mt-4 text-sm text-muted-foreground">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">{chips.map((c) => <Link key={c} to="/discover" className="rounded-full border border-border bg-background px-4 py-1.5 text-xs transition hover:bg-muted">{c}</Link>)}</div>
+          <Link to="/discover" className="mt-6 inline-block border-b border-foreground pb-0.5 text-[13px] tracking-[0.1em]">Explore the Wardrobe</Link>
         </div>
       </section>
 
