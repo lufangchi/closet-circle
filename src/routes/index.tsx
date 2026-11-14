@@ -34,10 +34,10 @@ const collections = [
 ];
 /** Popular-this-week collage: real outfit photos with mood tags (positions are % of the stage). */
 const popular = [
-  { img: coat.url, tag: "Soft satin, worn with denim", tone: "bg-blush", pos: "left-[4%] top-[4%]", tagPos: "-right-24 bottom-6", to: "/discover", fit: "object-top" },
-  { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "-left-28 top-10", to: "/discover", fit: "object-top" },
-  { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "-right-20 top-4", to: "/discover", fit: "object-top" },
-  { img: furMini.url, tag: "Fur-trim holiday mini", tone: "bg-clay", pos: "right-[12%] bottom-[6%]", tagPos: "-left-24 -top-4", to: "/discover", fit: "object-[50%_62%]" },
+  { img: coat.url, tag: "Soft satin, worn with denim", tone: "bg-blush", pos: "left-[4%] top-[4%]", tagPos: "left-3 top-4", to: "/discover", fit: "object-top" },
+  { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "right-3 top-6", to: "/discover", fit: "object-top" },
+  { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "left-3 top-4", to: "/discover", fit: "object-top" },
+  { img: furMini.url, tag: "Fur-trim holiday mini", tone: "bg-clay", pos: "right-[12%] bottom-[6%]", tagPos: "right-3 bottom-4", to: "/discover", fit: "object-[50%_62%]" },
 ];
 const chips = ["Clothing", "Bags", "Jewelry", "Shoes", "Accessories"];
 const steps = [
@@ -157,7 +157,7 @@ function Landing() {
         {popular.map((p) => (
           <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-36 md:w-56 ${p.pos}`}>
             <img src={p.img} alt={p.tag} loading="lazy" className={`aspect-[4/5] w-full rounded-[1.75rem] object-cover ${p.fit} shadow-soft transition duration-500 group-hover:-translate-y-1`} />
-            <span className={`absolute whitespace-nowrap rounded-full px-4 py-2 text-xs text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
+            <span className={`absolute max-w-[calc(100%-1.5rem)] rounded-full px-4 py-2 text-center text-xs leading-snug text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
           </Link>
         ))}
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6 text-center">
