@@ -206,6 +206,11 @@ function Composer({ onDone }: { onDone: () => void }) {
   const [occasion, setOccasion] = useState(occasions[0]!);
   const [rv, setRv] = useState({ condition: 5, accuracy: 5, experience: 5 });
   const [style, setStyle] = useState<string[]>([]);
+  const [mode, setMode] = useState<"solo" | "together">("solo");
+  const [coAuthor, setCoAuthor] = useState("");
+  const [outingId, setOutingId] = useState("");
+  const co = coAuthor ? getUser(coAuthor) : null;
+  const acceptedOutings = s.outings.filter((o) => o.status === "accepted" && (o.fromId === ME || o.toId === ME));
   const find = (id: string) => s.allItems.find((i) => i.id === id);
   const has = (id: string) => tags.some((t) => t.itemId === id);
   const toggle = (t: PieceTag) => setTags(has(t.itemId) ? tags.filter((x) => x.itemId !== t.itemId) : [...tags, t]);
@@ -216,6 +221,14 @@ function Composer({ onDone }: { onDone: () => void }) {
   const onFile = (f?: File) => { if (!f) return; const r = new FileReader(); r.onload = () => setPhoto(String(r.result)); r.readAsDataURL(f); };
   const publish = () => {
     if (!tags.length || !photo) return;
+    if (mode === "together") {
+      if (!coAuthor) return;
+      s.addPost({ id: "mp" + Date.now(), userId: ME, kind: "together", coAuthorId: coAuthor, coAuthorAccepted: false, ...(outingId ? { outingId } : {}),
+        image: photo, itemId: tags[0]!.itemId, tags, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
+      toast.success(`Outing post shared — ${getUser(coAuthor).name} can accept as co-author`);
+      onDone();
+      return;
+    }
     s.addPost({ id: "mp" + Date.now(), userId: ME, kind: firstRented ? "rented" : "closet", ...(firstRented?.rentalId ? { rentalId: firstRented.rentalId, review: rv } : {}),
       image: photo, itemId: tags[0]!.itemId, tags, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
     toast.success(firstRented ? "Posted! Your review shows on the rented piece's listing." : "Styling post shared");
@@ -233,10 +246,31 @@ function Composer({ onDone }: { onDone: () => void }) {
     <section className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-soft">
       <div className="grid gap-4 md:grid-cols-[180px_1fr]">
         <label className="relative block cursor-pointer overflow-hidden rounded-2xl bg-muted">
-          {photo ? <img src={photo} alt="Your outfit" className="aspect-[3/4] w-full object-cover" /> : <span className="grid aspect-[3/4] place-items-center p-4 text-center text-xs text-muted-foreground">Upload your outfit photo</span>}
+          {photo ? <img src={photo} alt="Your outfit" className="aspect-[3/4] w-full object-cover" /> : <span className="grid aspect-[3/4] place-items-center p-4 text-center text-xs text-muted-foreground">Upload {mode === "together" ? "a photo from the outing" : "your outfit photo"}</span>}
           <input type="file" accept="image/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
         </label>
         <div className="space-y-4">
+          <div className="flex rounded-full bg-muted p-1">
+            {([["solo", "Solo look"], ["together", "Styled Together"]] as const).map(([k, l]) => (
+              <button key={k} onClick={() => setMode(k)} className={cn("rounded-full px-4 py-1.5 text-sm", mode === k ? "bg-card shadow-soft" : "text-muted-foreground")}>{l}</button>
+            ))}
+          </div>
+          {mode === "together" && (
+            <div className="space-y-2">
+              <p className="font-display text-2xl">Who was in the photo?</p>
+              <select className={input} value={coAuthor} onChange={(e) => setCoAuthor(e.target.value)}>
+                <option value="">Choose a co-author…</option>
+                {users.filter((u) => u.id !== ME).map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
+              </select>
+              {acceptedOutings.length > 0 && (
+                <select className={input} value={outingId} onChange={(e) => setOutingId(e.target.value)}>
+                  <option value="">Link one of your plans (optional)</option>
+                  {acceptedOutings.map((o) => <option key={o.id} value={o.id}>{o.activity} · {o.time}</option>)}
+                </select>
+              )}
+              <p className="text-xs text-muted-foreground">Both names appear on the post once they accept the co-author invite.</p>
+            </div>
+          )}
           <div className="space-y-2">
             <p className="font-display text-2xl">Tag items in this look</p>
             <p className="text-xs text-muted-foreground">Tag only pieces neighbors can rent. Anything else in the photo can stay untagged.</p>
@@ -258,8 +292,8 @@ function Composer({ onDone }: { onDone: () => void }) {
                 ))}
               </div></div>
           )}
-          <div className="flex gap-2"><button disabled={caption.trim().length < 5 || !tags.length || !photo} onClick={publish} className={btn}>Publish</button><button onClick={onDone} className={btnGhost}>Cancel</button></div>
-          {(!photo || !tags.length) && <p className="text-xs text-muted-foreground">Add a photo and tag at least one piece to publish.</p>}
+          <div className="flex gap-2"><button disabled={caption.trim().length < 5 || !tags.length || !photo || (mode === "together" && !coAuthor)} onClick={publish} className={btn}>Publish</button><button onClick={onDone} className={btnGhost}>Cancel</button></div>
+          {(!photo || !tags.length || (mode === "together" && !coAuthor)) && <p className="text-xs text-muted-foreground">Add a photo, {mode === "together" ? "a co-author and " : ""}tag at least one piece to publish.</p>}
         </div>
       </div>
     </section>
