@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RentalsRouteImport } from './routes/rentals'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 import { Route as RentalsIdRouteImport } from './routes/rentals_.$id'
 import { Route as UserIdRouteImport } from './routes/user.$id'
@@ -38,9 +40,19 @@ const DiscoverRoute = DiscoverRouteImport.update({
   path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RentalsRoute = RentalsRouteImport.update({
   id: '/rentals',
   path: '/rentals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ItemIdRoute = ItemIdRouteImport.update({
@@ -64,7 +76,9 @@ export interface FileRoutesByFullPath {
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
+  '/signup': typeof SignupRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -74,7 +88,9 @@ export interface FileRoutesByTo {
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
+  '/signup': typeof SignupRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -85,7 +101,9 @@ export interface FileRoutesById {
   '/closet': typeof ClosetRoute
   '/community': typeof CommunityRoute
   '/discover': typeof DiscoverRoute
+  '/profile': typeof ProfileRoute
   '/rentals': typeof RentalsRoute
+  '/signup': typeof SignupRoute
   '/item/$id': typeof ItemIdRoute
   '/rentals_/$id': typeof RentalsIdRoute
   '/user/$id': typeof UserIdRoute
@@ -97,7 +115,9 @@ export interface FileRouteTypes {
     | '/closet'
     | '/community'
     | '/discover'
+    | '/profile'
     | '/rentals'
+    | '/signup'
     | '/item/$id'
     | '/rentals/$id'
     | '/user/$id'
@@ -107,7 +127,9 @@ export interface FileRouteTypes {
     | '/closet'
     | '/community'
     | '/discover'
+    | '/profile'
     | '/rentals'
+    | '/signup'
     | '/item/$id'
     | '/rentals/$id'
     | '/user/$id'
@@ -117,7 +139,9 @@ export interface FileRouteTypes {
     | '/closet'
     | '/community'
     | '/discover'
+    | '/profile'
     | '/rentals'
+    | '/signup'
     | '/item/$id'
     | '/rentals_/$id'
     | '/user/$id'
@@ -128,7 +152,9 @@ export interface RootRouteChildren {
   ClosetRoute: typeof ClosetRoute
   CommunityRoute: typeof CommunityRoute
   DiscoverRoute: typeof DiscoverRoute
+  ProfileRoute: typeof ProfileRoute
   RentalsRoute: typeof RentalsRoute
+  SignupRoute: typeof SignupRoute
   ItemIdRoute: typeof ItemIdRoute
   RentalsIdRoute: typeof RentalsIdRoute
   UserIdRoute: typeof UserIdRoute
@@ -164,11 +190,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rentals': {
       id: '/rentals'
       path: '/rentals'
       fullPath: '/rentals'
       preLoaderRoute: typeof RentalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/item/$id': {
@@ -200,7 +240,9 @@ const rootRouteChildren: RootRouteChildren = {
   ClosetRoute: ClosetRoute,
   CommunityRoute: CommunityRoute,
   DiscoverRoute: DiscoverRoute,
+  ProfileRoute: ProfileRoute,
   RentalsRoute: RentalsRoute,
+  SignupRoute: SignupRoute,
   ItemIdRoute: ItemIdRoute,
   RentalsIdRoute: RentalsIdRoute,
   UserIdRoute: UserIdRoute,
