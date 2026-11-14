@@ -97,9 +97,9 @@ function PostCard({ p }: { p: Post }) {
     <article className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
       <div className="relative">
         <img src={p.image} alt={p.caption} loading="lazy" className="aspect-[3/4] w-full object-cover" />
-        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[0.1em]">{p.kind === "rented" ? "Demo rental review" : "Demo post"}</span>}
-        <span className={cn("absolute left-3 top-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium", verified ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>
-          {verified ? <><BadgeCheck className="h-3 w-3" />Verified Rental</> : <><Shirt className="h-3 w-3" />Owner styling</>}
+        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[0.1em]">{p.kind === "rented" ? "Demo rental review" : p.kind === "together" ? "Demo outing post" : "Demo post"}</span>}
+        <span className={cn("absolute left-3 top-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium", p.kind === "together" ? "bg-secondary text-secondary-foreground" : verified ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>
+          {p.kind === "together" ? <><Users className="h-3 w-3" />Styled Together</> : verified ? <><BadgeCheck className="h-3 w-3" />Verified Rental</> : <><Shirt className="h-3 w-3" />Owner styling</>}
         </span>
         <button aria-label={saved ? "Unsave look" : "Save look"} onClick={() => { s.toggleSavePost(p.id); if (!saved) toast.success("Look saved to your inspiration"); }}
           className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-card/90 shadow-soft">
@@ -119,7 +119,12 @@ function PostCard({ p }: { p: Post }) {
                 <Link to="/item/$id" params={{ id: item.id }} className="block overflow-hidden rounded-xl bg-muted">
                   <img src={item.image} alt={`${item.title} product photo`} className="aspect-[3/4] w-full object-cover" loading="lazy" />
                   <span className="block space-y-0.5 p-2"><span className="block truncate text-[11px] font-medium">{item.title}</span><span className="block text-[11px] text-muted-foreground">${item.dailyRate}/day</span>
-                    <span className={cn("inline-block rounded-full px-1.5 py-0.5 text-[10px]", t.source === "rented" ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>{SOURCE_LABEL[t.source]}</span></span>
+                    <span className={cn("inline-block rounded-full px-1.5 py-0.5 text-[10px]", t.source === "rented" ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>{SOURCE_LABEL[t.source]}</span>
+                    {p.kind === "together" && <span className="block space-y-0.5 pt-1 text-[10px] leading-snug text-muted-foreground">
+                      {t.wornBy && <span className="block">Worn by {getUser(t.wornBy).name}</span>}
+                      <span className="block">{t.source === "rented" ? `Rented from ${getUser(item.ownerId).name}` : `From ${getUser(item.ownerId).name}'s closet`}</span>
+                      {verifiedPiece(t, s.myCompleted) && <span className="block text-accent-foreground">Verified Rental</span>}
+                    </span>}</span>
                 </Link>
                 <button aria-label={s.favorites.includes(item.id) ? `Unsave ${item.title}` : `Save ${item.title}`} onClick={() => { s.toggleFav(item.id); if (!s.favorites.includes(item.id)) toast.success(`${item.title} saved`); }} className="absolute right-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-full bg-card/90">
                   <Heart className={cn("h-3.5 w-3.5", s.favorites.includes(item.id) && "fill-blush text-blush")} />
@@ -128,7 +133,11 @@ function PostCard({ p }: { p: Post }) {
           </div>
         )}
         <div className="flex items-center justify-between gap-2">
-          <Link to="/user/$id" params={{ id: u.id }} className="flex min-w-0 items-center gap-2 text-xs font-medium"><Avatar id={u.id} size={24} /><span className="truncate">{self ? "You" : u.name}</span></Link>
+          <div className="flex min-w-0 items-center gap-2 text-xs font-medium">
+            <Link to="/user/$id" params={{ id: u.id }} className="flex min-w-0 items-center gap-1"><Avatar id={u.id} size={24} /><span className="truncate">{self ? "You" : u.name}</span></Link>
+            {p.coAuthorId && <Link to="/user/$id" params={{ id: p.coAuthorId }} className="flex min-w-0 items-center gap-1"><span className="text-muted-foreground">{"&"}</span><Avatar id={p.coAuthorId} size={24} /><span className="truncate">{getUser(p.coAuthorId).name}</span></Link>}
+            {p.coAuthorId && !p.coAuthorAccepted && <span className="text-[10px] text-muted-foreground">waiting for {getUser(p.coAuthorId).name} to accept</span>}
+          </div>
           <div className="flex items-center gap-2">
             {!self && <button aria-label={s.soulmates.includes(u.id) ? "Remove Soulmate" : "Save as Soulmate"} title="Save as Closet Soulmate" onClick={() => { s.toggleSoulmate(u.id); if (!s.soulmates.includes(u.id)) toast.success(`${u.name} saved as a Closet Soulmate`); }} className="text-muted-foreground">
               {s.soulmates.includes(u.id) ? <UserCheck className="h-4 w-4 text-accent-foreground" /> : <UserPlus className="h-4 w-4" />}
