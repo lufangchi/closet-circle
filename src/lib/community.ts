@@ -52,8 +52,15 @@ export const seedPosts: Post[] = [
   { id: "p10", demo: true, userId: "ines", kind: "closet", image: lookFloral24, itemId: "floral-sun", place: "24th St · 94114", caption: "My ditsy floral sundress on a coffee run down 24th. Swishy skirt, real pockets.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 12, saves: 4 },
 ];
 
+/** A tagged piece is a verified rental when its own order is complete. */
+export function verifiedPiece(t: PieceTag, myCompleted: string[]) {
+  const rid = t.rentalId;
+  return t.source === "rented" && !!rid && (communityRentals.some((r) => r.id === rid && r.status === "Completed") || myCompleted.includes(rid));
+}
+
 export const isVerified = (p: Post, myCompleted: string[]) =>
-  p.kind === "rented" && !!p.rentalId && (communityRentals.some((r) => r.id === p.rentalId && r.status === "Completed") || myCompleted.includes(p.rentalId));
+  (p.kind === "rented" && !!p.rentalId && (communityRentals.some((r) => r.id === p.rentalId && r.status === "Completed") || myCompleted.includes(p.rentalId)))
+  || (p.kind === "together" && (p.tags ?? []).some((t) => verifiedPiece(t, myCompleted)));
 
 /** Points rule: verified rental posts only. Like = 1 pt, save = 3 pts, capped at 50 per post. Self-engagement never counts. */
 export const LIKE_PTS = 1, SAVE_PTS = 3, POST_CAP = 50;
@@ -82,11 +89,22 @@ export function scorePost(p: Post, me: User, w: Record<string, number>, t: Taste
   if (users.find((u) => u.id === p.userId)?.neighborhood === me.neighborhood) s += 1;
   return s + p.saves * 0.05;
 }
+/** Plain-English reasons two neighbors match: shared style tags, tags the viewer saves, same size, same area. */
+export function sharedStyleReasons(me: User, other: User, w: Record<string, number>) {
+  const out: string[] = [];
+  const both = me.styleTags.filter((t) => other.styleTags.includes(t));
+  both.slice(0, 2).forEach((t) => out.push(`You both like ${t.toLowerCase()} looks`));
+  other.styleTags.filter((t) => (w[t] ?? 0) > 0 && !both.includes(t)).slice(0, 1).forEach((t) => out.push(`You both save ${t.toLowerCase()} looks`));
+  if (me.size === other.size) out.push(`You wear the same size (${me.size})`);
+  if (me.neighborhood === other.neighborhood) out.push(`Both nearby in ${me.neighborhood}`);
+  return out.slice(0, 3);
+}
+
 export function recommendPeople(me: User, w: Record<string, number>, exclude: string[]) {
   return users.filter((u) => u.id !== ME && !exclude.includes(u.id)).map((u) => {
     const shared = u.styleTags.filter((x) => w[x]).sort((a, b) => (w[b] ?? 0) - (w[a] ?? 0));
     const reason = shared.length ? `You both save ${shared[0]!.toLowerCase()} looks` : `Lends nearby in ${u.neighborhood}`;
-    return { u, reason, score: shared.reduce((a, x) => a + (w[x] ?? 0), 0), closet: items.filter((i) => i.ownerId === u.id) };
+    return { u, reason, reasons: sharedStyleReasons(me, u, w), score: shared.reduce((a, x) => a + (w[x] ?? 0), 0), closet: items.filter((i) => i.ownerId === u.id) };
   }).sort((a, b) => b.score - a.score);
 }
 export const taggedItem = (p: Post) => getItem(p.itemId);
