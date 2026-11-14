@@ -160,9 +160,9 @@ function Landing() {
           </Link>
         ))}
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6 text-center">
-          <p className="text-sm tracking-[0.14em] text-ink-foreground/70">This week on SisUse</p>
+          <p className="text-sm tracking-[0.14em] text-foreground/70">This week on SisUse</p>
           <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
-          <p className="mt-4 text-base leading-relaxed text-ink-foreground/80 md:text-lg">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
+          <p className="mt-4 text-base leading-relaxed text-foreground/80 md:text-lg">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
           <Link to="/discover" className="mt-7 inline-block border-b border-foreground pb-0.5 text-sm tracking-[0.12em]">Explore the Wardrobe</Link>
         </div>
       </section>
