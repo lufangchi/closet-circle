@@ -49,7 +49,7 @@ function RentalDetail() {
         {r.status === "Declined" ? <p className="text-destructive">This request was declined.</p> : (
           <ol className="flex items-center">{steps.map((st, i) => (
             <li key={st} className="flex flex-1 flex-col items-center gap-1 text-[11px]">
-              <span className={"grid h-8 w-8 place-items-center rounded-full " + (i <= idx ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>{i < idx ? <Check className="h-4 w-4" /> : i + 1}</span>{st}
+              <span className={"grid h-8 w-8 place-items-center rounded-full " + (i <= idx ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>{i < idx || r.status === "Completed" ? <Check className="h-4 w-4" /> : i + 1}</span>{st}
             </li>))}</ol>
         )}
 
