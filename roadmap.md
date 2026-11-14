@@ -16,3 +16,6 @@
 - [x] Landing C: "Inside the circle" → 3 tiles: Discover, Meet your community, Manage your closet
 - [x] Landing D: bottom section like attachment 4
 - [x] Community multi-item tags: composer "Tag items in this look" (My Rentals = "Rented for this look" → lender listing; My Closet = "From my closet"); add/remove before publish; post shows "Pieces in this look" cards (photo, name, $/day, source label, save each); item-level reviews on rented listing, closet piece as styling inspiration; demo: Ava in Maya's satin dress + Ava's own shoulder bag
+
+- [ ] Landing v3 (Victoria): remove SF line, new value prop, fan carousel how-it-works, no repeated photos, remove trust, smoother flow
+- [ ] Rentals & My Closet update (Kaixi, uploaded brief)
