@@ -97,7 +97,7 @@ function PostCard({ p }: { p: Post }) {
     <article className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
       <div className="relative">
         <img src={p.image} alt={p.caption} loading="lazy" className="aspect-[3/4] w-full object-cover" />
-        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[0.1em]">{p.kind === "rented" ? "Demo rental review" : p.kind === "together" ? "Demo outing post" : "Demo post"}</span>}
+        {p.demo && <span className="absolute bottom-3 left-3 rounded-full bg-card/90 px-2.5 py-1 text-[10px] tracking-[-0.01em]">{p.kind === "rented" ? "Demo rental review" : p.kind === "together" ? "Demo outing post" : "Demo post"}</span>}
         <span className={cn("absolute left-3 top-3 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium", p.kind === "together" ? "bg-secondary text-secondary-foreground" : verified ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>
           {p.kind === "together" ? <><Users className="h-3 w-3" />Styled Together</> : verified ? <><BadgeCheck className="h-3 w-3" />Verified Rental</> : <><Shirt className="h-3 w-3" />Owner styling</>}
         </span>
@@ -113,7 +113,7 @@ function PostCard({ p }: { p: Post }) {
         {p.place && <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" />{p.place}</p>}
         {tagged.length > 0 && (
           <div className="space-y-2">
-            <p className="text-[11px] tracking-[0.1em] text-muted-foreground">Pieces in this look</p>
+            <p className="text-[11px] tracking-[-0.01em] text-muted-foreground">Pieces in this look</p>
             <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{tagged.map(({ t, item }) => (
               <div key={item.id} className="relative w-28 shrink-0">
                 <Link to="/item/$id" params={{ id: item.id }} className="block overflow-hidden rounded-xl bg-muted">
