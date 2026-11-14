@@ -154,16 +154,16 @@ function Landing() {
       {/* POPULAR — scattered photo collage around a centered headline */}
       <section className="relative mx-auto h-[980px] max-w-7xl px-6 md:h-[860px]">
         {popular.map((p) => (
-          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-36 md:w-56 ${p.pos}`}>
+          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-36 lg:w-56 ${p.pos}`}>
             <img src={p.img} alt={p.tag} loading="lazy" className={`aspect-[4/5] w-full rounded-[1.75rem] object-cover ${p.fit} shadow-soft transition duration-500 group-hover:-translate-y-1`} />
             <span className={`absolute max-w-[calc(100%-1.5rem)] rounded-full px-4 py-2 text-center text-xs leading-snug text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
           </Link>
         ))}
         <div className="absolute inset-x-0 top-1/2 mx-auto max-w-md -translate-y-1/2 px-6 text-center">
           <p className="text-sm tracking-[0.14em] text-foreground/70">This week on SisUse</p>
-          <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
-          <p className="mt-4 text-base leading-relaxed text-foreground/80 md:text-lg">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
-          <Link to="/discover" className="mt-7 inline-block border-b border-foreground pb-0.5 text-sm tracking-[0.12em]">Explore the Wardrobe</Link>
+          <h2 className="mt-3 font-display text-5xl leading-[1.02] md:text-6xl lg:text-7xl">Most-loved <em className="text-olive">looks</em> nearby</h2>
+          <p className="mt-3 text-base leading-relaxed text-foreground/80 lg:text-lg">Romantic, relaxed, polished or bold — borrowed from women a few blocks away.</p>
+          <Link to="/discover" className="mt-6 inline-block border-b border-foreground pb-0.5 text-sm tracking-[0.12em]">Explore the Wardrobe</Link>
         </div>
       </section>
 
