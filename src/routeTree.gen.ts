@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ClosetRouteImport } from './routes/closet'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as RentalsRouteImport } from './routes/rentals'
+import { Route as ItemIdRouteImport } from './routes/item.$id'
+import { Route as RentalsIdRouteImport } from './routes/rentals_.$id'
+import { Route as UserIdRouteImport } from './routes/user.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClosetRoute = ClosetRouteImport.update({
+  id: '/closet',
+  path: '/closet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentalsRoute = RentalsRouteImport.update({
+  id: '/rentals',
+  path: '/rentals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ItemIdRoute = ItemIdRouteImport.update({
+  id: '/item/$id',
+  path: '/item/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentalsIdRoute = RentalsIdRouteImport.update({
+  id: '/rentals_/$id',
+  path: '/rentals/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserIdRoute = UserIdRouteImport.update({
+  id: '/user/$id',
+  path: '/user/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/closet': typeof ClosetRoute
+  '/community': typeof CommunityRoute
+  '/rentals': typeof RentalsRoute
+  '/item/$id': typeof ItemIdRoute
+  '/rentals/$id': typeof RentalsIdRoute
+  '/user/$id': typeof UserIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/closet': typeof ClosetRoute
+  '/community': typeof CommunityRoute
+  '/rentals': typeof RentalsRoute
+  '/item/$id': typeof ItemIdRoute
+  '/rentals/$id': typeof RentalsIdRoute
+  '/user/$id': typeof UserIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/closet': typeof ClosetRoute
+  '/community': typeof CommunityRoute
+  '/rentals': typeof RentalsRoute
+  '/item/$id': typeof ItemIdRoute
+  '/rentals_/$id': typeof RentalsIdRoute
+  '/user/$id': typeof UserIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/closet'
+    | '/community'
+    | '/rentals'
+    | '/item/$id'
+    | '/rentals/$id'
+    | '/user/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/closet'
+    | '/community'
+    | '/rentals'
+    | '/item/$id'
+    | '/rentals/$id'
+    | '/user/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/closet'
+    | '/community'
+    | '/rentals'
+    | '/item/$id'
+    | '/rentals_/$id'
+    | '/user/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClosetRoute: typeof ClosetRoute
+  CommunityRoute: typeof CommunityRoute
+  RentalsRoute: typeof RentalsRoute
+  ItemIdRoute: typeof ItemIdRoute
+  RentalsIdRoute: typeof RentalsIdRoute
+  UserIdRoute: typeof UserIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/closet': {
+      id: '/closet'
+      path: '/closet'
+      fullPath: '/closet'
+      preLoaderRoute: typeof ClosetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rentals': {
+      id: '/rentals'
+      path: '/rentals'
+      fullPath: '/rentals'
+      preLoaderRoute: typeof RentalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/item/$id': {
+      id: '/item/$id'
+      path: '/item/$id'
+      fullPath: '/item/$id'
+      preLoaderRoute: typeof ItemIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rentals_/$id': {
+      id: '/rentals_/$id'
+      path: '/rentals/$id'
+      fullPath: '/rentals/$id'
+      preLoaderRoute: typeof RentalsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user/$id': {
+      id: '/user/$id'
+      path: '/user/$id'
+      fullPath: '/user/$id'
+      preLoaderRoute: typeof UserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClosetRoute: ClosetRoute,
+  CommunityRoute: CommunityRoute,
+  RentalsRoute: RentalsRoute,
+  ItemIdRoute: ItemIdRoute,
+  RentalsIdRoute: RentalsIdRoute,
+  UserIdRoute: UserIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
