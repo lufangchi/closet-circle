@@ -49,6 +49,9 @@ function Closet() {
   return (
     <div className="space-y-10">
       <div><h1 className="text-4xl font-semibold">My Closet</h1><p className="text-muted-foreground">{getUser(ME).neighborhood} · {myItems.length} listed</p></div>
+      {myItems.length > 0 && <section><h2 className="mb-4 text-3xl">My listings</h2><div className="grid gap-3 md:grid-cols-2">{myItems.map((i) => <ClosetListing key={i.id} item={i} />)}</div></section>}
+      <GarmentCare item={myItems[0]} defaultArea={getUser(ME).zip || getUser(ME).neighborhood} />
+      <h2 className="text-3xl">List a new piece</h2>
       <section className="grid gap-6 rounded-3xl border border-border bg-card p-6 md:grid-cols-[240px_1fr]">
         <label className="grid aspect-[3/4] cursor-pointer place-items-center overflow-hidden rounded-2xl border-2 border-dashed border-border bg-muted text-sm text-muted-foreground">
           {img ? <img src={img} alt="" className="h-full w-full object-cover" /> : <span className="flex flex-col items-center gap-2"><Upload className="h-6 w-6" />Add photo</span>}
@@ -83,8 +86,6 @@ function Closet() {
           <button onClick={submit} disabled={!f.title || !img || !verified} className={btn + " sm:col-span-2"}>List item</button>
         </div>
       </section>
-      {myItems.length > 0 && <section><h2 className="mb-4 text-3xl">My listings</h2><div className="grid gap-3 md:grid-cols-2">{myItems.map((i) => <ClosetListing key={i.id} item={i} />)}</div></section>}
-      <GarmentCare item={myItems[0]} defaultArea={getUser(ME).zip || getUser(ME).neighborhood} />
       <section><h2 className="mb-4 text-3xl">Saved pieces</h2>
         {saved.length ? <div className="columns-2 gap-4 md:columns-4">{saved.map((i) => <ItemCard key={i.id} item={i} />)}</div> : <p className="text-sm text-muted-foreground">Tap the heart on any piece to save it here.</p>}
       </section>
