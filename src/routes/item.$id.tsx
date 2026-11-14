@@ -4,7 +4,7 @@ import { BadgeCheck, ShieldCheck, Star, MapPin, Clock, Ruler, Info } from "lucid
 import { toast } from "sonner";
 import { getItem, getUser, priceRental, pickupSpots, compatibility, users, ME } from "@/lib/data";
 import { useStore } from "@/lib/store";
-import { isVerified, taggedIds } from "@/lib/community";
+import { isVerified, pieceTags } from "@/lib/community";
 import { Avatar, HeartButton, btn, btnGhost, input } from "@/components/ui-kit";
 import { PreviewOnMe, FitCheckCard } from "@/components/preview-on-me";
 import { isClothing } from "@/lib/fit";
@@ -109,11 +109,20 @@ function ItemPage() {
 
 function VisualReviews({ itemId }: { itemId: string }) {
   const store = useStore();
-  const looks = store.allPosts.filter((p) => taggedIds(p).includes(itemId) && isVerified(p, store.myCompleted));
-  if (!looks.length) return null;
+  const ownerOf = (id: string) => store.allItems.find((i) => i.id === id)?.ownerId;
+  const src = (p: (typeof store.allPosts)[number]) => pieceTags(p, ownerOf).find((t) => t.itemId === itemId)?.source;
+  const looks = store.allPosts.filter((p) => src(p) === "rented" && isVerified(p, store.myCompleted));
+  const styled = store.allPosts.filter((p) => src(p) === "closet");
+  if (!looks.length && !styled.length) return null;
   return (
     <section className="md:col-span-2">
-      <h2 className="mb-3 text-3xl">Worn by renters</h2>
+      {styled.length > 0 && <><h2 className="mb-3 text-3xl">Styled by the owner</h2>
+      <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">{styled.map((p) => (
+        <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
+          <img src={p.image} alt={p.caption} className="aspect-[3/4] w-full object-cover" loading="lazy" />
+          <div className="space-y-1 p-3 text-xs"><p className="font-medium">From my closet · {p.userId === ME ? "You" : getUser(p.userId).name}{p.demo ? " · demo" : ""}</p><p>{p.caption}</p></div>
+        </div>))}</div></>}
+      {looks.length > 0 && <h2 className="mb-3 text-3xl">Worn by renters</h2>}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">{looks.map((p) => (
         <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
           <img src={p.image} alt={p.caption} className="aspect-[3/4] w-full object-cover" loading="lazy" />

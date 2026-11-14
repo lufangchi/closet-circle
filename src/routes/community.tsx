@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Heart, Bookmark, BadgeCheck, Shirt, UserPlus, UserCheck, X, Plus, Sparkles, Star, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { users, getUser, getItem, ME } from "@/lib/data";
-import { isVerified, taggedIds, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
+import { isVerified, taggedIds, pieceTags, SOURCE_LABEL, type PieceTag, postPoints, tasteTags, scorePost, recommendPeople, POST_CAP, type Post } from "@/lib/community";
 import { useStore } from "@/lib/store";
 import { Avatar, Chip, btn, btnGhost, input } from "@/components/ui-kit";
 import { cn } from "@/lib/utils";
@@ -82,7 +82,9 @@ function Community() {
 function PostCard({ p }: { p: Post }) {
   const s = useStore();
   const u = getUser(p.userId);
-  const tagged = taggedIds(p).map((id) => getItem(id) ?? s.allItems.find((i) => i.id === id)).filter((i): i is NonNullable<typeof i> => !!i);
+  const find = (id: string) => getItem(id) ?? s.allItems.find((i) => i.id === id);
+  const tagged = pieceTags(p, (id) => find(id)?.ownerId).map((t) => ({ t, item: find(t.itemId) })).filter((x): x is { t: PieceTag; item: NonNullable<ReturnType<typeof find>> } => !!x.item);
+  const reviewed = tagged.find((x) => x.t.source === "rented")?.item;
   const liked = s.likedPosts.includes(p.id), saved = s.savedPosts.includes(p.id);
   const verified = isVerified(p, s.myCompleted);
   const self = p.userId === ME;
@@ -103,21 +105,25 @@ function PostCard({ p }: { p: Post }) {
       </div>
       <div className="space-y-3 p-4">
         <p className="text-sm leading-snug">{p.caption}</p>
-        {p.review && <p className="flex flex-wrap gap-x-3 text-[11px] text-muted-foreground"><span>Condition {p.review.condition}/5</span><span>As described {p.review.accuracy}/5</span><span>Exchange {p.review.experience}/5</span></p>}
+        {p.review && <p className="flex flex-wrap gap-x-3 text-[11px] text-muted-foreground">{reviewed && <span className="w-full">Review of {reviewed.title}</span>}<span>Condition {p.review.condition}/5</span><span>As described {p.review.accuracy}/5</span><span>Exchange {p.review.experience}/5</span></p>}
         <div className="flex flex-wrap gap-1">{p.styleTags.map((t) => <span key={t} className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">{t}</span>)}</div>
         {p.place && <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" />{p.place}</p>}
-        {tagged.length > 0 && <p className="text-[11px] text-muted-foreground">{tagged.length === 1 ? "Rent this piece" : `Rent ${tagged.length} pieces from this look`}</p>}
-        {tagged.map((item) => (
-          <div key={item.id} className="flex items-center gap-2 rounded-xl bg-muted/70 p-2">
-            <Link to="/item/$id" params={{ id: item.id }} className="flex min-w-0 flex-1 items-center gap-2">
-              <img src={item.image} alt={`${item.title} product photo`} className="h-12 w-12 rounded-lg object-cover" />
-              <span className="min-w-0"><span className="block truncate text-xs font-medium">{item.title}</span><span className="text-[11px] text-muted-foreground">{item.condition} · ${item.dailyRate}/day</span></span>
-            </Link>
-            <button aria-label={s.favorites.includes(item.id) ? "Remove from wishlist" : "Add to wishlist"} onClick={() => { s.toggleFav(item.id); if (!s.favorites.includes(item.id)) toast.success("Added to your rental wishlist"); }} className="grid h-8 w-8 place-items-center rounded-full bg-card">
-              <Heart className={cn("h-4 w-4", s.favorites.includes(item.id) && "fill-blush text-blush")} />
-            </button>
+        {tagged.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-[11px] tracking-[0.1em] text-muted-foreground">Pieces in this look</p>
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">{tagged.map(({ t, item }) => (
+              <div key={item.id} className="relative w-28 shrink-0">
+                <Link to="/item/$id" params={{ id: item.id }} className="block overflow-hidden rounded-xl bg-muted">
+                  <img src={item.image} alt={`${item.title} product photo`} className="aspect-[3/4] w-full object-cover" loading="lazy" />
+                  <span className="block space-y-0.5 p-2"><span className="block truncate text-[11px] font-medium">{item.title}</span><span className="block text-[11px] text-muted-foreground">${item.dailyRate}/day</span>
+                    <span className={cn("inline-block rounded-full px-1.5 py-0.5 text-[10px]", t.source === "rented" ? "bg-accent text-accent-foreground" : "bg-secondary text-secondary-foreground")}>{SOURCE_LABEL[t.source]}</span></span>
+                </Link>
+                <button aria-label={s.favorites.includes(item.id) ? `Unsave ${item.title}` : `Save ${item.title}`} onClick={() => { s.toggleFav(item.id); if (!s.favorites.includes(item.id)) toast.success(`${item.title} saved`); }} className="absolute right-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-full bg-card/90">
+                  <Heart className={cn("h-3.5 w-3.5", s.favorites.includes(item.id) && "fill-blush text-blush")} />
+                </button>
+              </div>))}</div>
           </div>
-        ))}
+        )}
         <div className="flex items-center justify-between gap-2">
           <Link to="/user/$id" params={{ id: u.id }} className="flex min-w-0 items-center gap-2 text-xs font-medium"><Avatar id={u.id} size={24} /><span className="truncate">{self ? "You" : u.name}</span></Link>
           <div className="flex items-center gap-2">
@@ -182,61 +188,68 @@ const occasions = ["Wedding Guest", "Graduation Photos", "Brunch", "Work"];
 function Composer({ onDone }: { onDone: () => void }) {
   const s = useStore();
   const completed = s.rentals.filter((r) => r.status === "Completed" && r.renterId === ME);
-  const [kind, setKind] = useState<"rented" | "closet">(completed.length ? "rented" : "closet");
-  const [rentalId, setRentalId] = useState(completed[0]?.id ?? "");
-  const [ownId, setOwnId] = useState(s.myItems[0]?.id ?? "");
+  const [tags, setTags] = useState<PieceTag[]>([]);
   const [photo, setPhoto] = useState("");
   const [caption, setCaption] = useState("");
   const [occasion, setOccasion] = useState(occasions[0]!);
   const [rv, setRv] = useState({ condition: 5, accuracy: 5, experience: 5 });
-  const itemId = kind === "rented" ? completed.find((r) => r.id === rentalId)?.itemId : ownId;
-  const item = s.allItems.find((i) => i.id === itemId);
-  const [tags, setTags] = useState<string[]>([]);
-  const shownTags = tags.length ? tags : item?.styleTags ?? [];
+  const [style, setStyle] = useState<string[]>([]);
+  const find = (id: string) => s.allItems.find((i) => i.id === id);
+  const has = (id: string) => tags.some((t) => t.itemId === id);
+  const toggle = (t: PieceTag) => setTags(has(t.itemId) ? tags.filter((x) => x.itemId !== t.itemId) : [...tags, t]);
+  const firstRented = tags.find((t) => t.source === "rented");
+  const primary = tags[0] && find(tags[0].itemId);
+  const shownTags = style.length ? style : primary?.styleTags ?? [];
 
   const onFile = (f?: File) => { if (!f) return; const r = new FileReader(); r.onload = () => setPhoto(String(r.result)); r.readAsDataURL(f); };
   const publish = () => {
-    if (!item) return;
-    s.addPost({ id: "mp" + Date.now(), userId: ME, kind, ...(kind === "rented" ? { rentalId, review: rv } : {}), image: photo || item.image, itemId: item.id, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
-    toast.success(kind === "rented" ? "Posted! Verified looks earn points as neighbors like and save them." : "Styling post shared");
+    if (!tags.length || !photo) return;
+    s.addPost({ id: "mp" + Date.now(), userId: ME, kind: firstRented ? "rented" : "closet", ...(firstRented?.rentalId ? { rentalId: firstRented.rentalId, review: rv } : {}),
+      image: photo, itemId: tags[0]!.itemId, tags, caption, styleTags: shownTags, occasion, likes: 0, saves: 0 });
+    toast.success(firstRented ? "Posted! Your review shows on the rented piece's listing." : "Styling post shared");
     onDone();
+  };
+  const Pick = ({ t, label }: { t: PieceTag; label: string }) => {
+    const item = find(t.itemId); if (!item) return null;
+    return (
+      <button type="button" onClick={() => toggle(t)} className={cn("flex w-full items-center gap-2 rounded-xl border p-2 text-left text-xs", has(t.itemId) ? "border-primary bg-secondary/50" : "border-border")}>
+        <img src={item.image} alt="" className="h-10 w-10 rounded-lg object-cover" /><span className="min-w-0 flex-1"><span className="block truncate font-medium">{item.title}</span><span className="text-muted-foreground">{label}</span></span>
+        <span className="text-muted-foreground">{has(t.itemId) ? "Tagged ✓" : "Tag"}</span>
+      </button>);
   };
   return (
     <section className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-soft">
-      <div className="flex rounded-full bg-muted p-1 w-fit">
-        {([["rented", "I rented this"], ["closet", "From my closet"]] as const).map(([k, l]) => (
-          <button key={k} onClick={() => setKind(k)} className={cn("rounded-full px-4 py-1.5 text-sm", kind === k ? "bg-card shadow-soft" : "text-muted-foreground")}>{l}</button>
-        ))}
-      </div>
-      {kind === "rented" ? (
-        completed.length ? <label className="block text-xs text-muted-foreground">Completed rental<select className={input} value={rentalId} onChange={(e) => setRentalId(e.target.value)}>{completed.map((r) => <option key={r.id} value={r.id}>{s.allItems.find((i) => i.id === r.itemId)?.title} · {r.start}</option>)}</select></label>
-          : <p className="text-sm text-muted-foreground">Finish a rental to share a verified look.</p>
-      ) : (
-        s.myItems.length ? <label className="block text-xs text-muted-foreground">Tag your listing<select className={input} value={ownId} onChange={(e) => setOwnId(e.target.value)}>{s.myItems.map((i) => <option key={i.id} value={i.id}>{i.title}</option>)}</select></label>
-          : <p className="text-sm text-muted-foreground">List a piece in My Closet first, then show how you style it.</p>
-      )}
-      {item && (
-        <div className="grid gap-4 md:grid-cols-[160px_1fr]">
-          <label className="relative block cursor-pointer overflow-hidden rounded-2xl bg-muted">
-            <img src={photo || item.image} alt="" className="aspect-[3/4] w-full object-cover" />
-            <span className="absolute inset-x-2 bottom-2 rounded-full bg-card/90 py-1 text-center text-[11px]">Upload outfit photo</span>
-            <input type="file" accept="image/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
-          </label>
-          <div className="space-y-3">
-            <textarea className={input} rows={2} placeholder="Styling notes — what did you pair it with?" value={caption} onChange={(e) => setCaption(e.target.value)} />
-            <div className="flex flex-wrap gap-1">{tagPool.map((t) => <Chip key={t} active={shownTags.includes(t)} onClick={() => setTags(shownTags.includes(t) ? shownTags.filter((x) => x !== t) : [...shownTags, t])}>{t}</Chip>)}</div>
-            <label className="block text-xs text-muted-foreground">Occasion<select className={input} value={occasion} onChange={(e) => setOccasion(e.target.value)}>{occasions.map((o) => <option key={o}>{o}</option>)}</select></label>
-            {kind === "rented" && (
+      <div className="grid gap-4 md:grid-cols-[180px_1fr]">
+        <label className="relative block cursor-pointer overflow-hidden rounded-2xl bg-muted">
+          {photo ? <img src={photo} alt="Your outfit" className="aspect-[3/4] w-full object-cover" /> : <span className="grid aspect-[3/4] place-items-center p-4 text-center text-xs text-muted-foreground">Upload your outfit photo</span>}
+          <input type="file" accept="image/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
+        </label>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="font-display text-2xl">Tag items in this look</p>
+            <p className="text-xs text-muted-foreground">Tag only pieces neighbors can rent. Anything else in the photo can stay untagged.</p>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="space-y-1.5"><p className="text-xs font-medium">My Rentals</p>
+                {completed.length ? completed.map((r) => <Pick key={r.id} t={{ itemId: r.itemId, source: "rented", rentalId: r.id }} label={`${SOURCE_LABEL.rented} · from ${getUser(r.ownerId).name}`} />) : <p className="text-xs text-muted-foreground">Finished rentals appear here.</p>}</div>
+              <div className="space-y-1.5"><p className="text-xs font-medium">My Closet</p>
+                {s.myItems.length ? s.myItems.map((i) => <Pick key={i.id} t={{ itemId: i.id, source: "closet" }} label={SOURCE_LABEL.closet} />) : <p className="text-xs text-muted-foreground">List a piece in My Closet to tag it.</p>}</div>
+            </div>
+          </div>
+          <textarea className={input} rows={2} placeholder="Styling notes — what did you pair it with?" value={caption} onChange={(e) => setCaption(e.target.value)} />
+          <div className="flex flex-wrap gap-1">{tagPool.map((t) => <Chip key={t} active={shownTags.includes(t)} onClick={() => setStyle(shownTags.includes(t) ? shownTags.filter((x) => x !== t) : [...shownTags, t])}>{t}</Chip>)}</div>
+          <label className="block text-xs text-muted-foreground">Occasion<select className={input} value={occasion} onChange={(e) => setOccasion(e.target.value)}>{occasions.map((o) => <option key={o}>{o}</option>)}</select></label>
+          {firstRented && (
+            <div className="space-y-1"><p className="text-xs text-muted-foreground">Your review of {find(firstRented.itemId)?.title} — shown on its listing</p>
               <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
                 {([["condition", "Item condition"], ["accuracy", "As described"], ["experience", "Rental exchange"]] as const).map(([k, l]) => (
                   <label key={k}>{l}<select className={input} value={rv[k]} onChange={(e) => setRv({ ...rv, [k]: +e.target.value })}>{[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n} / 5</option>)}</select></label>
                 ))}
-              </div>
-            )}
-            <div className="flex gap-2"><button disabled={caption.trim().length < 5} onClick={publish} className={btn}>Publish</button><button onClick={onDone} className={btnGhost}>Cancel</button></div>
-          </div>
+              </div></div>
+          )}
+          <div className="flex gap-2"><button disabled={caption.trim().length < 5 || !tags.length || !photo} onClick={publish} className={btn}>Publish</button><button onClick={onDone} className={btnGhost}>Cancel</button></div>
+          {(!photo || !tags.length) && <p className="text-xs text-muted-foreground">Add a photo and tag at least one piece to publish.</p>}
         </div>
-      )}
+      </div>
     </section>
   );
 }
