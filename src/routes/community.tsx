@@ -169,12 +169,14 @@ function Recommended({ w }: { w: Record<string, number> }) {
             <div className="flex-1 space-y-3 p-4">
               <div><p className="font-display text-3xl">{r.u.name}</p><p className="text-xs text-muted-foreground">{r.u.neighborhood} · <Star className="inline h-3 w-3 fill-current" /> {r.u.rating}</p></div>
               <p className="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">{r.reason}</p>
+              {r.reasons.length > 1 && <div className="flex flex-wrap gap-1">{r.reasons.slice(1).map((x) => <span key={x} className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">{x}</span>)}</div>}
               <div className="flex flex-wrap gap-1">{r.u.styleTags.map((t) => <span key={t} className={cn("rounded-full px-2 py-0.5 text-[11px]", w[t] ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground")}>{t}</span>)}</div>
               <div className="flex gap-2">{r.closet.slice(0, 3).map((i) => <Link key={i.id} to="/item/$id" params={{ id: i.id }}><img src={i.image} alt={i.title} className="h-14 w-14 rounded-lg object-cover" /></Link>)}</div>
               <div className="flex gap-2">
                 <button onClick={() => s.skipPerson(r.u.id)} className={btnGhost + " flex-1"}><X className="h-4 w-4" />Skip</button>
                 <button onClick={() => { s.toggleSoulmate(r.u.id); toast.success(`${r.u.name} saved as a Closet Soulmate`); }} className={btn + " flex-1"}><Heart className="h-4 w-4" />Save as Soulmate</button>
               </div>
+              <MakePlanButton toId={r.u.id} />
             </div>
           </div>
         ) : <p className="mt-3 text-sm text-muted-foreground">You've seen everyone nearby for now.</p>}
