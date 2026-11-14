@@ -6,7 +6,6 @@ import bottom from "@/assets/landing-bottom-circle.jpg";
 import stepBrowse from "@/assets/step-browse.jpg";
 import stepMessage from "@/assets/step-message.jpg";
 import stepWear from "@/assets/step-wear.jpg";
-import occasion from "@/assets/occasion-wedding.jpg";
 import stepFriends from "@/assets/step-friends.jpg";
 import tileDiscover from "@/assets/tile-discover.jpg";
 import tileCommunity from "@/assets/tile-community.jpg";
@@ -127,7 +126,7 @@ function Landing() {
       </section>
 
       <Steps />
-      <Bridge text="Three ways to be part of it." />
+      <Bridge text="Four ways to be part of it." />
 
       {/* FOUR SUB-SECTIONS — connected photo mosaic */}
       <section className="px-4 pb-16 md:px-8">
