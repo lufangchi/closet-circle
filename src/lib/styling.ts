@@ -133,7 +133,7 @@ const SHAPE_SIL: Record<string, string[]> = {
 
 /* ---------- the outfit request ---------- */
 
-export type LookRequest = { occasion: string; start: string; end: string; zip: string; budget: number; radius: number; days: number };
+export type LookRequest = { occasion: string; start: string; end: string; zip: string; budget: number; radius: number; days: number; size: string };
 export type Slot = "main" | "bag" | "shoes" | "jewelry";
 export const SLOT_LABEL: Record<Slot, string> = { main: "Outfit", bag: "Bag", shoes: "Shoes", jewelry: "Jewelry" };
 const SLOT_CATS: Record<Slot, Item["category"][]> = { main: ["Dress", "Suit", "Top", "Bottom"], bag: ["Bag"], shoes: ["Shoes"], jewelry: ["Jewelry"] };
@@ -174,7 +174,7 @@ function score(i: Item, req: LookRequest, p: StylingPrefs, shape: string | null)
 
 function eligible(slot: Slot, pool: Item[], req: LookRequest, p: StylingPrefs, shape: string | null, used: Set<string>, palette: string[]) {
   return pool
-    .filter((i) => SLOT_CATS[slot].includes(i.category) && !used.has(i.id) && sizeOk(i, "") && i.distance <= req.radius && !isRangeBlocked(i, req.start, req.end))
+    .filter((i) => SLOT_CATS[slot].includes(i.category) && !used.has(i.id) && sizeOk(i, req.size) && i.distance <= req.radius && !isRangeBlocked(i, req.start, req.end))
     .filter((i) => { const c = itemColors(i); return !c.length || c.some((x) => palette.includes(x)); })
     .map((i) => ({ item: i, ...score(i, req, p, shape) }))
     .sort((a, b) => b.s - a.s);
@@ -190,8 +190,8 @@ function reason(slots: LookPiece[], p: StylingPrefs, owned: string[], shape: str
 }
 
 /** Two or three distinct looks from real listings, budget and dates checked first. */
-export function buildLooks(pool: Item[], req: LookRequest, p: StylingPrefs, owned: string[], picks: Partial<Record<string, number>> = {}): Look[] {
-  const shape = derivedShape(p.bodyShape === "measurements" ? undefined : undefined);
+export function buildLooks(pool: Item[], req: LookRequest, p: StylingPrefs, owned: string[], fit?: FitProfile, picks: Partial<Record<string, number>> = {}): Look[] {
+  const shape = p.bodyShape === "measurements" ? derivedShape(fit) : p.bodyShape && p.bodyShape !== "skip" ? p.bodyShape : null;
   const used = new Set<string>();
   const looks: Look[] = [];
   for (const pal of PALETTES) {
