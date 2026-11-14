@@ -32,29 +32,29 @@ const cats = [
   { label: "Shoes", img: items[4]!.image },
   { label: "Tailoring", img: items[3]!.image },
 ];
-const pill = "inline-flex items-center gap-3 rounded-full bg-ink-foreground py-1.5 pl-6 pr-1.5 text-sm font-medium text-ink transition hover:opacity-90";
+const pill = "inline-flex items-center gap-4 bg-ink-foreground py-2 pl-8 pr-2 text-[13px] tracking-[0.14em] text-ink transition hover:opacity-90";
 
 function Landing() {
   return (
     <div className="bg-background">
       {/* HERO — dark, arched model cards */}
       <section className="m-2 overflow-hidden rounded-[2rem] bg-secondary text-secondary-foreground md:m-4">
-        <nav className="flex items-center justify-between px-6 py-6 md:px-10">
-          <span className="font-display text-2xl">Closet <em>Circle</em></span>
-          <div className="hidden gap-1 rounded-full bg-foreground/5 p-1 md:flex">
-            {[["Discover", "/discover"], ["Community", "/community"], ["List a piece", "/closet"], ["Rentals", "/rentals"]].map(([l, to], i) => (
-              <Link key={l} to={to as "/discover"} className={"rounded-full px-5 py-2 text-sm transition " + "text-secondary-foreground hover:bg-background/60"}>{l}</Link>
+        <nav className="flex items-center justify-between px-6 py-7 md:px-12">
+          <span className="font-display text-2xl tracking-wide">Closet <em>Circle</em></span>
+          <div className="hidden items-center gap-8 md:flex">
+            {[["Discover", "/discover"], ["Community", "/community"], ["List a piece", "/closet"], ["Rentals", "/rentals"]].map(([l, to]) => (
+              <Link key={l} to={to as "/discover"} className="text-[13px] tracking-[0.14em] text-secondary-foreground/80 transition hover:text-secondary-foreground">{l}</Link>
             ))}
           </div>
-          <Link to="/discover" className="rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground">Open app</Link>
+          <Link to="/discover" className="border border-foreground/30 px-6 py-2 text-[13px] tracking-[0.14em] transition hover:bg-foreground hover:text-secondary">Open app</Link>
         </nav>
-        <div className="mx-auto max-w-3xl px-6 pt-8 text-center">
-          <span className="inline-block rounded-full border border-foreground/20 px-5 py-1.5 text-xs tracking-wide text-muted-foreground">Now in San Francisco · Mission, Bernal, Noe & SoMa</span>
-          <h1 className="mt-6 text-5xl leading-[1.05] md:text-7xl">Your neighborhood's <em>shared wardrobe</em></h1>
-          <p className="mx-auto mt-5 max-w-xl text-muted-foreground">Rent the dress for Saturday's wedding from a neighbor three blocks away. Get AI outfit picks, meet women who share your taste, and earn rewards for every honest review.</p>
-          <Link to="/discover" className={pill + " mt-8"}>Find my look <span className="grid h-9 w-9 place-items-center rounded-full bg-background text-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
+        <div className="mx-auto max-w-3xl px-6 pt-10 text-center">
+          <span className="inline-block border-b border-foreground/25 pb-2 text-[11px] tracking-luxe text-muted-foreground">Now in San Francisco · Mission, Bernal, Noe & SoMa</span>
+          <h1 className="mt-8 text-5xl leading-[1.08] md:text-7xl">Your neighborhood's <em>shared wardrobe</em></h1>
+          <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted-foreground">Rent the dress for Saturday's wedding from a neighbor three blocks away. Get AI outfit picks, meet women who share your taste, and earn rewards for every honest review.</p>
+          <Link to="/discover" className={pill + " mt-10"}>Find my look <span className="grid h-9 w-9 place-items-center rounded-full bg-background text-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
         </div>
-        <div className="mt-14 flex items-end justify-center gap-3 px-2 md:gap-5">
+        <div className="mt-16 flex items-end justify-center gap-3 px-2 md:gap-5">
           {arches.map((a, i) => (
             <div key={i} className={`arch relative w-1/5 max-w-[260px] shrink-0 overflow-hidden ${a.bg} ${a.h} ${i === 0 || i === 4 ? "hidden sm:block" : ""}`}>
               <img src={a.img} alt="" className="h-full w-full object-cover object-top" loading={i === 2 ? "eager" : "lazy"} />
@@ -81,18 +81,20 @@ function Landing() {
       </section>
 
       {/* VALUE PROPS */}
-      <section className="mx-auto max-w-6xl px-6 py-24">
-                <h2 className="mt-3 max-w-3xl text-4xl md:text-6xl">Three things, in one place</h2>
-        <div className="mt-12 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-6 py-28">
+        <p className="text-center text-[11px] tracking-luxe text-muted-foreground">The Closet Circle difference</p>
+        <h2 className="mx-auto mt-5 max-w-3xl text-center text-4xl md:text-6xl">Three things, in <em>one place</em></h2>
+        <div className="mx-auto mt-6 h-px w-16 bg-foreground/30" />
+        <div className="mt-14 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
           {[
             { icon: MapPin, t: "Local rental", d: "Pieces from closets within a few miles. Same-day pickup at public spots — no shipping, no waiting." },
             { icon: Sparkles, t: "AI styling", d: "Tell us the occasion, date, size and budget. Get complete outfit picks from nearby closets in seconds." },
             { icon: Users, t: "Closet Soulmates", d: "Find and follow women whose style matches yours. Their closets show up first in your recommendations." },
           ].map((v) => (
-            <div key={v.t} className="bg-card p-8">
-              <v.icon className="h-6 w-6" />
-              <h3 className="mt-6 text-3xl">{v.t}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{v.d}</p>
+            <div key={v.t} className="bg-card p-10">
+              <v.icon className="h-5 w-5" strokeWidth={1.25} />
+              <h3 className="mt-7 text-3xl">{v.t}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{v.d}</p>
             </div>
           ))}
         </div>
@@ -100,11 +102,11 @@ function Landing() {
 
       {/* CATEGORIES */}
       <section className="mx-auto max-w-6xl px-6">
-        <div className="flex items-end justify-between">
-          <h2 className="text-4xl md:text-5xl">Shop by occasion</h2>
-          <Link to="/discover" className="flex items-center gap-1 text-sm underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
+        <div className="flex items-end justify-between border-b border-border pb-6">
+          <h2 className="text-4xl md:text-5xl">Shop by <em>occasion</em></h2>
+          <Link to="/discover" className="flex items-center gap-1 text-[13px] tracking-[0.14em] underline-offset-4 hover:underline">Browse all <ArrowUpRight className="h-4 w-4" /></Link>
         </div>
-        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-5">
           {cats.map((c) => (
             <Link key={c.label} to="/discover" className="group relative aspect-[4/5] overflow-hidden bg-muted">
               <img src={c.img} alt="" loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
@@ -119,8 +121,11 @@ function Landing() {
       </section>
 
       {/* TRENDING PRODUCTS */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <p className="text-center text-[11px] tracking-luxe text-muted-foreground">This week in the circle</p>
+        <h2 className="mt-5 text-center text-4xl md:text-5xl">Trending <em>now</em></h2>
+        <div className="mx-auto mt-6 h-px w-16 bg-foreground/30" />
+        <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4">
           {items.slice(0, 4).map((it, i) => (
             <Link key={it.id} to="/item/$id" params={{ id: it.id }} className="group">
               <div className="relative aspect-[3/4] overflow-hidden bg-muted">
@@ -135,8 +140,8 @@ function Landing() {
       </section>
 
       {/* TRUST */}
-      <section className="mx-auto grid max-w-6xl gap-10 px-6 py-24 md:grid-cols-[1fr_1.2fr]">
-        <h2 className="text-4xl md:text-5xl">Built on trust, not just transactions</h2>
+      <section className="mx-auto grid max-w-6xl gap-12 border-t border-border px-6 py-28 md:grid-cols-[1fr_1.2fr]">
+        <h2 className="text-4xl md:text-5xl">Built on <em>trust</em>, not just transactions</h2>
         <div className="grid gap-6 sm:grid-cols-2">
           {[
             { icon: ShieldCheck, t: "Transparent & safe", d: "Only neighborhoods are public. Meetup details unlock after confirmation. Deposits and fees shown up front." },
@@ -144,19 +149,19 @@ function Landing() {
             { icon: Wallet, t: "Earn as you go", d: "List your closet to earn. Leave honest reviews for points toward future rentals." },
             { icon: Leaf, t: "Wear more, waste less", d: "Every rental keeps a piece in circulation instead of a one-time buy." },
           ].map((v) => (
-            <div key={v.t}><v.icon className="h-5 w-5" /><h3 className="mt-3 text-2xl">{v.t}</h3><p className="mt-1 text-sm text-muted-foreground">{v.d}</p></div>
+            <div key={v.t}><v.icon className="h-5 w-5" strokeWidth={1.25} /><h3 className="mt-4 text-2xl">{v.t}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{v.d}</p></div>
           ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="m-2 rounded-[2rem] bg-accent px-6 py-20 text-center text-accent-foreground md:m-4">
+      <section className="m-2 rounded-[2rem] bg-accent px-6 py-24 text-center text-accent-foreground md:m-4">
         <h2 className="mx-auto max-w-2xl text-5xl leading-tight md:text-6xl">Your next look is <em>around the corner</em></h2>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link to="/discover" className={pill}>Start discovering <span className="grid h-9 w-9 place-items-center rounded-full bg-background text-foreground"><ArrowRight className="h-4 w-4" /></span></Link>
-          <Link to="/closet" className="rounded-full border border-foreground/30 px-6 py-3 text-sm">List your closet</Link>
+          <Link to="/closet" className="border border-foreground/30 px-8 py-3 text-[13px] tracking-[0.14em] transition hover:bg-foreground hover:text-accent">List your closet</Link>
         </div>
-        <p className="mt-16 text-xs text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
+        <p className="mt-20 text-[11px] tracking-luxe text-muted-foreground">© 2026 Closet Circle · Made for neighbors</p>
       </section>
     </div>
   );
