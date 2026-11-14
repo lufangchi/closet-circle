@@ -10,10 +10,10 @@ import stepFriends from "@/assets/step-friends.jpg";
 import tileDiscover from "@/assets/tile-discover.jpg";
 import tileCommunity from "@/assets/tile-community.jpg";
 import tileCloset from "@/assets/tile-closet.jpg";
-import { items } from "@/lib/data";
 import coat from "@/assets/pink-satin-coat.png.asset.json";
 import gown from "@/assets/olive-column-gown.png.asset.json";
 import knit from "@/assets/blush-oversized-knit.jpg.asset.json";
+import furMini from "@/assets/jacquard-fur-trim-mini.png.asset.json";
 import tryOn from "@/assets/sample-preview-burgundy.jpg";
 
 export const Route = createFileRoute("/")({
@@ -34,10 +34,10 @@ const collections = [
 ];
 /** Popular-this-week collage: real outfit photos with mood tags (positions are % of the stage). */
 const popular = [
-  { img: coat.url, tag: "Soft satin, worn with denim", tone: "bg-blush", pos: "left-[4%] top-[4%]", tagPos: "-right-24 bottom-6", to: "/discover" },
-  { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "-left-28 top-10", to: "/discover" },
-  { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "-right-20 top-4", to: "/discover" },
-  { img: items[0]!.image, tag: "Wedding-guest silk", tone: "bg-accent", pos: "right-[12%] bottom-[6%]", tagPos: "-left-24 -top-4", to: "/item/sage-slip" },
+  { img: coat.url, tag: "Soft satin, worn with denim", tone: "bg-blush", pos: "left-[4%] top-[4%]", tagPos: "-right-24 bottom-6", to: "/discover", fit: "object-top" },
+  { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "-left-28 top-10", to: "/discover", fit: "object-top" },
+  { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "-right-20 top-4", to: "/discover", fit: "object-top" },
+  { img: furMini.url, tag: "Fur-trim holiday mini", tone: "bg-clay", pos: "right-[12%] bottom-[6%]", tagPos: "-left-24 -top-4", to: "/discover", fit: "object-[50%_62%]" },
 ];
 const chips = ["Clothing", "Bags", "Jewelry", "Shoes", "Accessories"];
 const steps = [
@@ -156,7 +156,7 @@ function Landing() {
       <section className="relative mx-auto h-[980px] max-w-7xl px-6 md:h-[860px]">
         {popular.map((p) => (
           <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-36 md:w-56 ${p.pos}`}>
-            <img src={p.img} alt={p.tag} loading="lazy" className="aspect-[4/5] w-full rounded-[1.75rem] object-cover object-top shadow-soft transition duration-500 group-hover:-translate-y-1" />
+            <img src={p.img} alt={p.tag} loading="lazy" className={`aspect-[4/5] w-full rounded-[1.75rem] object-cover ${p.fit} shadow-soft transition duration-500 group-hover:-translate-y-1`} />
             <span className={`absolute whitespace-nowrap rounded-full px-4 py-2 text-xs text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
           </Link>
         ))}
