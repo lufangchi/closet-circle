@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Sparkles, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { ME, getUser, type Item } from "@/lib/data";
+import type { GarmentFit } from "@/lib/fit";
 import { useStore } from "@/lib/store";
 import { ItemCard, DemoTag, btn, input } from "@/components/ui-kit";
 
@@ -16,7 +17,10 @@ export const Route = createFileRoute("/closet")({
   component: Closet,
 });
 
-const empty = { title: "", brand: "", category: "Dress" as Item["category"], size: "S", dailyRate: 20, deposit: 60, retail: 200, cleaningFee: 10, condition: "Excellent", flaws: "", description: "", bust: "", waist: "", length: "", tags: "", minNotice: "1 day" };
+const garmentFields: Record<string, ("bust" | "waist" | "hips" | "length" | "inseam")[]> = {
+  Dress: ["bust", "waist", "hips", "length"], Top: ["bust", "length"], Bottom: ["waist", "hips", "inseam"], Suit: ["bust", "waist", "hips", "inseam"],
+};
+const empty = { title: "", brand: "", category: "Dress" as Item["category"], size: "S", dailyRate: 20, deposit: 60, retail: 0, cleaningFee: 10, condition: "Excellent", flaws: "", description: "", bust: "", waist: "", hips: "", length: "", inseam: "", unit: "in" as "in" | "cm", stretch: "none" as GarmentFit["stretch"], fit: "regular" as GarmentFit["fit"], tags: "", minNotice: "1 day" };
 
 function Closet() {
   const { myItems, addItem, favorites, allItems } = useStore();
@@ -32,9 +36,12 @@ function Closet() {
     if (!f.title || !img || !verified) return;
     addItem({ id: "my-" + Date.now(), ownerId: ME, title: f.title, brand: f.brand || "Unbranded", category: f.category, size: f.size, image: img, dailyRate: +f.dailyRate, deposit: +f.deposit, retail: +f.retail, cleaningFee: +f.cleaningFee,
       occasions: ["Wedding", "Cocktail"], styleTags: f.tags.split(",").map((t) => t.trim()).filter(Boolean), condition: f.condition, flaws: f.flaws || "None noted", distance: 0,
-      measurements: Object.fromEntries([["Bust", f.bust], ["Waist", f.waist], ["Length", f.length]].filter(([, v]) => v)), blockedDates: [], minNotice: f.minNotice, description: f.description });
+      measurements: Object.fromEntries(fields.filter((k) => f[k]).map((k) => [k[0]!.toUpperCase() + k.slice(1), `${f[k]} ${f.unit}`])),
+      ...(fields.length ? { garment: { unit: f.unit, stretch: f.stretch, fit: f.fit, confirmed: true, ...Object.fromEntries(fields.filter((k) => +f[k] > 0).map((k) => [k, +f[k]])) } as GarmentFit } : {}),
+      blockedDates: [], minNotice: f.minNotice, description: f.description });
     setF(empty); setImg(""); setVerified(false); toast.success("Listed in your closet");
   };
+  const fields = garmentFields[f.category] ?? [];
   const saved = allItems.filter((i) => favorites.includes(i.id));
 
   return (
@@ -49,16 +56,28 @@ function Closet() {
           <div className="flex items-center gap-2 sm:col-span-2"><button onClick={suggest} disabled={!img || ai} className={btn}><Sparkles className="h-4 w-4" />{ai ? "Analyzing…" : "AI-fill from photo"}</button><DemoTag /></div>
           <input className={input} placeholder="Title" value={f.title} onChange={set("title")} />
           <input className={input} placeholder="Brand" value={f.brand} onChange={set("brand")} />
-          <select className={input} value={f.category} onChange={set("category")}>{["Dress", "Suit", "Bag", "Shoes", "Jewelry"].map((c) => <option key={c}>{c}</option>)}</select>
+          <select className={input} value={f.category} onChange={set("category")}>{["Dress", "Top", "Bottom", "Suit", "Bag", "Shoes", "Jewelry"].map((c) => <option key={c}>{c}</option>)}</select>
           <input className={input} placeholder="Size" value={f.size} onChange={set("size")} />
           <textarea className={input + " sm:col-span-2"} placeholder="Description" value={f.description} onChange={set("description")} />
           <input className={input} placeholder="Style tags (comma separated)" value={f.tags} onChange={set("tags")} />
           <input className={input} placeholder="Existing flaws" value={f.flaws} onChange={set("flaws")} />
-          <div className="grid grid-cols-3 gap-2 sm:col-span-2">{(["bust", "waist", "length"] as const).map((k) => <input key={k} className={input} placeholder={`${k} (in)`} value={f[k]} onChange={set(k)} />)}</div>
+          {fields.length > 0 ? (
+            <div className="space-y-2 rounded-2xl bg-muted/60 p-3 sm:col-span-2">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                <span className="font-medium text-foreground">Garment measurements (laid flat × 2 for circumferences)</span>
+                <select aria-label="Units" className={input.replace("w-full", "w-auto") + " py-1"} value={f.unit} onChange={set("unit")}><option value="in">in</option><option value="cm">cm</option></select>
+              </div>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{fields.map((k) => <label key={k} className="text-xs capitalize text-muted-foreground">{k}<input inputMode="decimal" className={input} value={f[k]} onChange={set(k)} /></label>)}</div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                <label>Stretch<select className={input} value={f.stretch} onChange={set("stretch")}><option value="none">None</option><option value="some">Some</option><option value="high">High</option></select></label>
+                <label>Intended fit<select className={input} value={f.fit} onChange={set("fit")}><option value="fitted">Fitted</option><option value="regular">Regular</option><option value="relaxed">Relaxed</option></select></label>
+              </div>
+            </div>
+          ) : <p className="text-xs text-muted-foreground sm:col-span-2">No body measurements needed for this category — add dimensions in the description.</p>}
           <div className="grid grid-cols-4 gap-2 sm:col-span-2 text-xs text-muted-foreground">
-            {([["dailyRate", "$/day"], ["deposit", "Deposit"], ["retail", "Retail"], ["cleaningFee", "Cleaning"]] as const).map(([k, l]) => <label key={k}>{l}<input type="number" className={input} value={f[k]} onChange={set(k)} /></label>)}
+            {([["dailyRate", "$/day"], ["deposit", "Deposit"], ["retail", "Original retail (optional)"], ["cleaningFee", "Cleaning"]] as const).map(([k, l]) => <label key={k}>{l}<input type="number" className={input} value={f[k]} onChange={set(k)} /></label>)}
           </div>
-          <label className="flex items-center gap-2 text-sm sm:col-span-2"><input type="checkbox" checked={verified} onChange={(e) => setVerified(e.target.checked)} />I measured this item myself and the measurements are accurate</label>
+          <label className="flex items-center gap-2 text-sm sm:col-span-2"><input type="checkbox" checked={verified} onChange={(e) => setVerified(e.target.checked)} />I measured this item myself and confirm these measurements can power Fit Check results</label>
           <button onClick={submit} disabled={!f.title || !img || !verified} className={btn + " sm:col-span-2"}>List item</button>
         </div>
       </section>
