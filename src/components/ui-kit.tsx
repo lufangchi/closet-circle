@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 const tabs = [
-  { to: "/", label: "Discover", icon: Compass },
+  { to: "/discover", label: "Discover", icon: Compass },
   { to: "/community", label: "Community", icon: Users },
   { to: "/closet", label: "My Closet", icon: Shirt },
   { to: "/rentals", label: "Rentals", icon: CalendarCheck },
@@ -15,7 +15,8 @@ const tabs = [
 export function AppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const { points } = useStore();
-  const active = (to: string) => (to === "/" ? pathname === "/" || pathname.startsWith("/item") : pathname.startsWith(to) || (to === "/community" && pathname.startsWith("/user")));
+  if (pathname === "/") return <>{children}</>;
+  const active = (to: string) => (to === "/discover" ? pathname === "/discover" || pathname.startsWith("/item") : pathname.startsWith(to) || (to === "/community" && pathname.startsWith("/user")));
   return (
     <div className="min-h-screen pb-24 md:pb-0">
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur">
