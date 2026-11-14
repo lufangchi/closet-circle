@@ -152,9 +152,9 @@ function Landing() {
       <Bridge text="Here’s what everyone is borrowing." />
 
       {/* POPULAR — scattered photo collage around a centered headline */}
-      <section className="relative mx-auto h-[980px] max-w-7xl px-6 md:h-[860px]">
+      <section className="relative mx-auto h-[1080px] max-w-7xl px-6 md:h-[1160px]">
         {popular.map((p) => (
-          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-44 lg:w-72 ${p.pos}`}>
+          <Link key={p.tag} to={p.to as "/discover"} className={`group absolute w-52 md:w-64 lg:w-80 ${p.pos}`}>
             <img src={p.img} alt={p.tag} loading="lazy" className={`aspect-[4/5] w-full rounded-[1.75rem] object-cover ${p.fit} shadow-soft transition duration-500 group-hover:-translate-y-1`} />
             <span className={`absolute max-w-[calc(100%-1.5rem)] rounded-full px-4 py-2 text-center text-xs leading-snug text-foreground shadow-soft md:text-sm ${p.tone} ${p.tagPos}`}>{p.tag}</span>
           </Link>
