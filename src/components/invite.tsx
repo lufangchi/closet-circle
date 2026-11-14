@@ -132,7 +132,7 @@ function OutingCard({ o }: { o: Outing }) {
           </div>
           <div className="flex gap-2">
             <input className={input} placeholder="Message about the plan" value={msg} onChange={(e) => setMsg(e.target.value)} />
-            <button disabled={!msg.trim()} onClick={() => { s.outingMessage(o.id, msg.trim()); setMsg(""); }} className={btnGhost}><Send className="h-4 w-4" /></button>
+            <button disabled={!msg.trim()} aria-label="Send message about the plan" onClick={() => { s.outingMessage(o.id, msg.trim()); setMsg(""); }} className={btnGhost}><Send className="h-4 w-4" /></button>
           </div>
         </div>
       )}
