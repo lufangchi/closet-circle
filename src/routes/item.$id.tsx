@@ -85,7 +85,7 @@ function ItemPage() {
         {isClothing(item.category) && <details className="text-sm"><summary className="cursor-pointer text-muted-foreground">Just the Fit Check</summary><div className="mt-2"><FitCheckCard item={item} /></div></details>}
 
         <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-soft">
-          <p className="flex items-baseline justify-between"><span className="text-sm text-muted-foreground">Original rental price</span><span className="font-display text-3xl">${item.dailyRate}<span className="text-sm text-muted-foreground"> / day</span></span></p>
+          <p className="flex items-baseline justify-between"><span className="text-sm text-muted-foreground">Original rental price</span><span className="type-detail text-3xl">${item.dailyRate}<span className="text-sm text-muted-foreground"> / day</span></span></p>
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs text-muted-foreground">Pick up<input type="date" className={input} value={start} onChange={(e) => setStart(e.target.value)} /></label>
             <label className="text-xs text-muted-foreground">Return<input type="date" className={input} value={end} min={start} onChange={(e) => setEnd(e.target.value)} /></label>
