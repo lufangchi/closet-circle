@@ -6,12 +6,17 @@ import lookSage from "@/assets/look-sage-mission.jpg";
 import lookSuit from "@/assets/look-suit-mirror.jpg";
 import lookFloral from "@/assets/look-floral-dolores.jpg";
 import lookBlush from "@/assets/look-blush-hallway.jpg";
+import lookAva from "@/assets/look-ava-satin.jpg";
 
+export type PieceSource = "rented" | "closet";
+export type PieceTag = { itemId: string; source: PieceSource; rentalId?: string };
 export type PostKind = "rented" | "closet";
 export type Post = {
   id: string; userId: string; kind: PostKind; image: string; caption: string; itemId: string;
   /** Extra tagged pieces worn in the photo — only listings that are available to rent. */
   alsoTagged?: string[];
+  /** Explicit tags chosen in the composer. Rented tags carry their completed rental. */
+  tags?: PieceTag[];
   /** Where it was shot, e.g. "Valencia St murals · 94110". */
   place?: string;
   /** Seeded sample content. */
@@ -26,10 +31,12 @@ export const communityRentals = [
   { id: "cr1", itemId: "sage-slip", renterId: "ines", status: "Completed" },
   { id: "cr2", itemId: "cream-bag", renterId: "maya", status: "Completed" },
   { id: "cr3", itemId: "floral-sun", renterId: "maya", status: "Completed" },
+  { id: "cr6", itemId: "champagne-satin", renterId: "ava", status: "Completed" },
   { id: "cr5", itemId: "burgundy-zip", renterId: "maya", status: "Completed" },
 ];
 
 export const seedPosts: Post[] = [
+  { id: "p12", demo: true, userId: "ava", kind: "rented", rentalId: "cr6", image: lookAva, itemId: "champagne-satin", tags: [{ itemId: "champagne-satin", source: "rented", rentalId: "cr6" }, { itemId: "black-shoulder-bag", source: "closet" }], place: "Hayes Street · 94102", caption: "Maya's champagne satin slip with my black shoulder bag (you can rent it too!) and loafers. The satin is even prettier in person.", styleTags: ["Silk", "Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 27, saves: 12 },
   { id: "p11", demo: true, userId: "maya", kind: "rented", rentalId: "cr5", image: lookBurgundy, itemId: "burgundy-zip", alsoTagged: ["crescent-bag"], place: "Home in Bernal Heights · 94110", caption: "Lena's burgundy half-zip with my green cable knit over the shoulders, a khaki wrap skirt and her crescent bag. Size M, roomy in the best way.", styleTags: ["Minimal", "Quiet luxury"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 23, saves: 9 },
   { id: "p1", demo: true, userId: "ines", kind: "rented", rentalId: "cr1", image: lookSage, itemId: "sage-slip", place: "Balmy Alley murals · 94110", caption: "Maya's sage slip, dressed down with a chunky cardigan and sneakers for a Mission walk. Fit exactly like the measurements said.", styleTags: ["Silk", "Minimal", "Romantic"], occasion: "Brunch", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 14, saves: 6 },
   { id: "p3", demo: true, userId: "maya", kind: "rented", rentalId: "cr2", image: lookSuit, itemId: "cream-bag", alsoTagged: ["black-suit"], place: "Bedroom mirror · 94110", caption: "Lena's cream bag made the whole suit look expensive. Spotless condition, quick handoff at Mint Plaza.", styleTags: ["Quiet luxury", "Tailored", "Minimal"], occasion: "Work", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 19, saves: 8 },
@@ -77,4 +84,13 @@ export function recommendPeople(me: User, w: Record<string, number>, exclude: st
   }).sort((a, b) => b.score - a.score);
 }
 export const taggedItem = (p: Post) => getItem(p.itemId);
-export const taggedIds = (p: Post) => [p.itemId, ...(p.alsoTagged ?? [])];
+/** Every tagged piece with its source. Seed posts without explicit tags: an item the author owns is "closet", otherwise "rented" (or the primary item of a closet post). */
+export function pieceTags(p: Post, ownerOf: (id: string) => string | undefined = (id) => getItem(id)?.ownerId): PieceTag[] {
+  if (p.tags?.length) return p.tags;
+  return [p.itemId, ...(p.alsoTagged ?? [])].map((id) => {
+    const own = ownerOf(id) === p.userId || (p.kind === "closet" && id === p.itemId);
+    return own ? { itemId: id, source: "closet" as const } : { itemId: id, source: "rented" as const, ...(id === p.itemId && p.rentalId ? { rentalId: p.rentalId } : {}) };
+  });
+}
+export const taggedIds = (p: Post) => pieceTags(p).map((t) => t.itemId);
+export const SOURCE_LABEL: Record<PieceSource, string> = { rented: "Rented for this look", closet: "From my closet" };
