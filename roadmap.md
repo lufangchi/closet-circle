@@ -20,3 +20,4 @@
 - [x] Landing v3 (Victoria): remove SF line, new value prop, fan carousel how-it-works, no repeated photos, remove trust, smoother flow
 - [x] Rentals & My Closet update (Kaixi, uploaded brief)
 - [x] Brand rename (Cuimei brief)
+- [ ] Community style-match invites + "Styled Together" posts (Kaixi brief): shared-style reasons, "Make a plan" invite (activity/time/area/note, accept/decline/suggest time, private meetup chat), co-authored outing post with per-item "worn by / from whose closet" + Verified Rental, seeded Ava↔Maya demo
