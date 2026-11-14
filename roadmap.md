@@ -15,3 +15,4 @@
 - [ ] Landing B: section 2 in the attachment-3 design (not black): 1 browse/AI discover & AI try-on, 2 message the owner, 3 get the clothes & wear them, 4 talk with people who share your taste
 - [ ] Landing C: "Inside the circle" → 3 tiles: Discover, Meet your community, Manage your closet
 - [ ] Landing D: bottom section like attachment 4
+- [ ] Community multi-item tags: composer "Tag items in this look" (My Rentals = "Rented for this look" → lender listing; My Closet = "From my closet"); add/remove before publish; post shows "Pieces in this look" cards (photo, name, $/day, source label, save each); item-level reviews on rented listing, closet piece as styling inspiration; demo: Ava in Maya's satin dress + Ava's own shoulder bag
