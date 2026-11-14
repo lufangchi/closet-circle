@@ -9,6 +9,7 @@ import { taggedIds } from "@/lib/community";
 import { streamImage } from "@/lib/stream-image";
 import { toBlob } from "@/components/preview-on-me";
 import { Avatar, Chip, btn, btnGhost, input } from "@/components/ui-kit";
+import { PersonalStyling } from "@/components/personal-styling";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/stylist")({
@@ -49,6 +50,7 @@ function Stylist() {
   const [img, setImg] = useState(""); const [final, setFinal] = useState(false);
   const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   const [step, setStep] = useState(1); // mobile stepper
+  const [tab, setTab] = useState<"preview" | "personal">("preview");
 
   const prefs: Prefs = { occasion, style, size, budget, radius, start, end, days: daysBetween(start, end) };
   const outfit = useMemo(() => buildOutfit(s.allItems, prefs, pick), [s.allItems, occasion, style, size, budget, radius, start, end, pick]);
@@ -133,7 +135,12 @@ function Stylist() {
   return (
     <div className="space-y-6 pb-24 md:pb-0">
       <div><h1 className="text-5xl">AI <em>Stylist</em></h1><p className="text-muted-foreground">Pick a place, choose how you appear, and we'll style a look from pieces neighbors actually lend.</p></div>
-      <div className="grid gap-8 md:grid-cols-[360px_1fr]">
+      <div className="flex max-w-md rounded-full bg-muted p-1">
+        {([["preview", "Styling preview"], ["personal", "Personal styling"]] as const).map(([k, l]) => (
+          <button key={k} onClick={() => setTab(k)} className={cn("flex-1 rounded-full px-4 py-2 text-sm", tab === k ? "bg-card shadow-soft" : "text-muted-foreground")}>{l}</button>
+        ))}
+      </div>
+      {tab === "preview" && <div className="grid gap-8 md:grid-cols-[360px_1fr]">
         <aside>{settings}</aside>
         <section className={cn("space-y-5", step !== 3 && "hidden md:block")}>
           <div className="grid gap-5 lg:grid-cols-[1fr_280px]">
@@ -189,12 +196,13 @@ function Stylist() {
             </div>
           )}
         </section>
-      </div>
-      <div className="fixed inset-x-0 bottom-16 z-20 flex gap-2 border-t border-border bg-card/95 p-3 md:hidden">
+      </div>}
+      {tab === "preview" && <div className="fixed inset-x-0 bottom-16 z-20 flex gap-2 border-t border-border bg-card/95 p-3 md:hidden">
         {step > 1 && <button onClick={() => setStep(step - 1)} className={btnGhost + " flex-1"}>Back</button>}
         {step < 3 ? <button onClick={() => setStep(step + 1)} className={btn + " flex-1"}>Next</button>
           : <button onClick={generate} disabled={busy || !pieces.length} className={btn + " flex-1"}>{img ? "Regenerate" : "Generate look"}</button>}
-      </div>
+      </div>}
+      {tab === "personal" && <PersonalStyling />}
     </div>
   );
 }
