@@ -6,6 +6,8 @@ import { getItem, getUser, priceRental, pickupSpots, compatibility, users, ME } 
 import { useStore } from "@/lib/store";
 import { isVerified } from "@/lib/community";
 import { Avatar, HeartButton, btn, btnGhost, input } from "@/components/ui-kit";
+import { PreviewOnMe, FitCheckCard } from "@/components/preview-on-me";
+import { isClothing } from "@/lib/fit";
 
 export const Route = createFileRoute("/item/$id")({
   loader: ({ params }) => { const item = getItem(params.id); if (!item) throw notFound(); return { title: item.title, desc: item.description }; },
@@ -44,6 +46,7 @@ function ItemPage() {
     <div className="grid gap-8 md:grid-cols-2">
       <div className="relative">
         <img src={item.image} alt={item.title} className="w-full rounded-3xl object-cover" />
+        {item.gallery && item.gallery.length > 1 && <div className="mt-3 flex gap-2">{item.gallery.map((g) => <img key={g} src={g} alt="" className="h-20 w-20 rounded-xl object-cover" />)}</div>}
         <HeartButton active={store.favorites.includes(item.id)} onClick={() => store.toggleFav(item.id)} className="absolute right-4 top-4" />
       </div>
       <div className="space-y-6">
@@ -71,11 +74,15 @@ function ItemPage() {
           </div>
           <div className="rounded-2xl bg-muted p-4 text-muted-foreground">
             <p className="mb-2 font-medium text-foreground">Condition</p>
-            <p>{item.condition}</p><p>Flaws: {item.flaws}</p><p>Retail ${item.retail}</p><p>Notice: {item.minNotice}</p>
+            <p>{item.condition}</p><p>Flaws: {item.flaws}</p>{item.retail > 0 && <p>Original retail price ${item.retail}</p>}<p>Notice: {item.minNotice}</p>
           </div>
         </div>
 
+        {isClothing(item.category) ? <PreviewOnMe item={item} /> : null}
+        {isClothing(item.category) && <details className="text-sm"><summary className="cursor-pointer text-muted-foreground">Just the Fit Check</summary><div className="mt-2"><FitCheckCard item={item} /></div></details>}
+
         <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-soft">
+          <p className="flex items-baseline justify-between"><span className="text-sm text-muted-foreground">Original rental price</span><span className="font-display text-3xl">${item.dailyRate}<span className="text-sm text-muted-foreground"> / day</span></span></p>
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs text-muted-foreground">Pick up<input type="date" className={input} value={start} onChange={(e) => setStart(e.target.value)} /></label>
             <label className="text-xs text-muted-foreground">Return<input type="date" className={input} value={end} min={start} onChange={(e) => setEnd(e.target.value)} /></label>
@@ -83,16 +90,16 @@ function ItemPage() {
           <label className="block text-xs text-muted-foreground">Public meetup spot<select className={input} value={pickup} onChange={(e) => setPickup(e.target.value)}>{pickupSpots.map((s) => <option key={s}>{s}</option>)}</select></label>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={usePts} onChange={(e) => setUsePts(e.target.checked)} />Use reward points ({store.points} pts)</label>
           <div className="space-y-1 border-t border-border pt-3 text-sm">
-            <Row l={`$${item.dailyRate} × ${p.days} days`} r={p.rental} />
-            <Row l="Cleaning fee" r={p.cleaning} />
-            {p.discount > 0 && <Row l="Points discount" r={-p.discount} />}
-            <Row l="Refundable deposit" r={p.deposit} />
-            <Row l="Due at confirmation" r={p.total} bold />
+            <Row l={`Rental subtotal ($${item.dailyRate} × ${p.days} ${p.days === 1 ? "day" : "days"})`} r={p.rental} />
+            {p.cleaning > 0 && <Row l="Cleaning fee" r={p.cleaning} />}
+            {p.discount > 0 && <Row l={`Points applied (${p.discount * 10} pts)`} r={-p.discount} />}
+            {p.deposit > 0 && <Row l="Refundable deposit" r={p.deposit} />}
+            <Row l="Final amount due" r={p.total} bold />
           </div>
           {blocked && <p className="text-xs text-destructive">Some of these dates are blocked by the owner.</p>}
           <button disabled={blocked} onClick={request} className={btn + " w-full"}>Request to rent</button>
           <p className="flex gap-1 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4 shrink-0" />Free cancellation up to 48h before pickup. Condition photos at pickup & return; normal wear is never charged.</p>
-          <p className="flex gap-1 text-xs text-muted-foreground"><Info className="h-4 w-4 shrink-0" />Fit guidance uses the owner's measurements. AI try-on is coming soon and is illustrative only.</p>
+          <p className="flex gap-1 text-xs text-muted-foreground"><Info className="h-4 w-4 shrink-0" />Prototype: no payment is taken. <Link to="/terms" className="underline">Rental terms</Link></p>
         </div>
       </div>
       <VisualReviews itemId={item.id} />
