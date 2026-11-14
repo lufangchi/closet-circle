@@ -1,6 +1,6 @@
 import { items, users, ME, getItem, type User } from "./data";
-import archTeal from "@/assets/arch-teal.jpg";
-import archYellow from "@/assets/arch-yellow.jpg";
+import lookSageEvening from "@/assets/look-sage-evening.jpg";
+import lookFloral24 from "@/assets/look-floral-24th.jpg";
 import lookBurgundy from "@/assets/look-burgundy-mirror.jpg";
 import lookSage from "@/assets/look-sage-mission.jpg";
 import lookSuit from "@/assets/look-suit-mirror.jpg";
@@ -42,8 +42,8 @@ export const seedPosts: Post[] = [
   { id: "p3", demo: true, userId: "maya", kind: "rented", rentalId: "cr2", image: lookSuit, itemId: "cream-bag", alsoTagged: ["black-suit"], place: "Bedroom mirror · 94110", caption: "Lena's cream bag made the whole suit look expensive. Spotless condition, quick handoff at Mint Plaza.", styleTags: ["Quiet luxury", "Tailored", "Minimal"], occasion: "Work", review: { condition: 5, accuracy: 5, experience: 5 }, likes: 19, saves: 8 },
   { id: "p5", demo: true, userId: "maya", kind: "rented", rentalId: "cr3", image: lookFloral, itemId: "floral-sun", place: "Dolores Park · 94114", caption: "Inès's floral sundress + my pink cardigan for a windy picnic. Pockets!", styleTags: ["Vintage", "Romantic", "Boho"], occasion: "Brunch", review: { condition: 5, accuracy: 4, experience: 5 }, likes: 11, saves: 3 },
   { id: "p2", demo: true, userId: "maya", kind: "closet", image: lookBlush, itemId: "blush-pleat", alsoTagged: ["nude-heels"], place: "Getting ready · 94110", caption: "How I style my blush chiffon for a wedding: nude sandals, low bun, nothing else.", styleTags: ["Romantic", "Evening"], occasion: "Wedding Guest", likes: 32, saves: 11 },
-  { id: "p9", demo: true, userId: "maya", kind: "closet", image: archTeal, itemId: "sage-slip", place: "Bernal Hill · 94110", caption: "Same sage slip, evening edition.", styleTags: ["Minimal", "Silk"], occasion: "Wedding Guest", likes: 16, saves: 7 },
-  { id: "p10", demo: true, userId: "ines", kind: "closet", image: archYellow, itemId: "floral-sun", place: "24th St · 94114", caption: "Florals on florals. Ask me about the matching sundress.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 12, saves: 4 },
+  { id: "p9", demo: true, userId: "maya", kind: "closet", image: lookSageEvening, itemId: "sage-slip", alsoTagged: ["nude-heels"], place: "Bernal Hill · 94110", caption: "Same sage slip, evening edition: my nude strappy sandals and a cream wrap for the sunset on Bernal Hill.", styleTags: ["Minimal", "Silk"], occasion: "Wedding Guest", likes: 16, saves: 7 },
+  { id: "p10", demo: true, userId: "ines", kind: "closet", image: lookFloral24, itemId: "floral-sun", place: "24th St · 94114", caption: "My ditsy floral sundress on a coffee run down 24th. Swishy skirt, real pockets.", styleTags: ["Vintage", "Boho"], occasion: "Brunch", likes: 12, saves: 4 },
 ];
 
 export const isVerified = (p: Post, myCompleted: string[]) =>
