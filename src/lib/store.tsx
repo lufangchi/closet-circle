@@ -1,3 +1,4 @@
+import type React from "react";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { seedPosts, isVerified, postPoints, type Post } from "./community";
 import { ME, seedRentals, type Rental, type RentalStatus, type Item, items as seedItems } from "./data";
@@ -12,7 +13,9 @@ type Ctx = State & {
   review: (id: string) => void; addItem: (i: Item) => void; postRequest: (t: string) => void; allItems: Item[];
   allPosts: Post[]; earned: number; myCompleted: string[]; toggleLike: (id: string) => void; toggleSavePost: (id: string) => void; addPost: (p: Post) => void; skipPerson: (id: string) => void;
 };
-const C = createContext<Ctx | null>(null);
+// Keep one context instance across hot reloads so provider and consumers never mismatch.
+const g = globalThis as unknown as { __closetCtx?: React.Context<Ctx | null> };
+const C = (g.__closetCtx ??= createContext<Ctx | null>(null));
 const KEY = "closet-circle-v1";
 
 export function StoreProvider({ children }: { children: ReactNode }) {
