@@ -165,7 +165,7 @@ function Landing() {
 
       {/* TRENDING — best-seller style row */}
       <section className="mx-auto max-w-7xl px-6 pb-16">
-        <p className="text-center text-[12px] tracking-luxe text-accent-foreground">This week in the circle</p>
+        <p className="text-center text-[12px] tracking-luxe text-accent-foreground">This week on SisUse</p>
         <h2 className="mt-6 text-center font-display text-4xl md:text-5xl">Discover what's <em>trending</em> nearby</h2>
         <div className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4">
           {items.slice(0, 4).map((it, i) => (
