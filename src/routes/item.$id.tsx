@@ -1,9 +1,10 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShieldCheck, Star, MapPin, Clock, Ruler, Info } from "lucide-react";
+import { BadgeCheck, ShieldCheck, Star, MapPin, Clock, Ruler, Info } from "lucide-react";
 import { toast } from "sonner";
 import { getItem, getUser, priceRental, pickupSpots, compatibility, users, ME } from "@/lib/data";
 import { useStore } from "@/lib/store";
+import { isVerified } from "@/lib/community";
 import { Avatar, HeartButton, btn, btnGhost, input } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/item/$id")({
@@ -94,7 +95,24 @@ function ItemPage() {
           <p className="flex gap-1 text-xs text-muted-foreground"><Info className="h-4 w-4 shrink-0" />Fit guidance uses the owner's measurements. AI try-on is coming soon and is illustrative only.</p>
         </div>
       </div>
+      <VisualReviews itemId={item.id} />
     </div>
+  );
+}
+
+function VisualReviews({ itemId }: { itemId: string }) {
+  const store = useStore();
+  const looks = store.allPosts.filter((p) => p.itemId === itemId && isVerified(p, store.myCompleted));
+  if (!looks.length) return null;
+  return (
+    <section className="md:col-span-2">
+      <h2 className="mb-3 text-3xl">Worn by renters</h2>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">{looks.map((p) => (
+        <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
+          <img src={p.image} alt={p.caption} className="aspect-[3/4] w-full object-cover" loading="lazy" />
+          <div className="space-y-1 p-3 text-xs"><p className="flex items-center gap-1 font-medium"><BadgeCheck className="h-3 w-3" />Verified Rental · {p.userId === ME ? "You" : getUser(p.userId).name}</p><p>{p.caption}</p>{p.review && <p className="text-muted-foreground">Condition {p.review.condition}/5 · As described {p.review.accuracy}/5 · Exchange {p.review.experience}/5</p>}</div>
+        </div>))}</div>
+    </section>
   );
 }
 const Row = ({ l, r, bold }: { l: string; r: number; bold?: boolean }) => (

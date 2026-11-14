@@ -19,7 +19,8 @@ export const Route = createFileRoute("/discover")({
 const cats = ["All", "Dress", "Suit", "Bag", "Shoes"];
 
 function Discover() {
-  const { soulmates, allItems, postRequest } = useStore();
+  const { soulmates, allItems, postRequest, favorites, savedPosts, allPosts } = useStore();
+  const savedPostItems = allPosts.filter((p) => savedPosts.includes(p.id)).map((p) => p.itemId);
   const [q, setQ] = useState({ occasion: "Wedding", date: "2026-11-21", size: "S", budget: 80, zip: "94110" });
   const [results, setResults] = useState<ReturnType<typeof recommend> | null>(null);
   const [loading, setLoading] = useState(false);
@@ -28,15 +29,14 @@ function Discover() {
   const [maxPrice, setMaxPrice] = useState(50);
   const [req, setReq] = useState("");
 
-  const run = () => { setLoading(true); setResults(null); setTimeout(() => { setResults(recommend(q, soulmates).slice(0, 3)); setLoading(false); }, 900); };
+  const run = () => { setLoading(true); setResults(null); setTimeout(() => { setResults(recommend(q, { soulmates, favorites, savedPostItems }, allItems).slice(0, 3)); setLoading(false); }, 900); };
   const filtered = useMemo(() => allItems.filter((i) => (cat === "All" || i.category === cat) && i.distance <= maxDist && i.dailyRate <= maxPrice), [allItems, cat, maxDist, maxPrice]);
   const fromSoulmates = allItems.filter((i) => soulmates.includes(i.ownerId));
 
   return (
     <div className="space-y-10">
       <section className="rounded-3xl bg-hero p-6 md:p-10">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Your neighborhood's shared wardrobe</p>
-        <h1 className="mt-2 max-w-xl text-4xl font-semibold leading-tight md:text-6xl">What are you dressing for?</h1>
+                <h1 className="mt-2 max-w-xl text-4xl font-semibold leading-tight md:text-6xl">What are you dressing for?</h1>
         <div className="mt-6 grid gap-3 rounded-2xl bg-card/80 p-4 shadow-soft md:grid-cols-6">
           <label className="md:col-span-2 text-xs text-muted-foreground">Occasion<input className={input} value={q.occasion} onChange={(e) => setQ({ ...q, occasion: e.target.value })} /></label>
           <label className="text-xs text-muted-foreground">Date<input type="date" className={input} value={q.date} onChange={(e) => setQ({ ...q, date: e.target.value })} /></label>
@@ -54,10 +54,11 @@ function Discover() {
             <div className="grid grid-cols-3 gap-4">{[0, 1, 2].map((i) => <div key={i} className="aspect-[3/4] animate-pulse rounded-2xl bg-muted" />)}</div>
           ) : (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-              {results!.map(({ item }, i) => (
+              {results!.length === 0 && <p className="text-sm text-muted-foreground">No pieces fit that date, size and budget — try widening your budget.</p>}
+              {results!.map(({ item, reasons }, i) => (
                 <div key={item.id}>
-                  <ItemCard item={item} badge={i === 0 ? "Best match" : soulmates.includes(item.ownerId) ? "From your Soulmate" : undefined} />
-                  <p className="-mt-2 px-1 text-xs text-muted-foreground">Why: fits {(item.occasions[0] ?? "").toLowerCase()} · size {item.size} · from {getUser(item.ownerId).name}'s closet</p>
+                  <ItemCard item={item} badge={reasons[0] ?? (i === 0 ? "Best match" : undefined)} />
+                  <p className="-mt-2 px-1 text-xs text-muted-foreground">Why: {reasons.length ? reasons.join(" · ").toLowerCase() + " · " : ""}fits {(item.occasions[0] ?? "").toLowerCase()} · size {item.size} · from {getUser(item.ownerId).name}'s closet</p>
                 </div>
               ))}
             </div>

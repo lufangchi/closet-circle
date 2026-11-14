@@ -22,7 +22,6 @@ export type Rental = {
   id: string; itemId: string; renterId: string; ownerId: string; start: string; end: string; status: RentalStatus;
   pickup: string; messages: { from: string; text: string; at: string }[]; reviewed?: boolean; pointsUsed?: number;
 };
-export type Post = { id: string; userId: string; image: string; caption: string; likes: number };
 
 export const ME = "me";
 
@@ -47,12 +46,6 @@ export const seedRentals: Rental[] = [
   { id: "r2", itemId: "floral-sun", renterId: ME, ownerId: "ines", start: "2026-11-21", end: "2026-11-22", status: "Confirmed", pickup: "Noe Valley Library steps", messages: [{ from: "ines", text: "Confirmed! It's freshly pressed.", at: "Nov 12" }] },
 ];
 
-export const posts: Post[] = [
-  { id: "p1", userId: "maya", image: blush, caption: "Wore this to my cousin's vineyard wedding — 3 people asked to rent it 💗", likes: 128 },
-  { id: "p2", userId: "lena", image: blazer, caption: "Styling tip: a tailored suit + flat sandals for summer weddings.", likes: 86 },
-  { id: "p3", userId: "ines", image: floral, caption: "Garden party season isn't over in SF. Linen forever.", likes: 64 },
-  { id: "p4", userId: "lena", image: bag, caption: "Quiet luxury, loud compliments.", likes: 92 },
-];
 
 export const getUser = (id: string) => users.find((u) => u.id === id)!;
 export const getItem = (id: string) => items.find((i) => i.id === id);
@@ -74,17 +67,23 @@ export function priceRental(item: Item, start: string, end: string, points = 0):
   return { days, rental, cleaning: item.cleaningFee, deposit: item.deposit, discount, total: rental + item.cleaningFee + item.deposit - discount };
 }
 
-/** Mock "AI" occasion matching — keyword scoring, clearly labeled as a demo in the UI. */
-export function recommend(q: { occasion: string; size: string; budget: number }, saved: string[]) {
-  return items
+export type RecCtx = { soulmates: string[]; favorites: string[]; savedPostItems: string[] };
+export type Rec = { item: Item; score: number; reasons: string[] };
+/** Two-step demo ranking: hard eligibility (size, budget for 2 days, date, ≤5 mi), then score. Saves visibly boost rank. */
+export function recommend(q: { occasion: string; size: string; budget: number; date?: string }, ctx: RecCtx, pool: Item[] = items): Rec[] {
+  return pool
+    .filter((i) => (!q.size || i.size === q.size || i.size === "One size" || i.category === "Shoes")
+      && (!q.budget || i.dailyRate * 2 <= q.budget)
+      && (!q.date || !i.blockedDates.includes(q.date))
+      && i.distance <= 5)
     .map((i) => {
-      let s = 0;
+      let s = 0; const reasons: string[] = [];
       if (q.occasion && i.occasions.some((o) => o.toLowerCase().includes(q.occasion.toLowerCase()))) s += 5;
-      if (q.size && (i.size === q.size || i.size === "One size" || i.category === "Shoes")) s += 3;
-      if (q.budget && i.dailyRate * 2 <= q.budget) s += 2;
-      if (saved.includes(i.ownerId)) s += 2;
+      if (ctx.favorites.includes(i.id)) { s += 6; reasons.push("On your wishlist"); }
+      if (ctx.savedPostItems.includes(i.id)) { s += 5; reasons.push("From a saved post"); }
+      if (ctx.soulmates.includes(i.ownerId)) { s += 4; reasons.push("From your Closet Soulmate"); }
       s += Math.max(0, 3 - i.distance);
-      return { item: i, score: s };
+      return { item: i, score: s, reasons };
     })
     .sort((a, b) => b.score - a.score);
 }
