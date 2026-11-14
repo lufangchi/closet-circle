@@ -10,7 +10,6 @@ import stepFriends from "@/assets/step-friends.jpg";
 import tileDiscover from "@/assets/tile-discover.jpg";
 import tileCommunity from "@/assets/tile-community.jpg";
 import tileCloset from "@/assets/tile-closet.jpg";
-import { items } from "@/lib/data";
 import coat from "@/assets/pink-satin-coat.png.asset.json";
 import gown from "@/assets/olive-column-gown.png.asset.json";
 import knit from "@/assets/blush-oversized-knit.jpg.asset.json";
