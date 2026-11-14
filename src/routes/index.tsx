@@ -13,7 +13,7 @@ import tileCloset from "@/assets/tile-closet.jpg";
 import { items } from "@/lib/data";
 import coat from "@/assets/pink-satin-coat.png.asset.json";
 import gown from "@/assets/olive-column-gown.png.asset.json";
-import knit from "@/assets/blush-oversized-knit.png.asset.json";
+import knit from "@/assets/blush-oversized-knit.jpg.asset.json";
 import tryOn from "@/assets/sample-preview-burgundy.jpg";
 
 export const Route = createFileRoute("/")({
@@ -38,7 +38,7 @@ const popular = [
   { img: gown.url, tag: "Gallery-opening glamour", tone: "bg-butter", pos: "right-[3%] top-[0%]", tagPos: "-left-28 top-10", to: "/discover" },
   { img: knit.url, tag: "Cozy oversized knits", tone: "bg-denim", pos: "left-[10%] bottom-[2%]", tagPos: "-right-20 top-4", to: "/discover" },
   { img: items[0]!.image, tag: "Wedding-guest silk", tone: "bg-accent", pos: "right-[12%] bottom-[6%]", tagPos: "-left-24 -top-4", to: "/item/sage-slip" },
-  { img: items[2]!.image, tag: "Quiet-luxury bags", tone: "bg-clay", pos: "left-[34%] top-[0%] hidden lg:block", tagPos: "-right-16 bottom-2", to: "/item/cream-bag" },
+  { img: items[2]!.image, tag: "Quiet-luxury bags", tone: "bg-clay", pos: "left-[36%] top-[0%] hidden w-40 lg:block md:w-44", tagPos: "-right-28 top-6", to: "/item/cream-bag" },
 ];
 const chips = ["Clothing", "Bags", "Jewelry", "Shoes", "Accessories"];
 const steps = [
